@@ -583,7 +583,11 @@ textarea.inp{resize:none;}
       <div class="check-list">
         <div class="check-item" id="ci-buku" onclick="toggleSimple('buku','lavender')">
           <div class="ci-check">✓</div>
-          <div class="ci-info"><div class="ci-name">📚 Baca Buku / Ilmu</div><div class="ci-sub">hari ini</div></div>
+          <div class="ci-info"><div class="ci-name">📖 Belajar Ilmu Agama</div><div class="ci-sub">fiqh, aqidah, sirah, tafsir, dll</div></div>
+        </div>
+        <div class="check-item" id="ci-karakter" onclick="toggleSimple('karakter','rose')">
+          <div class="ci-check">✓</div>
+          <div class="ci-info"><div class="ci-name">🌱 Belajar Memperbaiki Karakter</div><div class="ci-sub">sedikit saja, yang penting konsisten — Allah melihat hatimu</div></div>
         </div>
       </div>
     </div>
@@ -1017,11 +1021,11 @@ function toggleSimple(key, color) {
 
 function renderSimpleChecks() {
   const td = getTodayData();
-  const simples = ['tilawah','zikir-pagi','zikir-petang','buku'];
+  const simples = ['tilawah','zikir-pagi','zikir-petang','buku','karakter'];
   simples.forEach(k => {
     const el = document.getElementById('ci-'+k);
     if (!el) return;
-    const colors = {tilawah:'teal','zikir-pagi':'teal','zikir-petang':'teal',buku:'lavender'};
+    const colors = {tilawah:'teal','zikir-pagi':'teal','zikir-petang':'teal',buku:'lavender',akhlak:'rose'};
     el.className = 'check-item' + (td[k] ? ' done-'+colors[k] : '');
   });
   const tilzik = ['tilawah','zikir-pagi','zikir-petang'].filter(k => td[k]).length;
@@ -1054,6 +1058,8 @@ function updateAllProgress() {
   total++; if (td.hafalan) done++;
   // buku
   total++; if (td.buku) done++;
+  // akhlak
+  total++; if (td.akhlak) done++;
 
   const pct = Math.round(done/total*100);
   document.getElementById('ring-pct').textContent = pct + '%';
@@ -1066,7 +1072,7 @@ function updateAllProgress() {
   setCatWin('tilawah', !!td.tilawah);
   setCatWin('zikir', !!(td['zikir-pagi'] && td['zikir-petang']));
   setCatWin('hafalan', !!td.hafalan);
-  setCatWin('buku', !!td.buku);
+  setCatWin('buku', !!(td.buku || td.akhlak));
 
   // streak
   updateStreakDisplay();
@@ -1310,7 +1316,8 @@ function openDayDetail(y, m, d, k) {
     {label:'📿 Zikir Pagi', done:!!dd['zikir-pagi'], color:'var(--teal)'},
     {label:'📿 Zikir Petang', done:!!dd['zikir-petang'], color:'var(--teal)'},
     {label:'🧠 Hafalan/Murajaah', done:!!dd.hafalan, color:'var(--lavender)'},
-    {label:'📚 Buku/Ilmu', done:!!dd.buku, color:'var(--rose)'},
+    {label:'📖 Belajar Ilmu Agama', done:!!dd.buku, color:'var(--lavender)'},
+    {label:'🌱 Belajar Memperbaiki Karakter', done:!!dd.akhlak, color:'var(--rose)'},
   ];
   items.forEach(item => {
     const row = document.createElement('div');

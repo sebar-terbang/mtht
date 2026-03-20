@@ -607,6 +607,7 @@ textarea.inp{resize:none;}
     <div class="chain-tab" data-cat="tilawah" onclick="setChainCat(this,'tilawah')">📖 Tilawah</div>
     <div class="chain-tab" data-cat="zikir" onclick="setChainCat(this,'zikir')">📿 Zikir</div>
     <div class="chain-tab" data-cat="hafalan" onclick="setChainCat(this,'hafalan')">🧠 Hafalan</div>
+    <div class="chain-tab" data-cat="buku" onclick="setChainCat(this,'buku')">📖 Ilmu</div>
   </div>
 
   <div class="cal-nav">
@@ -1121,6 +1122,8 @@ function isDaySuccess(k, cat) {
   if (cat === 'tilawah') return !!dd.tilawah;
   if (cat === 'zikir') return !!(dd['zikir-pagi'] && dd['zikir-petang']);
   if (cat === 'hafalan') return !!dd.hafalan;
+  if (cat === 'buku') return !!(dd.buku && dd.karakter);
+  if (cat === 'karakter') return !!dd.karakter;
   return false;
 }
 

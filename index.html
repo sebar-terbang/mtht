@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Muntaha — Ibadah Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ── CAHAYA PAGI — Light Warm Theme ── */
+  --bg:#fffbf5;
+  --s1:#ffffff;
+  --s2:#fdf7ee;
+  --s3:#f5ede0;
+  --b1:#e8ddd0;
+  --b2:#d9ccbc;
+  --t1:#2c1f0e;
+  --t2:#7a6248;
+  --t3:#b09a82;
+  --amber:#c8881a;
+  --amber-light:#f5a623;
+  --amber-bg:#fff8eb;
+  --amber-border:#f0d4a0;
+  --teal:#1a8c7e;
+  --teal-bg:#edfaf7;
+  --teal-border:#a8ddd7;
+  --coral:#d4533a;
+  --coral-bg:#fff0ed;
+  --coral-border:#f5c4ba;
+  --rose:#c4547a;
+  --rose-bg:#fff0f5;
+  --rose-border:#f5c4d8;
+  --sky:#2a7fc4;
+  --sky-bg:#eef6ff;
+  --sky-border:#b8d9f5;
+  --lavender:#7c5cbf;
+  --lavender-bg:#f5f0ff;
+  --lavender-border:#d4c4f5;
+  --green:#2a9055;
+  --green-bg:#edfaf3;
+  --green-border:#a8ddc0;
+  --shadow-sm:0 1px 4px rgba(44,31,14,.06), 0 2px 8px rgba(44,31,14,.04);
+  --shadow-md:0 2px 8px rgba(44,31,14,.08), 0 4px 16px rgba(44,31,14,.06);
+  --shadow-lg:0 4px 16px rgba(44,31,14,.1), 0 8px 32px rgba(44,31,14,.08);
+  --serif:'Instrument Serif',serif;
+  --mono:'DM Mono',monospace;
+  --sans:'Nunito',sans-serif;
+  --radius:16px;
+  --radius-sm:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--t1);font-family:var(--sans);min-height:100vh;padding-bottom:72px;-webkit-tap-highlight-color:transparent;overscroll-behavior:none;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
+
+/* NAV */
+nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,251,245,.97);backdrop-filter:blur(20px);border-top:1px solid var(--b1);display:flex;z-index:100;box-shadow:0 -2px 12px rgba(44,31,14,.06);}
+.nb{flex:1;padding:8px 4px 8px;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--t3);font-family:var(--mono);font-size:7px;transition:color .15s;letter-spacing:.5px;text-transform:uppercase;}
+.nb.on{color:var(--amber);}
+.nb .ni{font-size:19px;line-height:1.2;}
+
+/* PAGES */
+.page{display:none;max-width:500px;margin:0 auto;padding-bottom:16px;}
+.page.on{display:block;}
+
+/* COMMON */
+.inp{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:10px 13px;color:var(--t1);font-family:var(--mono);font-size:12px;outline:none;transition:border-color .15s,box-shadow .15s;width:100%;box-shadow:var(--shadow-sm);}
+.inp:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(200,136,26,.12);}
+.inp::placeholder{color:var(--t3);}
+select.inp{appearance:none;cursor:pointer;}
+textarea.inp{resize:none;}
+.btn{font-family:var(--mono);border-radius:var(--radius-sm);cursor:pointer;transition:all .18s;border:none;letter-spacing:.3px;}
+.btn-a{background:var(--amber);color:#fff;font-size:12px;font-weight:700;padding:11px 18px;box-shadow:0 2px 8px rgba(200,136,26,.25);}
+.btn-a:hover{background:#b87818;transform:translateY(-1px);box-shadow:0 4px 12px rgba(200,136,26,.3);}
+.btn-a:active{transform:translateY(0) scale(.97);box-shadow:none;}
+.btn-o{background:var(--s1);border:1.5px solid var(--b1);color:var(--t2);font-size:11px;padding:9px 14px;box-shadow:var(--shadow-sm);}
+.btn-o:hover{border-color:var(--b2);background:var(--s2);}
+.sec-lbl{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px;}
+.divider{height:1px;background:var(--b1);margin:0 16px;}
+
+/* ══ TODAY ══ */
+#pg-today{padding:0;}
+.today-hero{
+  padding:28px 20px 20px;
+  position:relative;overflow:hidden;
+  background:linear-gradient(145deg,#fffbf5 0%,#fff8eb 40%,#fdf3e3 100%);
+  border-bottom:1px solid var(--b1);
+}
+.today-hero::before{
+  content:'';position:absolute;top:-60px;right:-40px;
+  width:220px;height:220px;
+  background:radial-gradient(circle,rgba(200,136,26,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.today-hero::after{
+  content:'';position:absolute;bottom:-30px;left:-20px;
+  width:140px;height:140px;
+  background:radial-gradient(circle,rgba(26,140,126,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.th-eyebrow{font-family:var(--mono);font-size:8.5px;color:var(--t2);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.th-title{font-family:var(--serif);font-size:26px;font-style:italic;color:var(--amber);line-height:1.15;margin-bottom:16px;}
+.th-title span{color:var(--t1);font-style:normal;}
+
+.progress-ring-wrap{display:flex;align-items:center;gap:16px;margin-bottom:12px;}
+.ring-svg{flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(200,136,26,.15));}
+.ring-bg{fill:none;stroke:var(--s3);stroke-width:5;}
+.ring-fill{fill:none;stroke:var(--amber);stroke-width:5;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .6s cubic-bezier(.34,1.1,.64,1);}
+.ring-pct{font-family:var(--serif);font-size:26px;text-anchor:middle;dominant-baseline:central;fill:var(--t1);}
+.ring-sub{font-family:var(--mono);font-size:7px;text-anchor:middle;fill:var(--t2);letter-spacing:1px;}
+.streak-info{flex:1;}
+.streak-num{font-family:var(--serif);font-size:52px;line-height:.9;color:var(--t1);}
+.streak-sub{font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:.5px;margin-top:6px;}
+.streak-best{font-family:var(--mono);font-size:8px;color:var(--t3);margin-top:3px;}
+
+/* day mode pills */
+.day-modes{display:flex;gap:7px;margin-top:12px;}
+.day-mode-btn{flex:1;padding:8px 4px;border-radius:var(--radius);border:1.5px solid var(--b1);background:var(--s1);color:var(--t3);font-family:var(--mono);font-size:9px;cursor:pointer;transition:all .2s;text-align:center;letter-spacing:.3px;box-shadow:var(--shadow-sm);}
+.day-mode-btn:hover{border-color:var(--b2);transform:translateY(-1px);}
+.day-mode-btn.on-full{background:var(--green-bg);border-color:var(--green-border);color:var(--green);box-shadow:0 2px 8px rgba(42,144,85,.12);}
+.day-mode-btn.on-light{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber);box-shadow:0 2px 8px rgba(200,136,26,.12);}
+.day-mode-btn.on-rest{background:var(--lavender-bg);border-color:var(--lavender-border);color:var(--lavender);box-shadow:0 2px 8px rgba(124,92,191,.12);}
+
+/* cat wins row */
+.cat-wins{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--b1);background:var(--s2);}
+.cw{padding:12px 4px;text-align:center;border-right:1px solid var(--b1);transition:background .2s;}
+.cw:last-child{border-right:none;}
+.cw.done{background:var(--amber-bg);}
+.cw-icon{font-size:20px;margin-bottom:4px;display:block;filter:grayscale(1) opacity(.35);transition:filter .2s;}
+.cw.done .cw-icon{filter:none;}
+.cw-name{font-family:var(--mono);font-size:6.5px;color:var(--t3);letter-spacing:.3px;text-transform:uppercase;}
+.cw.done .cw-name{color:var(--amber);}
+
+/* section blocks */
+.sec-block{padding:16px 16px 12px;}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;cursor:pointer;user-select:none;}
+.sec-head:active{opacity:.75;}
+.sec-chevron{font-size:11px;color:var(--t3);transition:transform .25s cubic-bezier(.34,1.1,.64,1);margin-left:6px;flex-shrink:0;}
+.sec-block.collapsed .sec-chevron{transform:rotate(-90deg);}
+.sec-body{overflow:hidden;transition:max-height .3s cubic-bezier(.4,0,.2,1),opacity .25s;max-height:1000px;opacity:1;}
+.sec-block.collapsed .sec-body{max-height:0 !important;opacity:0;pointer-events:none;}
+.sec-block.collapsed .sec-head{margin-bottom:0;}
+.sec-title{display:flex;align-items:center;gap:8px;}
+.sec-emoji{font-size:17px;}
+.sec-name{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--t1);}
+.sec-pct{font-family:var(--mono);font-size:10px;color:var(--t2);background:var(--s3);padding:2px 8px;border-radius:20px;}
+
+/* check items */
+.check-list{display:flex;flex-direction:column;gap:7px;}
+.check-item{
+  display:flex;align-items:center;gap:11px;
+  background:var(--s1);border:1.5px solid var(--b1);
+  border-radius:var(--radius);padding:12px 14px;
+  cursor:pointer;transition:all .18s;
+  position:relative;overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.check-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3.5px;background:var(--b1);border-radius:3px 0 0 3px;transition:background .2s;}
+.check-item:hover{transform:translateY(-1px);box-shadow:var(--shadow-md);}
+.check-item:active{transform:scale(.98);box-shadow:none;}
+
+.check-item.done-amber{background:var(--amber-bg);border-color:var(--amber-border);}
+.check-item.done-amber::before{background:var(--amber);}
+.check-item.done-teal{background:var(--teal-bg);border-color:var(--teal-border);}
+.check-item.done-teal::before{background:var(--teal);}
+.check-item.done-sky{background:var(--sky-bg);border-color:var(--sky-border);}
+.check-item.done-sky::before{background:var(--sky);}
+.check-item.done-rose{background:var(--rose-bg);border-color:var(--rose-border);}
+.check-item.done-rose::before{background:var(--rose);}
+.check-item.done-lavender{background:var(--lavender-bg);border-color:var(--lavender-border);}
+.check-item.done-lavender::before{background:var(--lavender);}
+.check-item.done-green{background:var(--green-bg);border-color:var(--green-border);}
+.check-item.done-green::before{background:var(--green);}
+.check-item.done-coral{background:var(--coral-bg);border-color:var(--coral-border);}
+.check-item.done-coral::before{background:var(--coral);}
+
+.ci-check{
+  width:22px;height:22px;border-radius:50%;
+  border:2px solid var(--b2);background:var(--s2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:transparent;flex-shrink:0;
+  transition:all .22s;
+}
+.check-item[class*="done-"] .ci-check{background:var(--amber);border-color:var(--amber);color:#fff;}
+.check-item.done-teal .ci-check{background:var(--teal);border-color:var(--teal);color:#fff;}
+.check-item.done-sky .ci-check{background:var(--sky);border-color:var(--sky);color:#fff;}
+.check-item.done-rose .ci-check{background:var(--rose);border-color:var(--rose);color:#fff;}
+.check-item.done-lavender .ci-check{background:var(--lavender);border-color:var(--lavender);color:#fff;}
+.check-item.done-green .ci-check{background:var(--green);border-color:var(--green);color:#fff;}
+.check-item.done-coral .ci-check{background:var(--coral);border-color:var(--coral);color:#fff;}
+.ci-info{flex:1;}
+.ci-name{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--t1);}
+.ci-sub{font-family:var(--mono);font-size:9px;color:var(--t3);margin-top:1px;}
+.ci-tags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;}
+.ci-tag{font-family:var(--mono);font-size:8px;padding:3px 8px;border-radius:20px;cursor:pointer;border:1.5px solid var(--b1);color:var(--t3);background:var(--s2);transition:all .15s;}
+.ci-tag.on{border-color:var(--teal-border);color:var(--teal);background:var(--teal-bg);}
+
+/* shalat item special */
+.shalat-item{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);overflow:hidden;margin-bottom:7px;transition:all .18s;box-shadow:var(--shadow-sm);}
+.shalat-item:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.shalat-main{display:flex;align-items:center;gap:11px;padding:12px 14px;cursor:pointer;position:relative;}
+.shalat-main::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3.5px;background:var(--b1);transition:background .2s;}
+.shalat-item.done{border-color:var(--amber-border);}
+.shalat-item.done .shalat-main{background:var(--amber-bg);}
+.shalat-item.done .shalat-main::before{background:var(--amber);}
+.shalat-item.done .shalat-main .ci-check{background:var(--amber);border-color:var(--amber);color:#fff;}
+.shalat-detail{padding:6px 14px 12px 47px;display:flex;gap:8px;flex-wrap:wrap;border-top:1px dashed var(--b1);}
+.shalat-detail.hidden{display:none;}
+
+/* hafalan mini widget in today */
+.hafalan-today-card{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);}
+.htc-label{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.htc-queue{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.htc-item{display:flex;align-items:center;justify-content:space-between;background:var(--s2);border:1px solid var(--b1);border-radius:var(--radius-sm);padding:9px 11px;}
+.htc-name{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--t1);}
+.htc-range{font-family:var(--mono);font-size:9px;color:var(--t2);}
+.strength-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.sd-weak{background:var(--coral);}
+.sd-mid{background:var(--amber);}
+.sd-strong{background:var(--green);}
+.htc-empty{font-family:var(--mono);font-size:10px;color:var(--t3);text-align:center;padding:10px;}
+
+/* ══ CHAIN ══ */
+#pg-chain{padding:16px;}
+.chain-header{margin-bottom:16px;}
+.chain-title{font-family:var(--serif);font-size:28px;font-style:italic;color:var(--t1);margin-bottom:3px;}
+.chain-sub{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;}
+
+.chain-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.chain-tab{font-family:var(--mono);font-size:9px;padding:6px 12px;border-radius:20px;border:1.5px solid var(--b1);background:var(--s1);color:var(--t3);cursor:pointer;transition:all .15s;letter-spacing:.3px;box-shadow:var(--shadow-sm);}
+.chain-tab:hover{border-color:var(--b2);}
+.chain-tab.on{border-color:var(--amber-border);color:var(--amber);background:var(--amber-bg);box-shadow:0 2px 8px rgba(200,136,26,.12);}
+
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cal-nav-btn{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:7px 14px;color:var(--t2);font-family:var(--mono);font-size:11px;cursor:pointer;box-shadow:var(--shadow-sm);transition:all .15s;}
+.cal-nav-btn:hover{border-color:var(--b2);background:var(--s2);}
+.cal-month{font-family:var(--serif);font-size:20px;color:var(--t1);}
+
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.cal-dow{font-family:var(--mono);font-size:8px;color:var(--t3);text-align:center;padding:4px 0;letter-spacing:.5px;}
+.cal-day{
+  aspect-ratio:1;border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;cursor:pointer;
+  position:relative;transition:all .15s;
+  background:var(--s1);color:var(--t3);
+  border:1px solid var(--b1);
+  gap:1px;
+}
+.cal-day:hover{transform:scale(1.08);box-shadow:var(--shadow-sm);}
+.cal-day.has-data{color:var(--t2);}
+.cal-day.is-today{border:2px solid var(--amber);color:var(--amber);font-weight:700;background:var(--amber-bg);}
+.cal-day.chain-done{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber);font-weight:600;}
+.cal-day.chain-grace{background:var(--lavender-bg);border-color:var(--lavender-border);color:var(--lavender);}
+.cal-day.chain-miss{background:var(--coral-bg);border-color:var(--coral-border);color:var(--coral);}
+.cal-day.empty{background:transparent;border-color:transparent;cursor:default;}
+.cal-day.empty:hover{transform:none;box-shadow:none;}
+
+.chain-legend{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;}
+.cl-item{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;color:var(--t2);}
+.cl-dot{width:8px;height:8px;border-radius:3px;}
+
+.chain-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;}
+.cs-card{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:12px;text-align:center;box-shadow:var(--shadow-sm);}
+.cs-num{font-family:var(--serif);font-size:26px;color:var(--amber);}
+.cs-lbl{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:.5px;margin-top:3px;}
+
+/* ══ HAFALAN ══ */
+#pg-hafalan{padding:16px;}
+.haf-hero{margin-bottom:16px;}
+.haf-title{font-family:var(--serif);font-size:28px;font-style:italic;color:var(--t1);margin-bottom:4px;}
+
+.haf-tabs{display:flex;gap:7px;margin-bottom:16px;}
+.haf-tab{flex:1;padding:9px;border-radius:var(--radius);border:1.5px solid var(--b1);background:var(--s1);color:var(--t3);font-family:var(--mono);font-size:9px;cursor:pointer;text-align:center;transition:all .15s;letter-spacing:.3px;box-shadow:var(--shadow-sm);}
+.haf-tab:hover{border-color:var(--b2);}
+.haf-tab.on{border-color:var(--teal-border);color:var(--teal);background:var(--teal-bg);box-shadow:0 2px 8px rgba(26,140,126,.12);}
+
+/* murajaah queue */
+.mur-queue{display:flex;flex-direction:column;gap:9px;}
+.mur-card{
+  background:var(--s1);border:1.5px solid var(--b1);
+  border-radius:var(--radius);padding:14px;
+  position:relative;overflow:hidden;
+  box-shadow:var(--shadow-sm);transition:box-shadow .18s;
+}
+.mur-card:hover{box-shadow:var(--shadow-md);}
+.mur-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;}
+.mur-card.weak{border-color:var(--coral-border);}
+.mur-card.weak::before{background:var(--coral);}
+.mur-card.mid{border-color:var(--amber-border);}
+.mur-card.mid::before{background:var(--amber);}
+.mur-card.strong{border-color:var(--green-border);}
+.mur-card.strong::before{background:var(--green);}
+.mur-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.mur-name{font-family:var(--sans);font-size:15px;font-weight:800;color:var(--t1);}
+.mur-range{font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:1px;}
+.mur-strength{font-family:var(--mono);font-size:8px;padding:3px 9px;border-radius:20px;font-weight:500;}
+.mur-strength.weak{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border);}
+.mur-strength.mid{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+.mur-strength.strong{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.mur-actions{display:flex;gap:7px;margin-top:9px;}
+.mur-btn{flex:1;padding:8px;border-radius:var(--radius-sm);border:1.5px solid;font-family:var(--mono);font-size:9px;cursor:pointer;transition:all .15s;font-weight:500;}
+.mur-btn.lupa{background:var(--coral-bg);border-color:var(--coral-border);color:var(--coral);}
+.mur-btn.lupa:hover{background:var(--coral);color:#fff;border-color:var(--coral);}
+.mur-btn.ragu{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber);}
+.mur-btn.ragu:hover{background:var(--amber);color:#fff;border-color:var(--amber);}
+.mur-btn.lancar{background:var(--green-bg);border-color:var(--green-border);color:var(--green);}
+.mur-btn.lancar:hover{background:var(--green);color:#fff;border-color:var(--green);}
+.mur-btn:active{transform:scale(.96);}
+.mur-empty{text-align:center;padding:36px 16px;color:var(--t3);font-family:var(--mono);font-size:11px;}
+.mur-empty-icon{font-size:36px;margin-bottom:10px;}
+
+/* ziyadah */
+.ziy-current{
+  background:linear-gradient(135deg,var(--teal-bg) 0%,#f0fbf9 100%);
+  border:1.5px solid var(--teal-border);
+  border-radius:var(--radius);padding:16px;margin-bottom:12px;
+  box-shadow:0 2px 12px rgba(26,140,126,.1);
+}
+.ziy-label{font-family:var(--mono);font-size:8px;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;opacity:.8;}
+.ziy-surat{font-family:var(--serif);font-size:24px;color:var(--teal);font-style:italic;}
+.ziy-progress{font-family:var(--mono);font-size:11px;color:var(--t2);margin-top:3px;}
+.ziy-bar{height:5px;background:rgba(26,140,126,.15);border-radius:3px;margin-top:10px;overflow:hidden;}
+.ziy-bar-fill{height:100%;background:var(--teal);border-radius:3px;transition:width .4s;}
+.ziy-actions{display:flex;gap:8px;margin-top:12px;}
+
+/* hafalan list */
+.haf-list{display:flex;flex-direction:column;gap:8px;}
+.haf-surat-card{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);}
+.hsc-head{display:flex;align-items:center;justify-content:space-between;}
+.hsc-name{font-family:var(--sans);font-size:14px;font-weight:800;color:var(--t1);}
+.hsc-range{font-family:var(--mono);font-size:9px;color:var(--t2);}
+.hsc-bar{height:4px;background:var(--s3);border-radius:2px;margin-top:10px;overflow:hidden;}
+.hsc-bar-fill{height:100%;border-radius:2px;transition:width .4s;}
+
+/* ══ STATS ══ */
+#pg-stats{padding:16px;}
+.stats-title{font-family:var(--serif);font-size:28px;font-style:italic;color:var(--t1);margin-bottom:16px;}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:16px;}
+.stat-card{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm);}
+.stat-card-n{font-family:var(--serif);font-size:38px;line-height:1;}
+.stat-card-l{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--t1);margin-top:4px;}
+.stat-card-s{font-family:var(--mono);font-size:9px;color:var(--t3);margin-top:2px;}
+
+.consistency-block{
+  background:linear-gradient(135deg,var(--amber-bg) 0%,#fffdf5 100%);
+  border:1.5px solid var(--amber-border);
+  border-radius:var(--radius);padding:16px;margin-bottom:14px;
+  box-shadow:0 2px 12px rgba(200,136,26,.1);
+}
+.cb-label{font-family:var(--mono);font-size:8px;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;opacity:.9;}
+.cb-score{font-family:var(--serif);font-size:52px;color:var(--amber);line-height:1;}
+.cb-desc{font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:5px;}
+.cb-bar{height:6px;background:rgba(200,136,26,.15);border-radius:3px;margin-top:12px;overflow:hidden;}
+.cb-bar-fill{height:100%;background:linear-gradient(90deg,var(--coral),var(--amber),var(--green));border-radius:3px;transition:width .6s;}
+
+.habit-stat-list{display:flex;flex-direction:column;gap:7px;}
+.habit-stat{display:flex;align-items:center;gap:10px;background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:11px 13px;box-shadow:var(--shadow-sm);}
+.hs-emoji{font-size:17px;width:24px;text-align:center;}
+.hs-name{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--t1);flex:1;}
+.hs-bar-wrap{width:60px;height:4px;background:var(--s3);border-radius:2px;overflow:hidden;}
+.hs-bar-fill{height:100%;border-radius:2px;transition:width .4s;}
+.hs-pct{font-family:var(--mono);font-size:9px;color:var(--t2);width:28px;text-align:right;}
+
+/* heatmap */
+.heatmap-wrap{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:16px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm);}
+.heatmap-grid{display:grid;grid-template-columns:repeat(13,1fr);gap:4px;margin-top:8px;}
+.hm-cell{aspect-ratio:1;border-radius:4px;background:var(--s3);transition:all .2s;}
+.hm-cell.l1{background:rgba(200,136,26,.18);}
+.hm-cell.l2{background:rgba(200,136,26,.38);}
+.hm-cell.l3{background:rgba(200,136,26,.65);}
+.hm-cell.l4{background:var(--amber);}
+
+/* ══ SETTINGS ══ */
+#pg-settings{padding:16px;}
+.settings-title{font-family:var(--serif);font-size:28px;font-style:italic;color:var(--t1);margin-bottom:16px;}
+.setting-group{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm);}
+.sg-head{padding:14px 16px;border-bottom:1px solid var(--b1);background:var(--s2);}
+.sg-title{font-family:var(--sans);font-size:14px;font-weight:800;color:var(--t1);}
+.sg-sub{font-family:var(--mono);font-size:9px;color:var(--t3);margin-top:2px;}
+.sg-body{padding:14px 16px;}
+.sg-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px;}
+.sg-row:last-child{margin-bottom:0;}
+.sg-row-label{font-family:var(--mono);font-size:10px;color:var(--t2);}
+
+/* why wall */
+.why-wall-display{
+  background:linear-gradient(135deg,var(--amber-bg),#fffdf8);
+  border:1.5px solid var(--amber-border);
+  border-radius:var(--radius-sm);padding:14px;
+  font-family:var(--serif);font-size:15px;font-style:italic;
+  color:var(--t1);line-height:1.6;min-height:64px;margin-bottom:8px;
+  cursor:pointer;transition:all .15s;
+}
+.why-wall-display:hover{box-shadow:0 2px 8px rgba(200,136,26,.15);}
+.why-wall-display.empty{color:var(--t3);font-style:normal;font-family:var(--mono);font-size:10px;}
+
+/* hafalan input */
+.surat-list-settings{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+.sls-item{display:flex;align-items:center;gap:9px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--radius-sm);padding:9px 12px;}
+.sls-name{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--t1);flex:1;}
+.sls-range{font-family:var(--mono);font-size:9px;color:var(--t2);}
+.sls-del{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral);font-size:10px;padding:4px 10px;border-radius:20px;cursor:pointer;font-family:var(--mono);transition:all .15s;}
+.sls-del:hover{background:var(--coral);color:#fff;}
+.add-surat-form{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:7px;align-items:end;}
+
+/* overlay */
+.ov{
+  position:fixed;inset:0;
+  background:rgba(44,31,14,.35);
+  backdrop-filter:blur(8px);
+  z-index:200;display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .22s;
+}
+.ov.on{opacity:1;pointer-events:all;}
+.ov-sheet{
+  background:var(--s1);
+  border-radius:24px 24px 0 0;
+  width:100%;max-width:500px;
+  padding:22px 20px 40px;
+  max-height:87vh;overflow-y:auto;
+  transform:translateY(30px);transition:transform .28s cubic-bezier(.34,1.1,.64,1);
+  box-shadow:0 -8px 32px rgba(44,31,14,.12);
+  border-top:1px solid var(--b1);
+}
+.ov.on .ov-sheet{transform:translateY(0);}
+.ov-title{font-family:var(--serif);font-size:22px;font-style:italic;color:var(--t1);margin-bottom:4px;}
+.ov-sub{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;}
+.ov-close{float:right;background:var(--s3);border:1px solid var(--b1);color:var(--t2);font-size:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--mono);transition:all .15s;}
+.ov-close:hover{background:var(--b1);}
+
+/* rest day overlay */
+.why-wall-ov{
+  padding:16px;
+  background:linear-gradient(135deg,var(--amber-bg),#fffdf8);
+  border:1.5px solid var(--amber-border);
+  border-radius:var(--radius);
+  font-family:var(--serif);font-size:16px;font-style:italic;
+  color:var(--t1);line-height:1.65;margin:14px 0;
+}
+
+/* day detail */
+.dd-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--b1);}
+.dd-item:last-child{border-bottom:none;}
+.dd-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dd-label{flex:1;font-family:var(--sans);font-size:12px;color:var(--t1);}
+.dd-status{font-family:var(--mono);font-size:10px;}
+
+/* toast */
+.toast{
+  position:fixed;bottom:84px;left:50%;
+  transform:translateX(-50%) translateY(10px);
+  background:var(--t1);color:var(--bg);
+  font-family:var(--mono);font-size:11px;
+  padding:9px 18px;border-radius:20px;
+  z-index:300;opacity:0;transition:all .22s;
+  pointer-events:none;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(44,31,14,.2);
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* progress bar */
+.prog-bar{height:3px;background:var(--s3);border-radius:2px;overflow:hidden;}
+.prog-bar-fill{height:100%;background:var(--amber);border-radius:2px;transition:width .4s;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ TODAY ══════════════ -->
+<div id="pg-today" class="page on">
+  <div class="today-hero">
+    <div class="th-eyebrow" id="th-date">—</div>
+    <div class="th-title">Hari ini, <span id="th-greeting">saatnya beribadah</span> ✨</div>
+    <div class="progress-ring-wrap">
+      <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
+        <circle class="ring-bg" cx="60" cy="60" r="52"/>
+        <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+        <text class="ring-pct" id="ring-pct" x="60" y="55">0%</text>
+        <text class="ring-sub" x="60" y="73">hari ini</text>
+      </svg>
+      <div class="streak-info">
+        <div class="streak-num" id="streak-num">0</div>
+        <div class="streak-sub">🔥 hari berturut-turut</div>
+        <div class="streak-best" id="streak-best">best: 0 hari</div>
+      </div>
+    </div>
+    <div class="day-modes">
+      <button class="day-mode-btn" id="mode-full" onclick="setDayMode('full')">🟢 Full</button>
+      <button class="day-mode-btn" id="mode-light" onclick="setDayMode('light')">🟡 Light</button>
+      <button class="day-mode-btn" id="mode-rest" onclick="setDayMode('rest')">🌙 Rest</button>
+    </div>
+  </div>
+
+  <div class="cat-wins" id="cat-wins">
+    <div class="cw" id="cw-shalat"><span class="cw-icon">🕌</span><div class="cw-name">Shalat</div></div>
+    <div class="cw" id="cw-tilawah"><span class="cw-icon">📖</span><div class="cw-name">Tilawah</div></div>
+    <div class="cw" id="cw-zikir"><span class="cw-icon">📿</span><div class="cw-name">Zikir</div></div>
+    <div class="cw" id="cw-hafalan"><span class="cw-icon">🧠</span><div class="cw-name">Hafalan</div></div>
+    <div class="cw" id="cw-buku"><span class="cw-icon">📚</span><div class="cw-name">Buku</div></div>
+  </div>
+
+  <!-- Shalat Wajib -->
+  <div class="sec-block" id="sec-shalat">
+    <div class="sec-head" onclick="toggleSec('sec-shalat')">
+      <div class="sec-title"><span class="sec-emoji">🕌</span><span class="sec-name">Shalat Wajib</span></div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span class="sec-pct" id="shalat-pct">0/5</span>
+        <span class="sec-chevron">▼</span>
+      </div>
+    </div>
+    <div class="sec-body"><div id="shalat-wajib-list"></div></div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- Shalat Sunnah -->
+  <div class="sec-block" id="sec-sunnah">
+    <div class="sec-head" onclick="toggleSec('sec-sunnah')">
+      <div class="sec-title"><span class="sec-emoji">🌟</span><span class="sec-name">Shalat Sunnah</span></div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span class="sec-pct" id="sunnah-pct">0/5</span>
+        <span class="sec-chevron">▼</span>
+      </div>
+    </div>
+    <div class="sec-body"><div class="check-list" id="sunnah-list"></div></div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- Tilawah & Zikir -->
+  <div class="sec-block" id="sec-tilzik">
+    <div class="sec-head" onclick="toggleSec('sec-tilzik')">
+      <div class="sec-title"><span class="sec-emoji">📖</span><span class="sec-name">Tilawah & Zikir</span></div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span class="sec-pct" id="tilzik-pct">0/3</span>
+        <span class="sec-chevron">▼</span>
+      </div>
+    </div>
+    <div class="sec-body">
+      <div class="check-list">
+        <div class="check-item" id="ci-tilawah" onclick="toggleSimple('tilawah','teal')">
+          <div class="ci-check">✓</div>
+          <div class="ci-info"><div class="ci-name">📖 Tilawah Al-Qur'an</div><div class="ci-sub">baca hari ini</div></div>
+        </div>
+        <div class="check-item" id="ci-zikir-pagi" onclick="toggleSimple('zikir-pagi','teal')">
+          <div class="ci-check">✓</div>
+          <div class="ci-info"><div class="ci-name">📿 Zikir Pagi</div><div class="ci-sub">dzikir ba'da subuh</div></div>
+        </div>
+        <div class="check-item" id="ci-zikir-petang" onclick="toggleSimple('zikir-petang','teal')">
+          <div class="ci-check">✓</div>
+          <div class="ci-info"><div class="ci-name">📿 Zikir Petang</div><div class="ci-sub">dzikir ba'da ashar/maghrib</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- Hafalan hari ini -->
+  <div class="sec-block" id="sec-hafalan">
+    <div class="sec-head" onclick="toggleSec('sec-hafalan')">
+      <div class="sec-title"><span class="sec-emoji">🧠</span><span class="sec-name">Hafalan Hari Ini</span></div>
+      <span class="sec-chevron">▼</span>
+    </div>
+    <div class="sec-body">
+      <div class="hafalan-today-card">
+        <div class="htc-label">🔄 Murajaah Hari Ini</div>
+        <div class="htc-queue" id="htc-queue"></div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-o" style="flex:1;font-size:10px;" onclick="navTo('hafalan')">Lihat Semua →</button>
+          <button class="btn btn-a" style="font-size:10px;padding:9px 14px;" onclick="markHafalanToday()">✓ Hafalan Selesai</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- Buku / Ilmu -->
+  <div class="sec-block" id="sec-buku">
+    <div class="sec-head" onclick="toggleSec('sec-buku')">
+      <div class="sec-title"><span class="sec-emoji">📚</span><span class="sec-name">Buku / Ilmu</span></div>
+      <span class="sec-chevron">▼</span>
+    </div>
+    <div class="sec-body">
+      <div class="check-list">
+        <div class="check-item" id="ci-buku" onclick="toggleSimple('buku','lavender')">
+          <div class="ci-check">✓</div>
+          <div class="ci-info"><div class="ci-name">📚 Baca Buku / Ilmu</div><div class="ci-sub">hari ini</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ CHAIN ══════════════ -->
+<div id="pg-chain" class="page">
+  <div class="chain-header">
+    <div class="chain-title">🔗 Don't Break the Chain</div>
+    <div class="chain-sub">KALENDER KONSISTENSI IBADAH</div>
+  </div>
+
+  <div class="chain-tabs" id="chain-tabs">
+    <div class="chain-tab on" data-cat="overall" onclick="setChainCat(this,'overall')">🌟 Overall</div>
+    <div class="chain-tab" data-cat="shalat" onclick="setChainCat(this,'shalat')">🕌 Shalat</div>
+    <div class="chain-tab" data-cat="tilawah" onclick="setChainCat(this,'tilawah')">📖 Tilawah</div>
+    <div class="chain-tab" data-cat="zikir" onclick="setChainCat(this,'zikir')">📿 Zikir</div>
+    <div class="chain-tab" data-cat="hafalan" onclick="setChainCat(this,'hafalan')">🧠 Hafalan</div>
+  </div>
+
+  <div class="cal-nav">
+    <button class="cal-nav-btn" onclick="calPrev()">‹ Prev</button>
+    <div class="cal-month" id="cal-month-label">—</div>
+    <button class="cal-nav-btn" onclick="calNext()">Next ›</button>
+  </div>
+
+  <div class="cal-grid" id="cal-grid"></div>
+
+  <div class="chain-legend">
+    <div class="cl-item"><div class="cl-dot" style="background:rgba(245,166,35,.6)"></div> Selesai</div>
+    <div class="cl-item"><div class="cl-dot" style="background:rgba(181,154,240,.5)"></div> Grace Day</div>
+    <div class="cl-item"><div class="cl-dot" style="background:rgba(255,112,88,.3)"></div> Terlewat</div>
+    <div class="cl-item"><div class="cl-dot" style="background:var(--s3)"></div> Belum ada data</div>
+  </div>
+
+  <div class="chain-stats-row" id="chain-stats-row">
+    <div class="cs-card"><div class="cs-num" id="cs-streak">0</div><div class="cs-lbl">🔥 Streak</div></div>
+    <div class="cs-card"><div class="cs-num" id="cs-best">0</div><div class="cs-lbl">⭐ Best</div></div>
+    <div class="cs-card"><div class="cs-num" id="cs-grace">0</div><div class="cs-lbl">🌙 Grace Left</div></div>
+  </div>
+</div>
+
+<!-- ══════════════ HAFALAN ══════════════ -->
+<div id="pg-hafalan" class="page">
+  <div class="haf-hero">
+    <div class="haf-title">🧠 Hafalan</div>
+  </div>
+
+  <div class="haf-tabs">
+    <div class="haf-tab on" onclick="setHafTab(this,'murajaah')">🔄 Murajaah</div>
+    <div class="haf-tab" onclick="setHafTab(this,'ziyadah')">➕ Ziyadah</div>
+    <div class="haf-tab" onclick="setHafTab(this,'daftar')">📋 Daftar</div>
+  </div>
+
+  <!-- Murajaah Panel -->
+  <div id="haf-panel-murajaah">
+    <div class="sec-lbl">antrian murajaah hari ini</div>
+    <div class="mur-queue" id="mur-queue"></div>
+  </div>
+
+  <!-- Ziyadah Panel -->
+  <div id="haf-panel-ziyadah" style="display:none;">
+    <div class="sec-lbl">hafalan baru — ziyadah</div>
+    <div class="ziy-current" id="ziy-current">
+      <div class="ziy-label">sedang menghafal</div>
+      <div class="ziy-surat" id="ziy-surat-name">—</div>
+      <div class="ziy-progress" id="ziy-progress">—</div>
+      <div class="ziy-bar"><div class="ziy-bar-fill" id="ziy-bar-fill" style="width:0%"></div></div>
+      <div class="ziy-actions">
+        <button class="btn btn-o" style="flex:1;font-size:10px;" onclick="openZiyadahInput()">✏️ Log Ayat</button>
+        <button class="btn btn-a" style="font-size:10px;padding:9px 14px;" onclick="markZiyadahDone()">✓ Selesai Sesi</button>
+      </div>
+    </div>
+    <div class="why-wall-ov" id="why-wall-ziy" style="display:none;"></div>
+  </div>
+
+  <!-- Daftar Panel -->
+  <div id="haf-panel-daftar" style="display:none;">
+    <div class="sec-lbl">semua hafalan lo</div>
+    <div class="haf-list" id="haf-surat-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════ STATS ══════════════ -->
+<div id="pg-stats" class="page">
+  <div class="stats-title">📊 Statistik</div>
+
+  <div class="consistency-block">
+    <div class="cb-label">consistency score — 30 hari terakhir</div>
+    <div class="cb-score" id="cb-score">0%</div>
+    <div class="cb-desc" id="cb-desc">Mulai tracking untuk melihat skor konsistensimu</div>
+    <div class="cb-bar"><div class="cb-bar-fill" id="cb-bar-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="stat-grid" id="stat-grid"></div>
+
+  <div class="sec-lbl" style="padding:0 0 8px;">per-ibadah</div>
+  <div class="habit-stat-list" id="habit-stat-list"></div>
+
+  <div class="heatmap-wrap" style="margin-top:12px;">
+    <div class="sec-lbl">aktivitas 3 bulan terakhir</div>
+    <div class="heatmap-grid" id="heatmap-grid"></div>
+  </div>
+</div>
+
+<!-- ══════════════ SETTINGS ══════════════ -->
+<div id="pg-settings" class="page">
+  <div class="settings-title">⚙️ Pengaturan</div>
+
+  <!-- Why Wall -->
+  <div class="setting-group">
+    <div class="sg-head">
+      <div class="sg-title">💛 Why Wall</div>
+      <div class="sg-sub">kenapa lo mulai — muncul saat butuh pengingat</div>
+    </div>
+    <div class="sg-body">
+      <div class="why-wall-display" id="why-wall-display" onclick="openWhyWall()">Tap untuk menambahkan alasan lo…</div>
+    </div>
+  </div>
+
+  <!-- Hafalan Input -->
+  <div class="setting-group">
+    <div class="sg-head">
+      <div class="sg-title">🧠 Input Hafalan</div>
+      <div class="sg-sub">surat yang sudah lo hafal</div>
+    </div>
+    <div class="sg-body">
+      <div class="surat-list-settings" id="surat-list-settings"></div>
+      <div class="add-surat-form">
+        <div>
+          <div class="sec-lbl">Surat</div>
+          <select class="inp" id="add-surat-select" style="font-size:11px;"></select>
+        </div>
+        <div>
+          <div class="sec-lbl">Ayat Awal</div>
+          <input type="number" class="inp" id="add-ayat-dari" placeholder="1" min="1" style="font-size:11px;">
+        </div>
+        <div>
+          <div class="sec-lbl">Ayat Akhir</div>
+          <input type="number" class="inp" id="add-ayat-sampai" placeholder="7" min="1" style="font-size:11px;">
+        </div>
+        <button class="btn btn-a" style="font-size:11px;padding:9px 10px;align-self:flex-end;" onclick="addSurat()">+ Tambah</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ziyadah target -->
+  <div class="setting-group">
+    <div class="sg-head">
+      <div class="sg-title">➕ Target Ziyadah</div>
+      <div class="sg-sub">surat & ayat yang sedang dihafalkan</div>
+    </div>
+    <div class="sg-body">
+      <div class="sg-row">
+        <span class="sg-row-label">Surat</span>
+        <select class="inp" id="ziy-target-surat" style="width:150px;font-size:11px;"></select>
+      </div>
+      <div class="sg-row">
+        <span class="sg-row-label">Sampai ayat ke-</span>
+        <input type="number" class="inp" id="ziy-target-ayat" placeholder="misalnya 10" min="1" style="width:100px;font-size:11px;">
+      </div>
+      <button class="btn btn-a" style="width:100%;margin-top:4px;font-size:11px;" onclick="saveZiyadahTarget()">💾 Simpan Target</button>
+    </div>
+  </div>
+
+  <!-- Data -->
+  <div class="setting-group">
+    <div class="sg-head">
+      <div class="sg-title">💾 Data</div>
+      <div class="sg-sub">backup & restore data lo</div>
+    </div>
+    <div class="sg-body">
+      <div style="display:flex;gap:6px;">
+        <button class="btn btn-a" style="flex:1;font-size:11px;" onclick="exportData()">📦 Export JSON</button>
+        <label class="btn btn-o" style="flex:1;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          📂 Import <input type="file" accept=".json" style="display:none;" onchange="importData(event)">
+        </label>
+      </div>
+      <button class="btn" style="width:100%;margin-top:8px;background:rgba(255,112,88,.1);border:1px solid rgba(255,112,88,.2);color:var(--coral);font-size:10px;padding:8px;" onclick="confirmReset()">🗑️ Reset Semua Data</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <button class="nb on" id="nb-today" onclick="navTo('today')"><span class="ni">🏠</span>Hari Ini</button>
+  <button class="nb" id="nb-chain" onclick="navTo('chain')"><span class="ni">🔗</span>Chain</button>
+  <button class="nb" id="nb-hafalan" onclick="navTo('hafalan')"><span class="ni">🧠</span>Hafalan</button>
+  <button class="nb" id="nb-stats" onclick="navTo('stats')"><span class="ni">📊</span>Stats</button>
+  <button class="nb" id="nb-settings" onclick="navTo('settings')"><span class="ni">⚙️</span>Settings</button>
+</nav>
+
+<!-- ══ OVERLAYS ══ -->
+<!-- Why Wall Overlay -->
+<div class="ov" id="ov-why">
+  <div class="ov-sheet">
+    <button class="ov-close" onclick="closeOv('ov-why')">✕</button>
+    <div class="ov-title">💛 Why Wall</div>
+    <div class="ov-sub">TULIS ALASAN LO DI SINI</div>
+    <textarea class="inp" id="why-input" rows="6" placeholder="Bismillah… gue mau hafal karena…" style="font-family:var(--serif);font-size:14px;font-style:italic;resize:none;line-height:1.6;"></textarea>
+    <button class="btn btn-a" style="width:100%;margin-top:10px;" onclick="saveWhyWall()">💾 Simpan</button>
+  </div>
+</div>
+
+<!-- Rest Day Overlay -->
+<div class="ov" id="ov-rest">
+  <div class="ov-sheet">
+    <button class="ov-close" onclick="closeOv('ov-rest')">✕</button>
+    <div class="ov-title">🌙 Rest Day</div>
+    <div class="ov-sub">GAK APA-APA, BESOK LAGI</div>
+    <div class="why-wall-ov" id="rest-why-display">—</div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--t3);margin-bottom:12px;" id="rest-grace-info">—</div>
+    <button class="btn btn-a" style="width:100%;margin-bottom:8px;" onclick="confirmRestDay()">✓ Tandai Rest Day</button>
+    <button class="btn btn-o" style="width:100%;" onclick="closeOv('ov-rest')">Kembali & Lanjut</button>
+  </div>
+</div>
+
+<!-- Day Detail Overlay -->
+<div class="ov" id="ov-day">
+  <div class="ov-sheet">
+    <button class="ov-close" onclick="closeOv('ov-day')">✕</button>
+    <div class="ov-title" id="day-modal-title">—</div>
+    <div class="ov-sub">DETAIL IBADAH</div>
+    <div id="day-modal-content"></div>
+  </div>
+</div>
+
+<!-- Ziyadah Input Overlay -->
+<div class="ov" id="ov-ziyadah">
+  <div class="ov-sheet">
+    <button class="ov-close" onclick="closeOv('ov-ziyadah')">✕</button>
+    <div class="ov-title">➕ Log Ziyadah</div>
+    <div class="ov-sub">CATAT PROGRESS HAFALAN BARU</div>
+    <div class="sec-lbl" style="margin-top:8px;">Sudah sampai ayat ke-</div>
+    <input type="number" class="inp" id="ziy-log-ayat" placeholder="misal: 5" style="margin-bottom:10px;" min="1">
+    <button class="btn btn-a" style="width:100%;" onclick="saveZiyadahLog()">💾 Simpan</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════════
+const S = {
+  get: k => { try { const v = localStorage.getItem('mnt_'+k); return v ? JSON.parse(v) : null; } catch { return null; } },
+  set: (k,v) => { try { localStorage.setItem('mnt_'+k, JSON.stringify(v)); } catch {} }
+};
+
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+const SHALAT_WAJIB = [
+  {id:'subuh', name:'Subuh', emoji:'🌅', waktu:'04:00–05:30'},
+  {id:'dzuhur', name:'Dzuhur', emoji:'☀️', waktu:'12:00–15:00'},
+  {id:'ashar', name:'Ashar', emoji:'🌤️', waktu:'15:00–17:30'},
+  {id:'maghrib', name:'Maghrib', emoji:'🌇', waktu:'17:30–19:00'},
+  {id:'isya', name:'Isya', emoji:'🌙', waktu:'19:00–23:59'},
+];
+const SHALAT_SUNNAH = [
+  {id:'rawatib', name:'Rawatib', emoji:'⭐', sub:'qabliyah & ba\'diyah'},
+  {id:'dhuha', name:'Dhuha', emoji:'🌞', sub:'min. 2 rakaat'},
+  {id:'tahajjud', name:'Tahajjud', emoji:'🌌', sub:'qiyamullail'},
+  {id:'witir', name:'Witir', emoji:'🌙', sub:'setelah isya / tahajjud'},
+  {id:'taubat', name:'Shalat Taubat', emoji:'💚', sub:'kapan pun'},
+];
+
+const QURAN_SURAT = [
+  {no:1,name:'Al-Fatihah',ayat:7},{no:2,name:'Al-Baqarah',ayat:286},{no:3,name:'Ali Imran',ayat:200},
+  {no:4,name:'An-Nisa',ayat:176},{no:5,name:'Al-Maidah',ayat:120},{no:6,name:'Al-Anam',ayat:165},
+  {no:7,name:'Al-Araf',ayat:206},{no:8,name:'Al-Anfal',ayat:75},{no:9,name:'At-Taubah',ayat:129},
+  {no:10,name:'Yunus',ayat:109},{no:11,name:'Hud',ayat:123},{no:12,name:'Yusuf',ayat:111},
+  {no:13,name:'Ar-Rad',ayat:43},{no:14,name:'Ibrahim',ayat:52},{no:15,name:'Al-Hijr',ayat:99},
+  {no:16,name:'An-Nahl',ayat:128},{no:17,name:'Al-Isra',ayat:111},{no:18,name:'Al-Kahfi',ayat:110},
+  {no:19,name:'Maryam',ayat:98},{no:20,name:'Ta Ha',ayat:135},{no:21,name:'Al-Anbiya',ayat:112},
+  {no:22,name:'Al-Hajj',ayat:78},{no:23,name:'Al-Muminun',ayat:118},{no:24,name:'An-Nur',ayat:64},
+  {no:25,name:'Al-Furqan',ayat:77},{no:26,name:'Asy-Syuara',ayat:227},{no:27,name:'An-Naml',ayat:93},
+  {no:28,name:'Al-Qasas',ayat:88},{no:29,name:'Al-Ankabut',ayat:69},{no:30,name:'Ar-Rum',ayat:60},
+  {no:31,name:'Luqman',ayat:34},{no:32,name:'As-Sajdah',ayat:30},{no:33,name:'Al-Ahzab',ayat:73},
+  {no:34,name:'Saba',ayat:54},{no:35,name:'Fatir',ayat:45},{no:36,name:'Ya Sin',ayat:83},
+  {no:37,name:'As-Saffat',ayat:182},{no:38,name:'Sad',ayat:88},{no:39,name:'Az-Zumar',ayat:75},
+  {no:40,name:'Ghafir',ayat:85},{no:41,name:'Fussilat',ayat:54},{no:42,name:'Asy-Syura',ayat:53},
+  {no:43,name:'Az-Zukhruf',ayat:89},{no:44,name:'Ad-Dukhan',ayat:59},{no:45,name:'Al-Jasiyah',ayat:37},
+  {no:46,name:'Al-Ahqaf',ayat:35},{no:47,name:'Muhammad',ayat:38},{no:48,name:'Al-Fath',ayat:29},
+  {no:49,name:'Al-Hujurat',ayat:18},{no:50,name:'Qaf',ayat:45},{no:51,name:'Az-Zariyat',ayat:60},
+  {no:52,name:'At-Tur',ayat:49},{no:53,name:'An-Najm',ayat:62},{no:54,name:'Al-Qamar',ayat:55},
+  {no:55,name:'Ar-Rahman',ayat:78},{no:56,name:'Al-Waqiah',ayat:96},{no:57,name:'Al-Hadid',ayat:29},
+  {no:58,name:'Al-Mujadilah',ayat:22},{no:59,name:'Al-Hasyr',ayat:24},{no:60,name:'Al-Mumtahanah',ayat:13},
+  {no:61,name:'As-Saf',ayat:14},{no:62,name:'Al-Jumuah',ayat:11},{no:63,name:'Al-Munafiqun',ayat:11},
+  {no:64,name:'At-Tagabun',ayat:18},{no:65,name:'At-Talaq',ayat:12},{no:66,name:'At-Tahrim',ayat:12},
+  {no:67,name:'Al-Mulk',ayat:30},{no:68,name:'Al-Qalam',ayat:52},{no:69,name:'Al-Haqqah',ayat:52},
+  {no:70,name:'Al-Maarij',ayat:44},{no:71,name:'Nuh',ayat:28},{no:72,name:'Al-Jin',ayat:28},
+  {no:73,name:'Al-Muzzammil',ayat:20},{no:74,name:'Al-Muddassir',ayat:56},{no:75,name:'Al-Qiyamah',ayat:40},
+  {no:76,name:'Al-Insan',ayat:31},{no:77,name:'Al-Mursalat',ayat:50},{no:78,name:'An-Naba',ayat:40},
+  {no:79,name:"An-Nazi'at",ayat:46},{no:80,name:'Abasa',ayat:42},{no:81,name:'At-Takwir',ayat:29},
+  {no:82,name:'Al-Infitar',ayat:19},{no:83,name:'Al-Muthaffifin',ayat:36},{no:84,name:'Al-Insyiqaq',ayat:25},
+  {no:85,name:'Al-Buruj',ayat:22},{no:86,name:'At-Tariq',ayat:17},{no:87,name:"Al-A'la",ayat:19},
+  {no:88,name:'Al-Ghasyiyah',ayat:26},{no:89,name:'Al-Fajr',ayat:30},{no:90,name:'Al-Balad',ayat:20},
+  {no:91,name:'Asy-Syams',ayat:15},{no:92,name:'Al-Lail',ayat:21},{no:93,name:'Ad-Dhuha',ayat:11},
+  {no:94,name:'Al-Insyirah',ayat:8},{no:95,name:'At-Tin',ayat:8},{no:96,name:'Al-Alaq',ayat:19},
+  {no:97,name:'Al-Qadr',ayat:5},{no:98,name:'Al-Bayyinah',ayat:8},{no:99,name:'Az-Zalzalah',ayat:8},
+  {no:100,name:'Al-Adiyat',ayat:11},{no:101,name:"Al-Qari'ah",ayat:11},{no:102,name:'At-Takasur',ayat:8},
+  {no:103,name:'Al-Asr',ayat:3},{no:104,name:'Al-Humazah',ayat:9},{no:105,name:'Al-Fil',ayat:5},
+  {no:106,name:'Quraisy',ayat:4},{no:107,name:"Al-Ma'un",ayat:7},{no:108,name:'Al-Kausar',ayat:3},
+  {no:109,name:'Al-Kafirun',ayat:6},{no:110,name:'An-Nasr',ayat:3},{no:111,name:'Al-Lahab',ayat:5},
+  {no:112,name:'Al-Ikhlas',ayat:4},{no:113,name:'Al-Falaq',ayat:5},{no:114,name:'An-Nas',ayat:6},
+];
+
+const MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const DAYS = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let calYear, calMonth, currentChainCat = 'overall';
+
+function todayStr() {
+  const n = new Date();
+  return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;
+}
+function getDayData(k) { return (S.get('days')||{})[k] || {}; }
+function setDayData(k, data) {
+  const days = S.get('days') || {};
+  days[k] = data;
+  S.set('days', days);
+}
+function getTodayData() { return getDayData(todayStr()); }
+function setTodayData(data) { setDayData(todayStr(), data); }
+
+// ══════════════════════════════════════════
+// TODAY
+// ══════════════════════════════════════════
+function renderTodayHeader() {
+  const now = new Date();
+  const h = now.getHours();
+  let greeting = 'saatnya beribadah';
+  if (h < 5) greeting = 'waktu qiyamullail';
+  else if (h < 10) greeting = 'semangat pagi';
+  else if (h < 15) greeting = 'istiqamah siang ini';
+  else if (h < 18) greeting = 'jangan sampai terlewat';
+  else greeting = 'tutup hari dengan ibadah';
+  document.getElementById('th-date').textContent = DAYS[now.getDay()] + ', ' + now.getDate() + ' ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear();
+  document.getElementById('th-greeting').textContent = greeting;
+}
+
+function renderShalatWajib() {
+  const td = getTodayData();
+  const list = document.getElementById('shalat-wajib-list');
+  list.innerHTML = '';
+  let done = 0;
+  SHALAT_WAJIB.forEach(s => {
+    const sd = (td.shalat||{})[s.id] || {};
+    if (sd.done) done++;
+    const div = document.createElement('div');
+    div.className = 'shalat-item' + (sd.done ? ' done' : '');
+    div.id = 'si-' + s.id;
+    const showDetail = sd.done;
+    div.innerHTML = `
+      <div class="shalat-main" onclick="toggleShalat('${s.id}')">
+        <div class="ci-check" style="${sd.done ? 'background:var(--amber);border-color:var(--amber);color:#fff;' : ''}">✓</div>
+        <div class="ci-info">
+          <div class="ci-name">${s.emoji} ${s.name}</div>
+          <div class="ci-sub">${s.waktu}</div>
+        </div>
+      </div>
+      <div class="shalat-detail ${showDetail ? '' : 'hidden'}" id="sd-${s.id}">
+        <span class="ci-tag ${sd.tepat ? 'on' : ''}" onclick="event.stopPropagation();toggleShalatTag('${s.id}','tepat')">⏰ Tepat Waktu</span>
+        <span class="ci-tag ${sd.jamaah ? 'on' : ''}" onclick="event.stopPropagation();toggleShalatTag('${s.id}','jamaah')">🕌 Berjamaah</span>
+      </div>`;
+    list.appendChild(div);
+  });
+  document.getElementById('shalat-pct').textContent = done + '/5';
+}
+
+function toggleShalat(id) {
+  const td = getTodayData();
+  if (!td.shalat) td.shalat = {};
+  if (!td.shalat[id]) td.shalat[id] = {};
+  td.shalat[id].done = !td.shalat[id].done;
+  setTodayData(td);
+  renderShalatWajib();
+  updateAllProgress();
+}
+function toggleShalatTag(id, tag) {
+  const td = getTodayData();
+  if (!td.shalat) td.shalat = {};
+  if (!td.shalat[id]) td.shalat[id] = {};
+  td.shalat[id][tag] = !td.shalat[id][tag];
+  setTodayData(td);
+  renderShalatWajib();
+}
+
+function renderShalatSunnah() {
+  const td = getTodayData();
+  const list = document.getElementById('sunnah-list');
+  list.innerHTML = '';
+  let done = 0;
+  SHALAT_SUNNAH.forEach(s => {
+    const isDone = !!(td.sunnah||{})[s.id];
+    if (isDone) done++;
+    const div = document.createElement('div');
+    div.className = 'check-item' + (isDone ? ' done-amber' : '');
+    div.onclick = () => toggleSunnah(s.id);
+    div.innerHTML = `<div class="ci-check">✓</div><div class="ci-info"><div class="ci-name">${s.emoji} ${s.name}</div><div class="ci-sub">${s.sub}</div></div>`;
+    list.appendChild(div);
+  });
+  document.getElementById('sunnah-pct').textContent = done + '/' + SHALAT_SUNNAH.length;
+}
+function toggleSunnah(id) {
+  const td = getTodayData();
+  if (!td.sunnah) td.sunnah = {};
+  td.sunnah[id] = !td.sunnah[id];
+  setTodayData(td);
+  renderShalatSunnah();
+  updateAllProgress();
+}
+
+function toggleSimple(key, color) {
+  const td = getTodayData();
+  td[key] = !td[key];
+  setTodayData(td);
+  const el = document.getElementById('ci-' + key);
+  if (el) {
+    el.className = 'check-item' + (td[key] ? ' done-'+color : '');
+  }
+  updateAllProgress();
+}
+
+function renderSimpleChecks() {
+  const td = getTodayData();
+  const simples = ['tilawah','zikir-pagi','zikir-petang','buku'];
+  simples.forEach(k => {
+    const el = document.getElementById('ci-'+k);
+    if (!el) return;
+    const colors = {tilawah:'teal','zikir-pagi':'teal','zikir-petang':'teal',buku:'lavender'};
+    el.className = 'check-item' + (td[k] ? ' done-'+colors[k] : '');
+  });
+  const tilzik = ['tilawah','zikir-pagi','zikir-petang'].filter(k => td[k]).length;
+  document.getElementById('tilzik-pct').textContent = tilzik + '/3';
+}
+
+function markHafalanToday() {
+  const td = getTodayData();
+  td.hafalan = true;
+  setTodayData(td);
+  updateAllProgress();
+  renderHtcQueue();
+  toast('✓ Hafalan hari ini selesai! 🧠');
+}
+
+function updateAllProgress() {
+  const td = getTodayData();
+  // calculate overall %
+  let total = 0, done = 0;
+  // shalat wajib: 5
+  const sw = td.shalat || {};
+  SHALAT_WAJIB.forEach(s => { total++; if ((sw[s.id]||{}).done) done++; });
+  // tilawah
+  total++; if (td.tilawah) done++;
+  // zikir pagi
+  total++; if (td['zikir-pagi']) done++;
+  // zikir petang
+  total++; if (td['zikir-petang']) done++;
+  // hafalan
+  total++; if (td.hafalan) done++;
+  // buku
+  total++; if (td.buku) done++;
+
+  const pct = Math.round(done/total*100);
+  document.getElementById('ring-pct').textContent = pct + '%';
+  const circ = 326.7;
+  document.getElementById('ring-fill').style.strokeDashoffset = circ - (circ * pct/100);
+
+  // cat wins
+  const shalatDone = SHALAT_WAJIB.every(s => (sw[s.id]||{}).done);
+  setCatWin('shalat', shalatDone);
+  setCatWin('tilawah', !!td.tilawah);
+  setCatWin('zikir', !!(td['zikir-pagi'] && td['zikir-petang']));
+  setCatWin('hafalan', !!td.hafalan);
+  setCatWin('buku', !!td.buku);
+
+  // streak
+  updateStreakDisplay();
+}
+
+function setCatWin(id, done) {
+  const el = document.getElementById('cw-'+id);
+  if (!el) return;
+  el.classList.toggle('done', done);
+}
+
+function setDayMode(mode) {
+  if (mode === 'rest') {
+    openRestDayOv();
+    return;
+  }
+  const td = getTodayData();
+  td.mode = mode;
+  setTodayData(td);
+  renderDayModes();
+  toast(mode === 'full' ? '🟢 Full day — semangat!' : '🟡 Light day — yang penting jalan');
+}
+function renderDayModes() {
+  const td = getTodayData();
+  const mode = td.mode || 'full';
+  ['full','light','rest'].forEach(m => {
+    const btn = document.getElementById('mode-'+m);
+    btn.className = 'day-mode-btn' + (mode===m ? ' on-'+m : '');
+  });
+}
+
+// ══════════════════════════════════════════
+// STREAK
+// ══════════════════════════════════════════
+function isDaySuccess(k, cat) {
+  const dd = getDayData(k);
+  if (dd.mode === 'rest') return true; // grace/rest = not breaking
+  if (cat === 'overall') {
+    const sw = dd.shalat || {};
+    return SHALAT_WAJIB.every(s => (sw[s.id]||{}).done) && dd.tilawah && dd['zikir-pagi'] && dd['zikir-petang'];
+  }
+  if (cat === 'shalat') {
+    const sw = dd.shalat || {};
+    return SHALAT_WAJIB.every(s => (sw[s.id]||{}).done);
+  }
+  if (cat === 'tilawah') return !!dd.tilawah;
+  if (cat === 'zikir') return !!(dd['zikir-pagi'] && dd['zikir-petang']);
+  if (cat === 'hafalan') return !!dd.hafalan;
+  return false;
+}
+
+function getStreak(cat) {
+  let streak = 0;
+  const today = new Date();
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const dd = getDayData(k);
+    if (Object.keys(dd).length === 0 && i > 0) break;
+    if (dd.mode === 'rest') { streak++; continue; }
+    if (isDaySuccess(k, cat || 'overall')) streak++;
+    else if (i > 0) break;
+  }
+  return streak;
+}
+
+function getBestStreak(cat) {
+  let best = 0, cur = 0;
+  const days = S.get('days') || {};
+  const keys = Object.keys(days).sort();
+  keys.forEach(k => {
+    const dd = days[k];
+    if (dd.mode === 'rest' || isDaySuccess(k, cat || 'overall')) cur++;
+    else cur = 0;
+    if (cur > best) best = cur;
+  });
+  return best;
+}
+
+function updateStreakDisplay() {
+  const streak = getStreak('overall');
+  const best = getBestStreak('overall');
+  document.getElementById('streak-num').textContent = streak;
+  document.getElementById('streak-best').textContent = 'best: ' + best + ' hari';
+}
+
+// ══════════════════════════════════════════
+// REST DAY
+// ══════════════════════════════════════════
+function getGraceUsedThisMonth() {
+  const now = new Date();
+  const days = S.get('days') || {};
+  let used = 0;
+  Object.keys(days).forEach(k => {
+    const d = new Date(k);
+    if (d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()) {
+      if (days[k].mode === 'rest') used++;
+    }
+  });
+  return used;
+}
+
+function openRestDayOv() {
+  const why = S.get('whyWall') || '';
+  document.getElementById('rest-why-display').textContent = why || '(Belum ada Why Wall — isi di Settings)';
+  const used = getGraceUsedThisMonth();
+  const left = Math.max(0, 2 - used);
+  document.getElementById('rest-grace-info').textContent = `Grace Day tersisa bulan ini: ${left}/2`;
+  openOv('ov-rest');
+}
+
+function confirmRestDay() {
+  const td = getTodayData();
+  td.mode = 'rest';
+  setTodayData(td);
+  renderDayModes();
+  closeOv('ov-rest');
+  toast('🌙 Rest Day dicatat. Besok lagi ya 💚');
+}
+
+// ══════════════════════════════════════════
+// HAFALAN TODAY WIDGET
+// ══════════════════════════════════════════
+function renderHtcQueue() {
+  const queue = getMurajaahQueue().slice(0, 3);
+  const el = document.getElementById('htc-queue');
+  el.innerHTML = '';
+  if (queue.length === 0) {
+    el.innerHTML = '<div class="htc-empty">✅ Tidak ada murajaah mendesak hari ini</div>';
+    return;
+  }
+  queue.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'htc-item';
+    const s = QURAN_SURAT.find(x => x.no === item.suratNo) || {};
+    div.innerHTML = `
+      <div class="strength-dot sd-${item.strength}"></div>
+      <div class="htc-name">${s.name||item.suratNo}</div>
+      <div class="htc-range">ayat ${item.dari}–${item.sampai}</div>`;
+    el.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════
+// CHAIN CALENDAR
+// ══════════════════════════════════════════
+function setChainCat(el, cat) {
+  currentChainCat = cat;
+  document.querySelectorAll('.chain-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const label = MONTHS[calMonth] + ' ' + calYear;
+  document.getElementById('cal-month-label').textContent = label;
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+  ['Min','Sen','Sel','Rab','Kam','Jum','Sab'].forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-dow';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+  const todayK = todayStr();
+  const graceUsed = getGraceUsedThisMonth();
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const k = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dd = getDayData(k);
+    const el = document.createElement('div');
+    const isToday = k === todayK;
+    const hasFuture = new Date(k) > new Date();
+
+    let cls = 'cal-day';
+    if (isToday) cls += ' is-today';
+    if (!hasFuture && Object.keys(dd).length > 0) {
+      if (dd.mode === 'rest') cls += ' chain-grace';
+      else if (isDaySuccess(k, currentChainCat)) cls += ' chain-done';
+      else cls += ' chain-miss has-data';
+    } else if (Object.keys(dd).length > 0) {
+      cls += ' has-data';
+    }
+
+    el.className = cls;
+    // Show checkmark on done days, grace symbol on grace days
+    if (!hasFuture && Object.keys(dd).length > 0) {
+      if (dd.mode === 'rest') {
+        el.innerHTML = `<span style="display:block;font-size:9px;line-height:1;">${d}</span><span style="font-size:9px;line-height:1;">🌙</span>`;
+      } else if (isDaySuccess(k, currentChainCat)) {
+        el.innerHTML = `<span style="display:block;font-size:9px;line-height:1;">${d}</span><span style="font-size:11px;line-height:1;font-weight:700;">✓</span>`;
+      } else {
+        el.textContent = d;
+      }
+    } else {
+      el.textContent = d;
+    }
+    if (!hasFuture && Object.keys(dd).length > 0) {
+      el.onclick = () => openDayDetail(calYear, calMonth, d, k);
+    }
+    grid.appendChild(el);
+  }
+
+  // stats
+  const streak = getStreak(currentChainCat);
+  const best = getBestStreak(currentChainCat);
+  const left = Math.max(0, 2 - graceUsed);
+  document.getElementById('cs-streak').textContent = streak;
+  document.getElementById('cs-best').textContent = best;
+  document.getElementById('cs-grace').textContent = left;
+}
+
+function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); }
+function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); }
+
+function openDayDetail(y, m, d, k) {
+  const label = DAYS[new Date(y,m,d).getDay()] + ', ' + d + ' ' + MONTHS[m] + ' ' + y;
+  document.getElementById('day-modal-title').textContent = label;
+  const dd = getDayData(k);
+  const cont = document.getElementById('day-modal-content');
+  cont.innerHTML = '';
+  const sw = dd.shalat || {};
+  const items = [
+    ...SHALAT_WAJIB.map(s => ({
+      label: s.emoji + ' ' + s.name + ((sw[s.id]||{}).tepat?' ⏰':'') + ((sw[s.id]||{}).jamaah?' 🕌':''),
+      done: !!(sw[s.id]||{}).done, color:'var(--amber)'
+    })),
+    ...SHALAT_SUNNAH.map(s => ({label: s.emoji+' '+s.name, done: !!(dd.sunnah||{})[s.id], color:'var(--sky)'})),
+    {label:'📖 Tilawah', done:!!dd.tilawah, color:'var(--teal)'},
+    {label:'📿 Zikir Pagi', done:!!dd['zikir-pagi'], color:'var(--teal)'},
+    {label:'📿 Zikir Petang', done:!!dd['zikir-petang'], color:'var(--teal)'},
+    {label:'🧠 Hafalan/Murajaah', done:!!dd.hafalan, color:'var(--lavender)'},
+    {label:'📚 Buku/Ilmu', done:!!dd.buku, color:'var(--rose)'},
+  ];
+  items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'dd-item';
+    row.innerHTML = `<div class="dd-dot" style="background:${item.done?item.color:'var(--b2)'}"></div><span class="dd-label" style="color:${item.done?'var(--t1)':'var(--t2)'}">${item.label}</span><span class="dd-status" style="color:${item.done?item.color:'var(--t3)'}">${item.done?'✓':'—'}</span>`;
+    cont.appendChild(row);
+  });
+  if (dd.mode === 'rest') {
+    const note = document.createElement('div');
+    note.style.cssText = 'margin-top:12px;background:rgba(181,154,240,.1);border:1px solid rgba(181,154,240,.2);border-radius:8px;padding:8px 12px;font-family:var(--mono);font-size:9px;color:var(--lavender);';
+    note.textContent = '🌙 Rest Day — Grace Day digunakan';
+    cont.appendChild(note);
+  }
+  openOv('ov-day');
+}
+
+// ══════════════════════════════════════════
+// HAFALAN / MURAJAAH
+// ══════════════════════════════════════════
+function getSuratList() { return S.get('suratList') || []; }
+function getMurajaahData() { return S.get('murajaahData') || {}; }
+function setMurajaahData(d) { S.set('murajaahData', d); }
+
+// Spaced repetition intervals (days)
+const STRENGTH_INTERVALS = { weak: 1, mid: 4, strong: 8 };
+
+function getMurajaahQueue() {
+  const surats = getSuratList();
+  const mData = getMurajaahData();
+  const today = todayStr();
+  const queue = [];
+  surats.forEach(s => {
+    const key = `${s.suratNo}-${s.dari}-${s.sampai}`;
+    const md = mData[key] || { strength: 'weak', nextDate: today };
+    if (md.nextDate <= today) {
+      queue.push({ ...s, ...md, key });
+    }
+  });
+  return queue.sort((a,b) => {
+    const order = {weak:0, mid:1, strong:2};
+    return order[a.strength] - order[b.strength];
+  });
+}
+
+function rateMurajaah(key, rating) {
+  const mData = getMurajaahData();
+  if (!mData[key]) mData[key] = {strength:'weak'};
+  let newStrength;
+  if (rating === 'lancar') {
+    newStrength = mData[key].strength === 'weak' ? 'mid' : 'strong';
+  } else if (rating === 'ragu') {
+    newStrength = 'mid';
+  } else {
+    newStrength = 'weak';
+  }
+  mData[key].strength = newStrength;
+  const interval = STRENGTH_INTERVALS[newStrength];
+  const next = new Date();
+  next.setDate(next.getDate() + interval);
+  mData[key].nextDate = `${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}-${String(next.getDate()).padStart(2,'0')}`;
+  mData[key].lastRated = todayStr();
+  setMurajaahData(mData);
+  renderMurajaahQueue();
+  renderHtcQueue();
+  toast(rating === 'lancar' ? '🟢 Mantap! Jadwal diperpanjang' : rating === 'ragu' ? '🟡 Oke, ulang lagi dalam 4 hari' : '🔴 Perlu diulang besok');
+}
+
+function renderMurajaahQueue() {
+  const queue = getMurajaahQueue();
+  const el = document.getElementById('mur-queue');
+  if (!el) return;
+  el.innerHTML = '';
+  if (queue.length === 0) {
+    el.innerHTML = `<div class="mur-empty"><div class="mur-empty-icon">✅</div>Tidak ada murajaah hari ini!<br><span style="color:var(--t3)">Tambah hafalan di Ziyadah atau Settings</span></div>`;
+    return;
+  }
+  queue.forEach(item => {
+    const surat = QURAN_SURAT.find(s => s.no === item.suratNo) || {name: 'Surat #'+item.suratNo};
+    const card = document.createElement('div');
+    card.className = 'mur-card ' + (item.strength||'weak');
+    const strengthLabel = {weak:'🔴 Lemah', mid:'🟡 Sedang', strong:'🟢 Kuat'};
+    card.innerHTML = `
+      <div class="mur-card-head">
+        <div>
+          <div class="mur-name">${surat.name}</div>
+          <div class="mur-range">Ayat ${item.dari} – ${item.sampai}</div>
+        </div>
+        <div class="mur-strength ${item.strength||'weak'}">${strengthLabel[item.strength||'weak']}</div>
+      </div>
+      <div class="mur-actions">
+        <button class="mur-btn lupa" onclick="rateMurajaah('${item.key}','lupa')">😓 Lupa</button>
+        <button class="mur-btn ragu" onclick="rateMurajaah('${item.key}','ragu')">🤔 Ragu</button>
+        <button class="mur-btn lancar" onclick="rateMurajaah('${item.key}','lancar')">😊 Lancar</button>
+      </div>`;
+    el.appendChild(card);
+  });
+}
+
+function renderZiyadah() {
+  const target = S.get('ziyadahTarget');
+  const el = document.getElementById('ziy-surat-name');
+  const ep = document.getElementById('ziy-progress');
+  const bar = document.getElementById('ziy-bar-fill');
+  const why = document.getElementById('why-wall-ziy');
+  const whyText = S.get('whyWall');
+
+  if (!target || !target.suratNo) {
+    el.textContent = 'Belum ada target';
+    ep.textContent = 'Set target ziyadah di Settings';
+    bar.style.width = '0%';
+    return;
+  }
+  const surat = QURAN_SURAT.find(s => s.no === target.suratNo) || {name:'?', ayat:1};
+  const current = target.currentAyat || 0;
+  const targetAyat = target.targetAyat || surat.ayat;
+  const pct = Math.min(100, Math.round(current/targetAyat*100));
+  el.textContent = surat.name;
+  ep.textContent = `Sudah: ayat ${current} / target: ${targetAyat}`;
+  bar.style.width = pct + '%';
+
+  if (whyText) {
+    why.style.display = 'block';
+    why.textContent = '💛 ' + whyText;
+  }
+}
+
+function openZiyadahInput() {
+  const target = S.get('ziyadahTarget');
+  if (target) document.getElementById('ziy-log-ayat').value = target.currentAyat || '';
+  openOv('ov-ziyadah');
+}
+
+function saveZiyadahLog() {
+  const ayat = parseInt(document.getElementById('ziy-log-ayat').value);
+  if (!ayat || ayat < 1) { toast('⚠ Masukkan nomor ayat yang valid'); return; }
+  const target = S.get('ziyadahTarget') || {};
+  target.currentAyat = ayat;
+  S.set('ziyadahTarget', target);
+  closeOv('ov-ziyadah');
+  renderZiyadah();
+  toast('✓ Progress ziyadah disimpan: ayat ' + ayat);
+}
+
+function markZiyadahDone() {
+  const td = getTodayData();
+  td.hafalan = true;
+  setTodayData(td);
+  updateAllProgress();
+  toast('✓ Sesi ziyadah selesai! 🧠');
+}
+
+function renderHafSuratList() {
+  const surats = getSuratList();
+  const mData = getMurajaahData();
+  const el = document.getElementById('haf-surat-list');
+  if (!el) return;
+  el.innerHTML = '';
+  if (surats.length === 0) {
+    el.innerHTML = '<div style="font-family:var(--mono);font-size:11px;color:var(--t3);text-align:center;padding:20px;">Belum ada hafalan. Tambah di Settings → Input Hafalan.</div>';
+    return;
+  }
+  surats.forEach(s => {
+    const surat = QURAN_SURAT.find(x => x.no === s.suratNo) || {name:'?'};
+    const key = `${s.suratNo}-${s.dari}-${s.sampai}`;
+    const md = mData[key] || {strength:'weak'};
+    const colors = {weak:var_coral(), mid:var_amber(), strong:var_green()};
+    const card = document.createElement('div');
+    card.className = 'haf-surat-card';
+    const pct = md.strength === 'weak' ? 30 : md.strength === 'mid' ? 65 : 95;
+    card.innerHTML = `
+      <div class="hsc-head">
+        <div class="hsc-name">${surat.name}</div>
+        <div class="hsc-range" style="font-family:var(--mono);font-size:9px;color:var(--t2);">Ayat ${s.dari}–${s.sampai}</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:8px;color:${colors[md.strength]};margin-top:3px;">${md.strength === 'weak' ? '🔴 Lemah' : md.strength === 'mid' ? '🟡 Sedang' : '🟢 Kuat'}</div>
+      <div class="hsc-bar"><div class="hsc-bar-fill" style="width:${pct}%;background:${colors[md.strength]}"></div></div>`;
+    el.appendChild(card);
+  });
+}
+
+function var_coral() { return 'var(--coral)'; }
+function var_amber() { return 'var(--amber)'; }
+function var_green() { return 'var(--green)'; }
+
+function setHafTab(el, tab) {
+  document.querySelectorAll('.haf-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  ['murajaah','ziyadah','daftar'].forEach(t => {
+    const panel = document.getElementById('haf-panel-'+t);
+    if (panel) panel.style.display = t === tab ? 'block' : 'none';
+  });
+  if (tab === 'murajaah') renderMurajaahQueue();
+  if (tab === 'ziyadah') renderZiyadah();
+  if (tab === 'daftar') renderHafSuratList();
+}
+
+// ══════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════
+function renderStats() {
+  const days = S.get('days') || {};
+  const keys = Object.keys(days).sort();
+
+  // consistency score (30 days)
+  const today = new Date();
+  let score30 = 0, counted = 0;
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const dd = getDayData(k);
+    if (Object.keys(dd).length === 0) continue;
+    counted++;
+    if (dd.mode === 'rest' || isDaySuccess(k,'overall')) score30++;
+  }
+  const cs = counted > 0 ? Math.round(score30/counted*100) : 0;
+  document.getElementById('cb-score').textContent = cs + '%';
+  document.getElementById('cb-bar-fill').style.width = cs + '%';
+  document.getElementById('cb-desc').textContent = cs >= 80 ? '🌟 Luar biasa! Konsistensi tinggi' : cs >= 60 ? '💪 Bagus, terus jaga ritme' : cs >= 40 ? '🔄 Ada progress, tingkatkan lagi' : counted === 0 ? 'Mulai tracking untuk melihat skor' : '🌱 Baru mulai — istiqamah ya';
+
+  // overall stats
+  const streak = getStreak('overall');
+  const best = getBestStreak('overall');
+  const successDays = keys.filter(k => isDaySuccess(k,'overall')).length;
+  const activeDays = keys.filter(k => Object.keys(getDayData(k)).length > 0).length;
+
+  const grid = document.getElementById('stat-grid');
+  grid.innerHTML = '';
+  [
+    {n:streak, l:'Streak Sekarang', s:'hari berturut-turut', c:'var(--amber)'},
+    {n:best, l:'Best Streak', s:'hari terbaik', c:'var(--teal)'},
+    {n:successDays, l:'Hari Sempurna', s:'semua ibadah done', c:'var(--rose)'},
+    {n:activeDays, l:'Hari Aktif', s:'total ada data', c:'var(--sky)'},
+  ].forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'stat-card';
+    card.innerHTML = `<div class="stat-card-n" style="color:${s.c}">${s.n}</div><div class="stat-card-l">${s.l}</div><div class="stat-card-s">${s.s}</div>`;
+    grid.appendChild(card);
+  });
+
+  // per habit
+  const list = document.getElementById('habit-stat-list');
+  list.innerHTML = '';
+  const habits = [
+    {emoji:'🕌', name:'Shalat Wajib (5x)', cat:'shalat'},
+    {emoji:'📖', name:'Tilawah', cat:'tilawah'},
+    {emoji:'📿', name:'Zikir', cat:'zikir'},
+    {emoji:'🧠', name:'Hafalan', cat:'hafalan'},
+  ];
+  habits.forEach(h => {
+    const streak2 = getStreak(h.cat);
+    const doneCount = activeDays > 0 ? keys.filter(k => {
+      const dd = getDayData(k);
+      if (Object.keys(dd).length === 0) return false;
+      return isDaySuccess(k, h.cat);
+    }).length : 0;
+    const pct = activeDays > 0 ? Math.round(doneCount/Math.max(activeDays,1)*100) : 0;
+    const row = document.createElement('div');
+    row.className = 'habit-stat';
+    row.innerHTML = `<div class="hs-emoji">${h.emoji}</div><div class="hs-name">${h.name}</div><div class="hs-bar-wrap"><div class="hs-bar-fill" style="width:${pct}%;background:var(--amber)"></div></div><div class="hs-pct">${pct}%</div><span style="font-family:var(--mono);font-size:9px;color:var(--t2);">${streak2}🔥</span>`;
+    list.appendChild(row);
+  });
+
+  // heatmap (13 weeks)
+  const hm = document.getElementById('heatmap-grid');
+  hm.innerHTML = '';
+  for (let i = 90; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const dd = getDayData(k);
+    const cell = document.createElement('div');
+    cell.className = 'hm-cell';
+    if (Object.keys(dd).length > 0) {
+      const sw = dd.shalat || {};
+      const doneShalat = SHALAT_WAJIB.filter(s => (sw[s.id]||{}).done).length;
+      const extras = [dd.tilawah, dd['zikir-pagi'], dd['zikir-petang'], dd.hafalan].filter(Boolean).length;
+      const total = doneShalat + extras;
+      if (total >= 8) cell.classList.add('l4');
+      else if (total >= 6) cell.classList.add('l3');
+      else if (total >= 3) cell.classList.add('l2');
+      else cell.classList.add('l1');
+    }
+    hm.appendChild(cell);
+  }
+}
+
+// ══════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════
+function renderWhyWall() {
+  const why = S.get('whyWall') || '';
+  const el = document.getElementById('why-wall-display');
+  if (why) {
+    el.textContent = why;
+    el.classList.remove('empty');
+  } else {
+    el.textContent = 'Tap untuk menambahkan alasan lo…';
+    el.classList.add('empty');
+  }
+}
+
+function openWhyWall() {
+  document.getElementById('why-input').value = S.get('whyWall') || '';
+  openOv('ov-why');
+}
+function saveWhyWall() {
+  const val = document.getElementById('why-input').value.trim();
+  S.set('whyWall', val);
+  renderWhyWall();
+  closeOv('ov-why');
+  toast('💛 Why Wall disimpan');
+}
+
+function renderSuratListSettings() {
+  const surats = getSuratList();
+  const el = document.getElementById('surat-list-settings');
+  el.innerHTML = '';
+  if (surats.length === 0) {
+    el.innerHTML = '<div style="font-family:var(--mono);font-size:10px;color:var(--t3);">Belum ada hafalan.</div>';
+    return;
+  }
+  surats.forEach((s, i) => {
+    const surat = QURAN_SURAT.find(x => x.no === s.suratNo) || {name: '#'+s.suratNo};
+    const div = document.createElement('div');
+    div.className = 'sls-item';
+    div.innerHTML = `<div class="sls-name">${surat.name}</div><div class="sls-range">Ayat ${s.dari}–${s.sampai}</div><button class="sls-del" onclick="delSurat(${i})">✕</button>`;
+    el.appendChild(div);
+  });
+}
+
+function populateSuratSelect() {
+  const sel = document.getElementById('add-surat-select');
+  const sel2 = document.getElementById('ziy-target-surat');
+  [sel, sel2].forEach(s => {
+    if (!s) return;
+    s.innerHTML = '';
+    QURAN_SURAT.forEach(q => {
+      const opt = document.createElement('option');
+      opt.value = q.no;
+      opt.textContent = q.no + '. ' + q.name;
+      s.appendChild(opt);
+    });
+  });
+  const zt = S.get('ziyadahTarget');
+  if (zt && sel2) sel2.value = zt.suratNo;
+  if (zt) document.getElementById('ziy-target-ayat').value = zt.targetAyat || '';
+}
+
+function addSurat() {
+  const suratNo = parseInt(document.getElementById('add-surat-select').value);
+  const dari = parseInt(document.getElementById('add-ayat-dari').value);
+  const sampai = parseInt(document.getElementById('add-ayat-sampai').value);
+  if (!suratNo || !dari || !sampai || dari > sampai) { toast('⚠ Data tidak valid'); return; }
+  const surats = getSuratList();
+  surats.push({suratNo, dari, sampai});
+  S.set('suratList', surats);
+  // init murajaah data for this entry
+  const mData = getMurajaahData();
+  const key = `${suratNo}-${dari}-${sampai}`;
+  if (!mData[key]) { mData[key] = {strength:'weak', nextDate: todayStr()}; setMurajaahData(mData); }
+  document.getElementById('add-ayat-dari').value = '';
+  document.getElementById('add-ayat-sampai').value = '';
+  renderSuratListSettings();
+  renderHtcQueue();
+  toast('✓ Hafalan ditambahkan!');
+}
+
+function delSurat(i) {
+  const surats = getSuratList();
+  surats.splice(i,1);
+  S.set('suratList', surats);
+  renderSuratListSettings();
+  toast('✓ Dihapus');
+}
+
+function saveZiyadahTarget() {
+  const suratNo = parseInt(document.getElementById('ziy-target-surat').value);
+  const targetAyat = parseInt(document.getElementById('ziy-target-ayat').value);
+  if (!suratNo || !targetAyat) { toast('⚠ Lengkapi data'); return; }
+  const existing = S.get('ziyadahTarget') || {};
+  S.set('ziyadahTarget', {...existing, suratNo, targetAyat});
+  toast('✓ Target ziyadah disimpan');
+}
+
+// ══════════════════════════════════════════
+// EXPORT / IMPORT
+// ══════════════════════════════════════════
+function exportData() {
+  const data = {
+    days: S.get('days'),
+    suratList: S.get('suratList'),
+    murajaahData: S.get('murajaahData'),
+    ziyadahTarget: S.get('ziyadahTarget'),
+    whyWall: S.get('whyWall'),
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'muntaha-backup-' + todayStr() + '.json';
+  a.click();
+  toast('📦 Data diekspor!');
+}
+function importData(e) {
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const p = JSON.parse(ev.target.result);
+      if (p.days) S.set('days', p.days);
+      if (p.suratList) S.set('suratList', p.suratList);
+      if (p.murajaahData) S.set('murajaahData', p.murajaahData);
+      if (p.ziyadahTarget) S.set('ziyadahTarget', p.ziyadahTarget);
+      if (p.whyWall) S.set('whyWall', p.whyWall);
+      init();
+      toast('✓ Data berhasil diimpor!');
+    } catch { toast('⚠ File tidak valid'); }
+  };
+  r.readAsText(f);
+  e.target.value = '';
+}
+function confirmReset() {
+  if (confirm('Reset SEMUA data? Tidak bisa dibatalkan!')) {
+    ['days','suratList','murajaahData','ziyadahTarget','whyWall'].forEach(k => localStorage.removeItem('mnt_'+k));
+    init();
+    toast('Data direset');
+  }
+}
+
+// ══════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════
+function navTo(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  document.getElementById('nb-'+id).classList.add('on');
+  if (id === 'chain') renderCalendar();
+  if (id === 'stats') renderStats();
+  if (id === 'hafalan') renderMurajaahQueue();
+  if (id === 'settings') {
+    renderSuratListSettings();
+    renderWhyWall();
+    populateSuratSelect();
+  }
+}
+
+// ══════════════════════════════════════════
+// OVERLAYS
+// ══════════════════════════════════════════
+function openOv(id) { document.getElementById(id).classList.add('on'); }
+function closeOv(id) { document.getElementById(id).classList.remove('on'); }
+document.querySelectorAll('.ov').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('on'); });
+});
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+let toastT;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('on'), 2400);
+}
+
+// ══════════════════════════════════════════
+// SECTION ACCORDION
+// ══════════════════════════════════════════
+function toggleSec(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('collapsed');
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+function init() {
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  renderTodayHeader();
+  renderShalatWajib();
+  renderShalatSunnah();
+  renderSimpleChecks();
+  updateAllProgress();
+  renderHtcQueue();
+  renderCalendar();
+}
+
+init();
+</script>
+</body>
+</html>

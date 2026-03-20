@@ -460,7 +460,18 @@ textarea.inp{resize:none;}
 }
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* progress bar */
+/* muhasabah */
+.muhasabah-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 8px;border-radius:var(--radius);border:1.5px solid var(--b1);background:var(--s1);cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);}
+.muhasabah-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
+.muhasabah-btn:active{transform:scale(.96);}
+.mhsb-icon{font-size:22px;line-height:1;}
+.mhsb-label{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.5px;}
+.muhasabah-btn.active-dekat{background:var(--amber-bg);border-color:var(--amber-border);}
+.muhasabah-btn.active-dekat .mhsb-label{color:var(--amber);font-weight:600;}
+.muhasabah-btn.active-biasa{background:var(--sky-bg);border-color:var(--sky-border);}
+.muhasabah-btn.active-biasa .mhsb-label{color:var(--sky);font-weight:600;}
+.muhasabah-btn.active-jauh{background:var(--lavender-bg);border-color:var(--lavender-border);}
+.muhasabah-btn.active-jauh .mhsb-label{color:var(--lavender);font-weight:600;}
 .prog-bar{height:3px;background:var(--s3);border-radius:2px;overflow:hidden;}
 .prog-bar-fill{height:100%;background:var(--amber);border-radius:2px;transition:width .4s;}
 </style>
@@ -592,6 +603,32 @@ textarea.inp{resize:none;}
       </div>
     </div>
   </div>
+  <div class="divider"></div>
+
+  <!-- Muhasabah -->
+  <div class="sec-block" id="sec-muhasabah">
+    <div class="sec-head" onclick="toggleSec('sec-muhasabah')">
+      <div class="sec-title"><span class="sec-emoji">🤍</span><span class="sec-name">Muhasabah</span></div>
+      <span class="sec-chevron">▼</span>
+    </div>
+    <div class="sec-body">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--t2);margin-bottom:12px;line-height:1.6;">Seberapa deket sama Allah hari ini?</div>
+      <div style="display:flex;gap:8px;" id="muhasabah-btns">
+        <button class="muhasabah-btn" id="mhsb-dekat" onclick="setMuhasabah('dekat')">
+          <span class="mhsb-icon">☀️</span>
+          <span class="mhsb-label">Dekat</span>
+        </button>
+        <button class="muhasabah-btn" id="mhsb-biasa" onclick="setMuhasabah('biasa')">
+          <span class="mhsb-icon">🌤️</span>
+          <span class="mhsb-label">Biasa</span>
+        </button>
+        <button class="muhasabah-btn" id="mhsb-jauh" onclick="setMuhasabah('jauh')">
+          <span class="mhsb-icon">🌧️</span>
+          <span class="mhsb-label">Jauh</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ══════════════ CHAIN ══════════════ -->
@@ -692,6 +729,11 @@ textarea.inp{resize:none;}
   <div class="heatmap-wrap" style="margin-top:12px;">
     <div class="sec-lbl">aktivitas 3 bulan terakhir</div>
     <div class="heatmap-grid" id="heatmap-grid"></div>
+  </div>
+
+  <div class="heatmap-wrap">
+    <div class="sec-lbl">🤍 muhasabah — 30 hari terakhir</div>
+    <div id="muhasabah-chart"></div>
   </div>
 </div>
 
@@ -1569,6 +1611,7 @@ function renderStats() {
     {emoji:'📖', name:'Tilawah', cat:'tilawah'},
     {emoji:'📿', name:'Zikir', cat:'zikir'},
     {emoji:'🧠', name:'Hafalan', cat:'hafalan'},
+    {emoji:'📚', name:'Ilmu & Karakter', cat:'buku'},
   ];
   habits.forEach(h => {
     const streak2 = getStreak(h.cat);
@@ -1606,10 +1649,63 @@ function renderStats() {
     }
     hm.appendChild(cell);
   }
+
+  // muhasabah chart (30 hari)
+  renderMuhasabahChart(today, days);
 }
 
-// ══════════════════════════════════════════
-// SETTINGS
+function renderMuhasabahChart(today, days) {
+  const el = document.getElementById('muhasabah-chart');
+  if (!el) return;
+  el.innerHTML = '';
+  const vals = {dekat:3, biasa:2, jauh:1};
+  const colors = {dekat:'var(--amber)', biasa:'var(--sky)', jauh:'var(--lavender)'};
+  const labels = {dekat:'Dekat ☀️', biasa:'Biasa 🌤️', jauh:'Jauh 🌧️'};
+  const data = [];
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const dd = getDayData(k);
+    data.push({k, val: dd.muhasabah || null, date: d.getDate()});
+  }
+  // draw bars
+  const hasData = data.some(d => d.val);
+  if (!hasData) {
+    el.innerHTML = '<div style="font-family:var(--mono);font-size:10px;color:var(--t3);text-align:center;padding:20px;">Belum ada data muhasabah.</div>';
+    return;
+  }
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;align-items:flex-end;gap:3px;height:80px;padding:0 2px;';
+  data.forEach(d => {
+    const bar = document.createElement('div');
+    bar.style.cssText = `flex:1;border-radius:4px 4px 0 0;transition:height .3s;cursor:default;`;
+    if (d.val) {
+      const h = vals[d.val];
+      bar.style.height = (h/3*100) + '%';
+      bar.style.background = colors[d.val];
+      bar.title = d.date + ' — ' + labels[d.val];
+    } else {
+      bar.style.height = '4px';
+      bar.style.background = 'var(--s3)';
+      bar.style.borderRadius = '2px';
+    }
+    wrap.appendChild(bar);
+  });
+  el.appendChild(wrap);
+  // legend
+  const leg = document.createElement('div');
+  leg.style.cssText = 'display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;';
+  Object.entries(labels).forEach(([k,v]) => {
+    const item = document.createElement('div');
+    item.style.cssText = 'display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;color:var(--t2);';
+    item.innerHTML = `<div style="width:8px;height:8px;border-radius:2px;background:${colors[k]};flex-shrink:0;"></div>${v}`;
+    leg.appendChild(item);
+  });
+  el.appendChild(leg);
+}
+
+
 // ══════════════════════════════════════════
 function renderWhyWall() {
   const why = S.get('whyWall') || '';
@@ -1791,7 +1887,28 @@ function toast(msg) {
 }
 
 // ══════════════════════════════════════════
-// SECTION ACCORDION
+// MUHASABAH
+// ══════════════════════════════════════════
+function setMuhasabah(val) {
+  const td = getTodayData();
+  td.muhasabah = td.muhasabah === val ? null : val; // toggle off if same
+  setTodayData(td);
+  renderMuhasabah();
+  const msgs = {dekat:'☀️ Alhamdulillah, jaga terus!', biasa:'🌤️ Semangat tingkatkan lagi!', jauh:'🌧️ Gak apa-apa, balik lagi pelan-pelan 💚'};
+  if (td.muhasabah) toast(msgs[val]);
+}
+
+function renderMuhasabah() {
+  const td = getTodayData();
+  const val = td.muhasabah;
+  ['dekat','biasa','jauh'].forEach(v => {
+    const btn = document.getElementById('mhsb-'+v);
+    if (!btn) return;
+    btn.className = 'muhasabah-btn' + (val === v ? ' active-'+v : '');
+  });
+}
+
+
 // ══════════════════════════════════════════
 function toggleSec(id) {
   const el = document.getElementById(id);
@@ -1809,6 +1926,7 @@ function init() {
   renderShalatWajib();
   renderShalatSunnah();
   renderSimpleChecks();
+  renderMuhasabah();
   updateAllProgress();
   renderHtcQueue();
   renderCalendar();

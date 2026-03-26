@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Muntaha — Ibadah Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Nunito:wght@400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
   /* ── CAHAYA PAGI — Light Warm Theme ── */
@@ -221,8 +221,87 @@ textarea.inp{resize:none;}
 .sd-strong{background:var(--green);}
 .htc-empty{font-family:var(--mono);font-size:10px;color:var(--t3);text-align:center;padding:10px;}
 
-/* ══ CHAIN ══ */
-#pg-chain{padding:16px;}
+/* ══ TILAWAH PAGE ══ */
+#pg-tilawah{padding:0;}
+.til-hero{
+  padding:20px 16px 16px;
+  background:linear-gradient(145deg,#fffbf5 0%,#f5f0e8 60%,#ede7d9 100%);
+  border-bottom:1px solid var(--b1);
+  position:relative;overflow:hidden;
+}
+.til-hero::before{content:'';position:absolute;top:-40px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(200,136,26,.1) 0%,transparent 70%);pointer-events:none;}
+.til-eyebrow{font-family:var(--mono);font-size:8.5px;color:var(--t2);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
+.til-title{font-family:var(--serif);font-size:24px;font-style:italic;color:var(--amber);margin-bottom:12px;}
+
+.til-tabs{display:flex;gap:6px;padding:12px 16px 0;background:var(--s2);border-bottom:1px solid var(--b1);}
+.til-tab{padding:8px 14px;border-radius:var(--radius) var(--radius) 0 0;border:1.5px solid transparent;border-bottom:none;background:transparent;color:var(--t3);font-family:var(--mono);font-size:9px;cursor:pointer;transition:all .15s;letter-spacing:.5px;position:relative;bottom:-1px;}
+.til-tab.on{background:var(--s1);border-color:var(--b1);border-bottom-color:var(--s1);color:var(--amber);}
+
+.til-panel{display:none;padding:14px 16px 0;}
+.til-panel.on{display:block;}
+
+/* streak strip */
+.til-streak-strip{display:flex;gap:10px;margin-bottom:14px;}
+.til-streak-card{flex:1;background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:11px 12px;text-align:center;box-shadow:var(--shadow-sm);}
+.til-streak-num{font-family:var(--serif);font-size:28px;color:var(--amber);line-height:1;}
+.til-streak-lbl{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:.5px;margin-top:3px;}
+
+/* log form */
+.til-form-card{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
+.til-form-title{font-family:var(--mono);font-size:8.5px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:11px;}
+.til-row{display:grid;gap:8px;margin-bottom:10px;}
+.til-row.c2{grid-template-columns:1fr auto 1fr;}
+.til-row.c2p{grid-template-columns:1fr 1fr;}
+.til-arrow{color:var(--t3);font-size:16px;display:flex;align-items:flex-end;padding-bottom:11px;justify-content:center;}
+.til-inp{background:var(--bg);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:9px 11px;color:var(--t1);font-family:var(--sans);font-size:13px;outline:none;transition:border-color .15s;width:100%;}
+.til-inp:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(200,136,26,.12);}
+.til-inp::placeholder{color:var(--t3);}
+.til-lbl{font-family:var(--mono);font-size:8.5px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;display:block;}
+textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:1.5;}
+
+/* ayat preview */
+.til-ayat-preview{background:var(--amber-bg);border-left:3px solid var(--amber);padding:11px 13px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin-bottom:10px;display:none;}
+.til-ayat-text{font-family:'Amiri',serif;font-size:20px;color:var(--t1);direction:rtl;text-align:right;line-height:1.8;margin-bottom:4px;}
+.til-ayat-ref{font-family:var(--mono);font-size:9px;color:var(--amber);letter-spacing:1px;}
+
+/* mood chips */
+.til-mood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
+.til-mood-chip{background:var(--s2);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:9px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .13s;font-family:var(--mono);font-size:8.5px;color:var(--t3);text-align:center;user-select:none;}
+.til-mood-chip:active{transform:scale(.93);}
+.til-mood-chip.on{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber);}
+.til-mood-em{font-size:20px;line-height:1;}
+
+/* juz grid */
+.til-juz-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:10px;}
+.til-juz-box{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--s2);border:1.5px solid var(--b1);border-radius:var(--radius-sm);font-family:var(--mono);font-size:11px;color:var(--t3);cursor:pointer;transition:all .13s;user-select:none;}
+.til-juz-box:active{transform:scale(.9);}
+.til-juz-box.done{background:var(--green-bg);border-color:var(--green-border);color:var(--green);font-weight:700;}
+.til-khatam{display:none;text-align:center;padding:12px;background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:var(--radius-sm);font-family:var(--serif);font-style:italic;color:var(--green);font-size:15px;margin-bottom:12px;}
+.til-khatam.show{display:block;}
+
+/* chain cal (reuse cal-grid styles, just wrap) */
+.til-cal-wrap{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
+.til-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.til-cal-dow{font-family:var(--mono);font-size:8px;color:var(--t3);text-align:center;padding:3px 0;letter-spacing:.5px;}
+.til-cal-day{aspect-ratio:1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;background:var(--s2);color:var(--t3);border:1px solid var(--b1);position:relative;}
+.til-cal-day.til-today{border:2px solid var(--amber);color:var(--amber);font-weight:700;background:var(--amber-bg);}
+.til-cal-day.til-done{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal);font-weight:600;}
+.til-cal-day.til-done::after{content:'✓';position:absolute;font-size:12px;font-weight:700;}
+.til-cal-day.til-done span{opacity:0;}
+.til-cal-day.til-empty{background:transparent;border-color:transparent;}
+
+/* history */
+.til-hist-item{border-bottom:1px solid var(--b1);padding:12px 0;}
+.til-hist-item:last-child{border-bottom:none;}
+.til-hist-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
+.til-hist-date{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--t3);}
+.til-hist-range{font-size:14px;color:var(--t2);font-family:var(--serif);font-style:italic;margin-bottom:3px;}
+.til-hist-ayat{font-family:'Amiri',serif;font-size:17px;direction:rtl;text-align:right;color:var(--t1);margin-bottom:3px;}
+.til-hist-tadabbur{font-family:var(--sans);font-size:13px;color:var(--t2);line-height:1.5;max-height:60px;overflow:hidden;transition:max-height .3s;}
+.til-hist-tadabbur.exp{max-height:500px;}
+.til-hist-toggle{background:none;border:none;font-family:var(--mono);font-size:9px;color:var(--amber);cursor:pointer;padding:2px 0;letter-spacing:.5px;}
+.til-save-btn{width:100%;background:var(--amber);color:#fff;border:none;border-radius:var(--radius-sm);padding:14px;font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .18s;box-shadow:0 2px 8px rgba(200,136,26,.25);margin-bottom:10px;}
+.til-save-btn:active{transform:scale(.98);}
 .chain-header{margin-bottom:16px;}
 .chain-title{font-family:var(--serif);font-size:28px;font-style:italic;color:var(--t1);margin-bottom:3px;}
 .chain-sub{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;}
@@ -542,7 +621,7 @@ textarea.inp{resize:none;}
     <div class="sec-head" onclick="toggleSec('sec-tilzik')">
       <div class="sec-title"><span class="sec-emoji">📖</span><span class="sec-name">Tilawah & Zikir</span></div>
       <div style="display:flex;align-items:center;gap:6px;">
-        <span class="sec-pct" id="tilzik-pct">0/3</span>
+        <span class="sec-pct" id="tilzik-pct">0/5</span>
         <span class="sec-chevron">▼</span>
       </div>
     </div>
@@ -551,6 +630,14 @@ textarea.inp{resize:none;}
         <div class="check-item" id="ci-tilawah" onclick="toggleSimple('tilawah','teal')">
           <div class="ci-check">✓</div>
           <div class="ci-info"><div class="ci-name">📖 Tilawah Al-Qur'an</div><div class="ci-sub">baca hari ini</div></div>
+        </div>
+        <div class="check-item" id="ci-almulk" onclick="toggleSimple('almulk','teal')">
+          <div class="ci-check">✓</div>
+          <div class="ci-info"><div class="ci-name">🌙 Al-Mulk</div><div class="ci-sub">surat ke-67 — baca tiap malam</div></div>
+        </div>
+        <div class="check-item" id="ci-alkahfi" onclick="toggleSimple('alkahfi','sky')" style="display:none;">
+          <div class="ci-check">✓</div>
+          <div class="ci-info"><div class="ci-name">✨ Al-Kahfi</div><div class="ci-sub">surat ke-18 — sunnah hari Jum'at 🕌</div></div>
         </div>
         <div class="check-item" id="ci-zikir-pagi" onclick="toggleSimple('zikir-pagi','teal')">
           <div class="ci-check">✓</div>
@@ -626,6 +713,171 @@ textarea.inp{resize:none;}
           <span class="mhsb-icon">🌧️</span>
           <span class="mhsb-label">Jauh</span>
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ TILAWAH ══════════════ -->
+<div id="pg-tilawah" class="page">
+  <div class="til-hero">
+    <div class="til-eyebrow" id="til-date-lbl">—</div>
+    <div class="til-title">📖 Tilawah Journal</div>
+    <div class="til-streak-strip">
+      <div class="til-streak-card">
+        <div class="til-streak-num" id="til-streak-num">0</div>
+        <div class="til-streak-lbl">🔥 hari streak</div>
+      </div>
+      <div class="til-streak-card">
+        <div class="til-streak-num" id="til-juz-num" style="color:var(--teal)">0</div>
+        <div class="til-streak-lbl">📚 juz selesai</div>
+      </div>
+      <div class="til-streak-card">
+        <div class="til-streak-num" id="til-total-num" style="color:var(--rose)">0</div>
+        <div class="til-streak-lbl">📅 total hari</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- tabs -->
+  <div class="til-tabs">
+    <div class="til-tab on" onclick="setTilTab(this,'log')">✏️ Log</div>
+    <div class="til-tab" onclick="setTilTab(this,'chain')">🔗 Chain</div>
+    <div class="til-tab" onclick="setTilTab(this,'juz')">🕌 Juz</div>
+    <div class="til-tab" onclick="setTilTab(this,'riwayat')">📜 Riwayat</div>
+  </div>
+
+  <!-- LOG PANEL -->
+  <div class="til-panel on" id="til-panel-log">
+    <!-- progress tilawah -->
+    <div class="til-form-card">
+      <div class="til-form-title">Progress Tilawah</div>
+      <div class="til-row c2">
+        <div>
+          <span class="til-lbl">Dari Surah</span>
+          <input type="text" class="til-inp" id="til-from-surah" placeholder="Al-Baqarah">
+        </div>
+        <div class="til-arrow">→</div>
+        <div>
+          <span class="til-lbl">Sampai Surah</span>
+          <input type="text" class="til-inp" id="til-to-surah" placeholder="Al-Baqarah">
+        </div>
+      </div>
+      <div class="til-row" style="grid-template-columns:1fr auto 1fr;margin-bottom:10px;">
+        <div>
+          <span class="til-lbl">Ayat awal</span>
+          <input type="number" class="til-inp" id="til-from-ayat" placeholder="1" min="1">
+        </div>
+        <div class="til-arrow">→</div>
+        <div>
+          <span class="til-lbl">Ayat akhir</span>
+          <input type="number" class="til-inp" id="til-to-ayat" placeholder="20" min="1">
+        </div>
+      </div>
+      <div class="til-row c2p">
+        <div>
+          <span class="til-lbl">Hal. awal</span>
+          <input type="number" class="til-inp" id="til-from-page" placeholder="1" min="1" max="604">
+        </div>
+        <div>
+          <span class="til-lbl">Hal. akhir</span>
+          <input type="number" class="til-inp" id="til-to-page" placeholder="5" min="1" max="604">
+        </div>
+      </div>
+    </div>
+
+    <!-- ayat favorit -->
+    <div class="til-form-card">
+      <div class="til-form-title">Ayat Favorit + Tadabbur</div>
+      <div style="margin-bottom:10px;">
+        <span class="til-lbl">Tulis ayatnya (Arab)</span>
+        <textarea class="til-inp" id="til-ayat-fav" rows="2" placeholder="..." style="font-family:'Amiri',serif;font-size:20px;direction:rtl;text-align:right;" oninput="updateTilPreview()"></textarea>
+      </div>
+      <div style="margin-bottom:10px;">
+        <span class="til-lbl">Referensi</span>
+        <input type="text" class="til-inp" id="til-ayat-ref" placeholder="QS. Al-Baqarah : 255" oninput="updateTilPreview()">
+      </div>
+      <div class="til-ayat-preview" id="til-ayat-preview">
+        <div class="til-ayat-text" id="til-prev-text"></div>
+        <div class="til-ayat-ref" id="til-prev-ref"></div>
+      </div>
+      <div>
+        <span class="til-lbl">Tadabbur — apa yang lo dapat?</span>
+        <textarea class="til-inp" id="til-tadabbur" rows="4" placeholder="Pikiran, perasaan, koneksi sama hidup lo..."></textarea>
+      </div>
+    </div>
+
+    <!-- kondisi hati -->
+    <div class="til-form-card">
+      <div class="til-form-title">Kondisi Hati</div>
+      <div class="til-mood-grid" id="til-mood-grid">
+        <div class="til-mood-chip" onclick="pickTilMood(this,'khushu')"><span class="til-mood-em">🕌</span>Khusyu'</div>
+        <div class="til-mood-chip" onclick="pickTilMood(this,'tenang')"><span class="til-mood-em">🌿</span>Tenang</div>
+        <div class="til-mood-chip" onclick="pickTilMood(this,'terharu')"><span class="til-mood-em">💧</span>Terharu</div>
+        <div class="til-mood-chip" onclick="pickTilMood(this,'semangat')"><span class="til-mood-em">⚡</span>Semangat</div>
+        <div class="til-mood-chip" onclick="pickTilMood(this,'gelisah')"><span class="til-mood-em">🌊</span>Gelisah</div>
+        <div class="til-mood-chip" onclick="pickTilMood(this,'ngantuk')"><span class="til-mood-em">😴</span>Ngantuk</div>
+        <div class="til-mood-chip" onclick="pickTilMood(this,'biasa')"><span class="til-mood-em">☁️</span>Biasa aja</div>
+        <div class="til-mood-chip" onclick="pickTilMood(this,'berat')"><span class="til-mood-em">🪨</span>Berat</div>
+      </div>
+      <div>
+        <span class="til-lbl">Catatan hati (opsional)</span>
+        <textarea class="til-inp" id="til-catatan" rows="2" placeholder="Lo lagi ngerasain apa..."></textarea>
+      </div>
+    </div>
+
+    <button class="til-save-btn" onclick="saveTilawah()">✦ Simpan Tilawah Hari Ini</button>
+  </div>
+
+  <!-- CHAIN PANEL -->
+  <div class="til-panel" id="til-panel-chain">
+    <div class="til-cal-wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div class="cal-month" id="til-cal-label" style="font-family:var(--serif);font-size:18px;font-style:italic;">—</div>
+        <div style="display:flex;gap:6px;">
+          <button class="cal-nav-btn" style="padding:6px 11px;" onclick="tilCalPrev()">‹</button>
+          <button class="cal-nav-btn" style="padding:6px 11px;" onclick="tilCalNext()">›</button>
+        </div>
+      </div>
+      <div class="til-cal-grid" id="til-cal-grid"></div>
+    </div>
+    <div class="chain-stats-row">
+      <div class="cs-card"><div class="cs-num" id="til-cs-done" style="color:var(--teal)">0</div><div class="cs-lbl">✅ Hari Tilawah</div></div>
+      <div class="cs-card"><div class="cs-num" id="til-cs-missed" style="color:var(--coral)">0</div><div class="cs-lbl">⛔ Terlewat</div></div>
+      <div class="cs-card"><div class="cs-num" id="til-cs-pct" style="color:var(--teal)">0%</div><div class="cs-lbl">📈 Konsistensi</div></div>
+    </div>
+  </div>
+
+  <!-- JUZ PANEL -->
+  <div class="til-panel" id="til-panel-juz">
+    <div class="til-form-card">
+      <div class="til-form-title">Progress Khatam Al-Qur'an</div>
+      <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1px;margin-bottom:5px;">
+        <span>Juz Selesai</span><span id="til-juz-count">0 / 30</span>
+      </div>
+      <div style="height:5px;background:var(--s3);border-radius:3px;margin-bottom:14px;overflow:hidden;">
+        <div id="til-juz-bar" style="height:100%;background:linear-gradient(90deg,var(--teal),var(--green));border-radius:3px;width:0%;transition:width .4s;"></div>
+      </div>
+      <div class="til-khatam" id="til-khatam-badge">🎉 MasyaAllah — 30 Juz Khatam! Barakallah fiik.</div>
+      <div class="til-juz-grid" id="til-juz-grid"></div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1px;text-align:center;margin-bottom:6px;">ketuk juz untuk toggle</div>
+      <button class="btn btn-o" style="width:100%;font-size:10px;" onclick="resetTilJuz()">Reset Juz</button>
+    </div>
+  </div>
+
+  <!-- RIWAYAT PANEL -->
+  <div class="til-panel" id="til-panel-riwayat">
+    <div class="til-form-card">
+      <div class="til-form-title">Riwayat Tilawah</div>
+      <div id="til-hist-list"><div style="font-family:var(--mono);font-size:10px;color:var(--t3);text-align:center;padding:20px;">Belum ada catatan.<br>Mulai tilawah hari ini ✦</div></div>
+    </div>
+    <div class="til-form-card">
+      <div class="til-form-title">Backup &amp; Restore</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-a" style="flex:1;font-size:10px;" onclick="exportTilData()">📦 Export</button>
+        <label class="btn btn-o" style="flex:1;font-size:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          📂 Import <input type="file" accept=".json" style="display:none;" onchange="importTilData(event)">
+        </label>
       </div>
     </div>
   </div>
@@ -818,7 +1070,7 @@ textarea.inp{resize:none;}
 <!-- NAV -->
 <nav>
   <button class="nb on" id="nb-today" onclick="navTo('today')"><span class="ni">🏠</span>Hari Ini</button>
-  <button class="nb" id="nb-chain" onclick="navTo('chain')"><span class="ni">🔗</span>Chain</button>
+  <button class="nb" id="nb-tilawah" onclick="navTo('tilawah')"><span class="ni">📖</span>Tilawah</button>
   <button class="nb" id="nb-hafalan" onclick="navTo('hafalan')"><span class="ni">🧠</span>Hafalan</button>
   <button class="nb" id="nb-stats" onclick="navTo('stats')"><span class="ni">📊</span>Stats</button>
   <button class="nb" id="nb-settings" onclick="navTo('settings')"><span class="ni">⚙️</span>Settings</button>
@@ -1062,17 +1314,37 @@ function toggleSimple(key, color) {
   updateAllProgress();
 }
 
+function isFriday() {
+  return new Date().getDay() === 5;
+}
+
 function renderSimpleChecks() {
   const td = getTodayData();
-  const simples = ['tilawah','zikir-pagi','zikir-petang','buku','karakter'];
+  const friday = isFriday();
+
+  // Show/hide Al-Kahfi based on day
+  const kahfiEl = document.getElementById('ci-alkahfi');
+  if (kahfiEl) kahfiEl.style.display = friday ? 'flex' : 'none';
+
+  const simples = ['tilawah','almulk','alkahfi','zikir-pagi','zikir-petang','buku','karakter'];
+  const colors = {
+    tilawah:'teal', almulk:'teal', alkahfi:'sky',
+    'zikir-pagi':'teal','zikir-petang':'teal',
+    buku:'lavender', karakter:'rose'
+  };
   simples.forEach(k => {
     const el = document.getElementById('ci-'+k);
     if (!el) return;
-    const colors = {tilawah:'teal','zikir-pagi':'teal','zikir-petang':'teal',buku:'lavender',akhlak:'rose'};
-    el.className = 'check-item' + (td[k] ? ' done-'+colors[k] : '');
+    el.className = 'check-item' + (td[k] ? ' done-'+(colors[k]||'teal') : '');
+    // Re-apply display for alkahfi
+    if (k === 'alkahfi') el.style.display = friday ? 'flex' : 'none';
   });
-  const tilzik = ['tilawah','zikir-pagi','zikir-petang'].filter(k => td[k]).length;
-  document.getElementById('tilzik-pct').textContent = tilzik + '/3';
+
+  // Count tilzik items: always tilawah + almulk + zikir pagi + zikir petang, + alkahfi if friday
+  const tilzikKeys = ['tilawah','almulk','zikir-pagi','zikir-petang'];
+  if (friday) tilzikKeys.push('alkahfi');
+  const tilzikDone = tilzikKeys.filter(k => td[k]).length;
+  document.getElementById('tilzik-pct').textContent = tilzikDone + '/' + tilzikKeys.length;
 }
 
 function markHafalanToday() {
@@ -1086,6 +1358,7 @@ function markHafalanToday() {
 
 function updateAllProgress() {
   const td = getTodayData();
+  const friday = isFriday();
   // calculate overall %
   let total = 0, done = 0;
   // shalat wajib: 5
@@ -1093,6 +1366,10 @@ function updateAllProgress() {
   SHALAT_WAJIB.forEach(s => { total++; if ((sw[s.id]||{}).done) done++; });
   // tilawah
   total++; if (td.tilawah) done++;
+  // al-mulk
+  total++; if (td.almulk) done++;
+  // al-kahfi (only on friday)
+  if (friday) { total++; if (td.alkahfi) done++; }
   // zikir pagi
   total++; if (td['zikir-pagi']) done++;
   // zikir petang
@@ -1112,7 +1389,8 @@ function updateAllProgress() {
   // cat wins
   const shalatDone = SHALAT_WAJIB.every(s => (sw[s.id]||{}).done);
   setCatWin('shalat', shalatDone);
-  setCatWin('tilawah', !!td.tilawah);
+  const tilawahWin = !!td.tilawah && !!td.almulk && (!friday || !!td.alkahfi);
+  setCatWin('tilawah', tilawahWin);
   setCatWin('zikir', !!(td['zikir-pagi'] && td['zikir-petang']));
   setCatWin('hafalan', !!td.hafalan);
   setCatWin('buku', !!(td.buku || td.akhlak));
@@ -1161,7 +1439,11 @@ function isDaySuccess(k, cat) {
     const sw = dd.shalat || {};
     return SHALAT_WAJIB.every(s => (sw[s.id]||{}).done);
   }
-  if (cat === 'tilawah') return !!dd.tilawah;
+  if (cat === 'tilawah') {
+    const dayOfWeek = new Date(k).getDay();
+    const isFri = dayOfWeek === 5;
+    return !!dd.tilawah && !!dd.almulk && (!isFri || !!dd.alkahfi);
+  }
   if (cat === 'zikir') return !!(dd['zikir-pagi'] && dd['zikir-petang']);
   if (cat === 'hafalan') return !!dd.hafalan;
   if (cat === 'buku') return !!(dd.buku && dd.karakter);
@@ -1358,6 +1640,8 @@ function openDayDetail(y, m, d, k) {
     })),
     ...SHALAT_SUNNAH.map(s => ({label: s.emoji+' '+s.name, done: !!(dd.sunnah||{})[s.id], color:'var(--sky)'})),
     {label:'📖 Tilawah', done:!!dd.tilawah, color:'var(--teal)'},
+    {label:'🌙 Al-Mulk', done:!!dd.almulk, color:'var(--teal)'},
+    ...(new Date(k).getDay()===5 ? [{label:'✨ Al-Kahfi (Jum\'at)', done:!!dd.alkahfi, color:'var(--sky)'}] : []),
     {label:'📿 Zikir Pagi', done:!!dd['zikir-pagi'], color:'var(--teal)'},
     {label:'📿 Zikir Petang', done:!!dd['zikir-petang'], color:'var(--teal)'},
     {label:'🧠 Hafalan/Murajaah', done:!!dd.hafalan, color:'var(--lavender)'},
@@ -1640,7 +1924,9 @@ function renderStats() {
     if (Object.keys(dd).length > 0) {
       const sw = dd.shalat || {};
       const doneShalat = SHALAT_WAJIB.filter(s => (sw[s.id]||{}).done).length;
-      const extras = [dd.tilawah, dd['zikir-pagi'], dd['zikir-petang'], dd.hafalan].filter(Boolean).length;
+      const dayOfWeek = new Date(k).getDay();
+      const isFri = dayOfWeek === 5;
+      const extras = [dd.tilawah, dd.almulk, isFri ? dd.alkahfi : null, dd['zikir-pagi'], dd['zikir-petang'], dd.hafalan].filter(Boolean).length;
       const total = doneShalat + extras;
       if (total >= 8) cell.classList.add('l4');
       else if (total >= 6) cell.classList.add('l3');
@@ -1848,6 +2134,274 @@ function confirmReset() {
 }
 
 // ══════════════════════════════════════════
+// TILAWAH JOURNAL
+// ══════════════════════════════════════════
+const MOOD_EM_TIL = {khushu:'🕌',tenang:'🌿',terharu:'💧',semangat:'⚡',gelisah:'🌊',ngantuk:'😴',biasa:'☁️',berat:'🪨'};
+let tilMood = '';
+let tilCalViewYear, tilCalViewMonth;
+
+function getTilHistory() { return JSON.parse(localStorage.getItem('tilHist') || '[]'); }
+function setTilHistory(h) { localStorage.setItem('tilHist', JSON.stringify(h)); }
+function getTilChain() { return JSON.parse(localStorage.getItem('chain') || '{}'); }
+function setTilChain(c) { localStorage.setItem('chain', JSON.stringify(c)); }
+function getTilJuz() { return JSON.parse(localStorage.getItem('juzDone') || '[]'); }
+function setTilJuz(j) { localStorage.setItem('juzDone', JSON.stringify(j)); }
+
+function initTilawah() {
+  const now = new Date();
+  tilCalViewYear = now.getFullYear();
+  tilCalViewMonth = now.getMonth();
+  document.getElementById('til-date-lbl').textContent =
+    DAYS[now.getDay()] + ', ' + now.getDate() + ' ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear();
+  updateTilStreak();
+  loadTilDraft();
+}
+
+function updateTilStreak() {
+  const chain = getTilChain();
+  const hist = getTilHistory();
+  // streak
+  let s = 0;
+  const d = new Date();
+  if (!chain[todayStr()]) d.setDate(d.getDate() - 1);
+  const tmp = new Date(d);
+  while (true) {
+    const k = tmp.getFullYear()+'-'+String(tmp.getMonth()+1).padStart(2,'0')+'-'+String(tmp.getDate()).padStart(2,'0');
+    if (!chain[k]) break;
+    s++; tmp.setDate(tmp.getDate()-1);
+  }
+  document.getElementById('til-streak-num').textContent = s;
+  document.getElementById('til-juz-num').textContent = getTilJuz().length;
+  document.getElementById('til-total-num').textContent = Object.keys(chain).length;
+  // update header
+  const headerEl = document.getElementById('til-streak-num');
+  if (headerEl) headerEl.textContent = s;
+}
+
+function setTilTab(el, tab) {
+  document.querySelectorAll('.til-tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.til-panel').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('til-panel-'+tab).classList.add('on');
+  if (tab === 'chain') renderTilCal();
+  if (tab === 'juz') renderTilJuz();
+  if (tab === 'riwayat') renderTilHistory();
+}
+
+function pickTilMood(el, val) {
+  document.querySelectorAll('.til-mood-chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  tilMood = val;
+}
+
+function updateTilPreview() {
+  const t = document.getElementById('til-ayat-fav').value.trim();
+  const r = document.getElementById('til-ayat-ref').value.trim();
+  const p = document.getElementById('til-ayat-preview');
+  if (t || r) {
+    p.style.display = 'block';
+    document.getElementById('til-prev-text').textContent = t;
+    document.getElementById('til-prev-ref').textContent = r;
+  } else { p.style.display = 'none'; }
+}
+
+function loadTilDraft() {
+  const d = JSON.parse(localStorage.getItem('tilDraft') || '{}');
+  if (!d.dateKey || d.dateKey !== todayStr()) return;
+  const fields = ['til-from-surah','til-to-surah','til-ayat-fav','til-ayat-ref','til-tadabbur','til-catatan'];
+  const nums = ['til-from-ayat','til-to-ayat','til-from-page','til-to-page'];
+  const map = {'til-from-surah':'fromSurah','til-to-surah':'toSurah','til-ayat-fav':'ayatFav','til-ayat-ref':'ayatRef','til-tadabbur':'tadabbur','til-catatan':'catatanHati','til-from-ayat':'fromAyat','til-to-ayat':'toAyat','til-from-page':'fromPage','til-to-page':'toPage'};
+  [...fields,...nums].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && d[map[id]]) el.value = d[map[id]];
+  });
+  if (d.mood) {
+    tilMood = d.mood;
+    document.querySelectorAll('.til-mood-chip').forEach(c => {
+      const fn = c.getAttribute('onclick') || '';
+      if (fn.includes(`'${d.mood}'`)) c.classList.add('on');
+    });
+  }
+  updateTilPreview();
+}
+
+function saveTilawah() {
+  const k = todayStr();
+  const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  const gn = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+  const entry = {
+    dateKey: k,
+    dateDisplay: new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}),
+    fromSurah: g('til-from-surah'), toSurah: g('til-to-surah'),
+    fromAyat: gn('til-from-ayat'), toAyat: gn('til-to-ayat'),
+    fromPage: gn('til-from-page'), toPage: gn('til-to-page'),
+    ayatFav: g('til-ayat-fav'), ayatRef: g('til-ayat-ref'),
+    tadabbur: g('til-tadabbur'), catatanHati: g('til-catatan'),
+    mood: tilMood,
+  };
+  let hist = getTilHistory();
+  hist = hist.filter(h => h.dateKey !== k);
+  hist.push(entry);
+  setTilHistory(hist);
+  const chain = getTilChain();
+  chain[k] = true;
+  setTilChain(chain);
+  localStorage.setItem('tilDraft', JSON.stringify(entry));
+
+  // ✅ auto-mark tilawah checkbox in Muntaha today
+  const td = getTodayData();
+  td.tilawah = true;
+  setTodayData(td);
+  const el = document.getElementById('ci-tilawah');
+  if (el) el.className = 'check-item done-teal';
+  updateAllProgress();
+
+  updateTilStreak();
+  toast('✦ Tilawah tersimpan — jazakallah khair! 📖');
+}
+
+// Tilawah Chain Calendar
+function renderTilCal() {
+  const chain = getTilChain();
+  const y = tilCalViewYear, m = tilCalViewMonth;
+  document.getElementById('til-cal-label').textContent = MONTHS[m] + ' ' + y;
+  const grid = document.getElementById('til-cal-grid');
+  grid.innerHTML = '';
+  ['Min','Sen','Sel','Rab','Kam','Jum','Sab'].forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'til-cal-dow'; el.textContent = d; grid.appendChild(el);
+  });
+  const firstDay = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m+1, 0).getDate();
+  const todayK = todayStr();
+  const today = new Date();
+  const passed = (y===today.getFullYear()&&m===today.getMonth()) ? today.getDate() : (new Date(y,m+1,0)<today ? daysInMonth : 0);
+  let done = 0;
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div'); el.className = 'til-cal-day til-empty'; grid.appendChild(el);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const k = y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const checked = !!chain[k]; if(checked) done++;
+    const el = document.createElement('div');
+    let cls = 'til-cal-day';
+    if (k === todayK) cls += ' til-today';
+    if (checked) cls += ' til-done';
+    el.className = cls;
+    const sp = document.createElement('span'); sp.textContent = d;
+    el.appendChild(sp); grid.appendChild(el);
+  }
+  const missed = Math.max(0, passed - done);
+  const pct = passed > 0 ? Math.round(done/passed*100) : 0;
+  document.getElementById('til-cs-done').textContent = done;
+  document.getElementById('til-cs-missed').textContent = missed;
+  document.getElementById('til-cs-pct').textContent = pct + '%';
+}
+function tilCalPrev() { tilCalViewMonth--; if(tilCalViewMonth<0){tilCalViewMonth=11;tilCalViewYear--;} renderTilCal(); }
+function tilCalNext() { tilCalViewMonth++; if(tilCalViewMonth>11){tilCalViewMonth=0;tilCalViewYear++;} renderTilCal(); }
+
+// Juz tracker
+function renderTilJuz() {
+  const juzDone = getTilJuz();
+  const grid = document.getElementById('til-juz-grid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= 30; i++) {
+    const b = document.createElement('div');
+    b.className = 'til-juz-box' + (juzDone.includes(i) ? ' done' : '');
+    b.textContent = i;
+    b.onclick = () => toggleTilJuz(i, b);
+    grid.appendChild(b);
+  }
+  updateTilJuzProg();
+}
+function toggleTilJuz(n, el) {
+  let juzDone = getTilJuz();
+  juzDone = juzDone.includes(n) ? juzDone.filter(j=>j!==n) : [...juzDone, n];
+  setTilJuz(juzDone);
+  el.classList.toggle('done', juzDone.includes(n));
+  updateTilJuzProg();
+  updateTilStreak();
+}
+function updateTilJuzProg() {
+  const juzDone = getTilJuz();
+  const c = juzDone.length, pct = Math.round(c/30*100);
+  document.getElementById('til-juz-count').textContent = c + ' / 30';
+  document.getElementById('til-juz-bar').style.width = pct + '%';
+  document.getElementById('til-khatam-badge').classList.toggle('show', c===30);
+}
+function resetTilJuz() {
+  if (!confirm('Reset semua juz?')) return;
+  setTilJuz([]);
+  renderTilJuz();
+  updateTilStreak();
+}
+
+// Tilawah History
+function renderTilHistory() {
+  const hist = getTilHistory();
+  const el = document.getElementById('til-hist-list');
+  if (!hist.length) {
+    el.innerHTML = '<div style="font-family:var(--mono);font-size:10px;color:var(--t3);text-align:center;padding:20px;">Belum ada catatan.<br>Mulai tilawah hari ini ✦</div>';
+    return;
+  }
+  el.innerHTML = '';
+  [...hist].reverse().slice(0, 30).forEach((e, idx) => {
+    const div = document.createElement('div');
+    div.className = 'til-hist-item';
+    const range = (e.fromSurah && e.toSurah) ? `${e.fromSurah} ${e.fromAyat||''}→${e.toSurah} ${e.toAyat||''}` : '';
+    const isLong = e.tadabbur && e.tadabbur.length > 120;
+    const tadId = 'tilTad-'+idx, togId = 'tilTog-'+idx;
+    div.innerHTML = `
+      <div class="til-hist-top">
+        <div class="til-hist-date">${e.dateDisplay||e.dateKey}</div>
+        <div style="font-size:14px;">${MOOD_EM_TIL[e.mood]||''}</div>
+      </div>
+      ${range?`<div class="til-hist-range">${range}</div>`:''}
+      ${e.ayatFav?`<div class="til-hist-ayat">${e.ayatFav.slice(0,80)}${e.ayatFav.length>80?'...':''}</div>`:''}
+      ${e.ayatRef?`<div style="font-family:var(--mono);font-size:9px;color:var(--amber);letter-spacing:1px;margin-bottom:4px">${e.ayatRef}</div>`:''}
+      ${e.tadabbur?`<div class="til-hist-tadabbur ${isLong?'':'exp'}" id="${tadId}">${e.tadabbur}</div>${isLong?`<button class="til-hist-toggle" id="${togId}" onclick="toggleTilTad('${tadId}','${togId}')">baca selengkapnya ▾</button>`:''}`:''}
+      ${e.catatanHati?`<div style="font-family:var(--sans);font-size:12px;color:var(--t2);margin-top:4px;">💬 ${e.catatanHati}</div>`:''}`;
+    el.appendChild(div);
+  });
+}
+function toggleTilTad(textId, btnId) {
+  const el = document.getElementById(textId), btn = document.getElementById(btnId);
+  const exp = el.classList.toggle('exp');
+  btn.textContent = exp ? 'tutup ▴' : 'baca selengkapnya ▾';
+}
+
+// Export/import tilawah data
+function exportTilData() {
+  const payload = { version:1, exportedAt:new Date().toISOString(), history:getTilHistory(), chain:getTilChain(), juzDone:getTilJuz() };
+  const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'tilawah-backup-' + todayStr() + '.json';
+  a.click();
+  toast('📦 Data tilawah diekspor!');
+}
+function importTilData(e) {
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.version || !Array.isArray(data.history)) throw new Error('Format tidak valid');
+      const existKeys = new Set(getTilHistory().map(h => h.dateKey));
+      const newEntries = data.history.filter(h => !existKeys.has(h.dateKey));
+      const merged = [...getTilHistory(), ...newEntries].sort((a,b)=>a.dateKey.localeCompare(b.dateKey));
+      setTilHistory(merged);
+      setTilChain({...(data.chain||{}), ...getTilChain()});
+      const juzSet = new Set([...getTilJuz(), ...(data.juzDone||[])]);
+      setTilJuz([...juzSet].sort((a,b)=>a-b));
+      renderTilHistory(); renderTilJuz(); updateTilStreak();
+      toast('✓ Data tilawah berhasil diimpor!');
+    } catch { toast('⚠ File tilawah tidak valid'); }
+  };
+  r.readAsText(f); e.target.value = '';
+}
+
+// ══════════════════════════════════════════
 // NAV
 // ══════════════════════════════════════════
 function navTo(id) {
@@ -1855,7 +2409,7 @@ function navTo(id) {
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
   document.getElementById('pg-'+id).classList.add('on');
   document.getElementById('nb-'+id).classList.add('on');
-  if (id === 'chain') renderCalendar();
+  if (id === 'tilawah') initTilawah();
   if (id === 'stats') renderStats();
   if (id === 'hafalan') renderMurajaahQueue();
   if (id === 'settings') {

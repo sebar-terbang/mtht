@@ -82,7 +82,7 @@ textarea.inp{resize:none;}
 /* ══ TODAY ══ */
 #pg-today{padding:0;}
 .today-hero{
-  padding:28px 20px 20px;
+  padding:20px 20px 16px;
   position:relative;overflow:hidden;
   background:linear-gradient(145deg,#fffbf5 0%,#fff8eb 40%,#fdf3e3 100%);
   border-bottom:1px solid var(--b1);
@@ -93,46 +93,145 @@ textarea.inp{resize:none;}
   background:radial-gradient(circle,rgba(200,136,26,.12) 0%,transparent 70%);
   pointer-events:none;
 }
-.today-hero::after{
-  content:'';position:absolute;bottom:-30px;left:-20px;
-  width:140px;height:140px;
-  background:radial-gradient(circle,rgba(26,140,126,.07) 0%,transparent 70%);
-  pointer-events:none;
-}
-.th-eyebrow{font-family:var(--mono);font-size:8.5px;color:var(--t2);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
-.th-title{font-family:var(--serif);font-size:26px;font-style:italic;color:var(--amber);line-height:1.15;margin-bottom:16px;}
+.th-eyebrow{font-family:var(--mono);font-size:8.5px;color:var(--t2);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
+.th-title{font-family:var(--serif);font-size:22px;font-style:italic;color:var(--amber);line-height:1.15;margin-bottom:10px;}
 .th-title span{color:var(--t1);font-style:normal;}
-
-.progress-ring-wrap{display:flex;align-items:center;gap:16px;margin-bottom:12px;}
-.ring-svg{flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(200,136,26,.15));}
-.ring-bg{fill:none;stroke:var(--s3);stroke-width:5;}
-.ring-fill{fill:none;stroke:var(--amber);stroke-width:5;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .6s cubic-bezier(.34,1.1,.64,1);}
-.ring-pct{font-family:var(--serif);font-size:26px;text-anchor:middle;dominant-baseline:central;fill:var(--t1);}
-.ring-sub{font-family:var(--mono);font-size:7px;text-anchor:middle;fill:var(--t2);letter-spacing:1px;}
-.streak-info{flex:1;}
-.streak-num{font-family:var(--serif);font-size:52px;line-height:.9;color:var(--t1);}
-.streak-sub{font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:.5px;margin-top:6px;}
-.streak-best{font-family:var(--mono);font-size:8px;color:var(--t3);margin-top:3px;}
+.streak-row{display:flex;align-items:center;gap:10px;}
+.streak-num{font-family:var(--serif);font-size:44px;line-height:1;color:var(--t1);}
+.streak-sub{font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:.5px;}
+.streak-best{font-family:var(--mono);font-size:8px;color:var(--t3);margin-top:2px;}
 
 /* day mode pills */
-.day-modes{display:flex;gap:7px;margin-top:12px;}
-.day-mode-btn{flex:1;padding:8px 4px;border-radius:var(--radius);border:1.5px solid var(--b1);background:var(--s1);color:var(--t3);font-family:var(--mono);font-size:9px;cursor:pointer;transition:all .2s;text-align:center;letter-spacing:.3px;box-shadow:var(--shadow-sm);}
+.day-modes{display:flex;gap:7px;margin-top:10px;}
+.day-mode-btn{flex:1;padding:7px 4px;border-radius:var(--radius);border:1.5px solid var(--b1);background:var(--s1);color:var(--t3);font-family:var(--mono);font-size:9px;cursor:pointer;transition:all .2s;text-align:center;letter-spacing:.3px;box-shadow:var(--shadow-sm);}
 .day-mode-btn:hover{border-color:var(--b2);transform:translateY(-1px);}
 .day-mode-btn.on-full{background:var(--green-bg);border-color:var(--green-border);color:var(--green);box-shadow:0 2px 8px rgba(42,144,85,.12);}
 .day-mode-btn.on-light{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber);box-shadow:0 2px 8px rgba(200,136,26,.12);}
 .day-mode-btn.on-rest{background:var(--lavender-bg);border-color:var(--lavender-border);color:var(--lavender);box-shadow:0 2px 8px rgba(124,92,191,.12);}
 
+/* ══ SMART TIMELINE ══ */
+.timeline-wrap{padding:14px 16px 8px;}
+.tl-zone-label{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.tl-zone-label::after{content:'';flex:1;height:1px;background:var(--b1);}
+.tl-zone-label.overdue-lbl{color:var(--coral);}
+.tl-zone-label.overdue-lbl::after{background:var(--coral-border);}
+
+/* compact card grid */
+.ibadah-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.ib-card{
+  background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius-sm);
+  padding:10px 8px 9px;display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;transition:all .18s;box-shadow:var(--shadow-sm);
+  position:relative;overflow:hidden;text-align:center;
+  user-select:none;
+}
+.ib-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--b1);transition:background .2s;}
+.ib-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-md);}
+.ib-card:active{transform:scale(.96);box-shadow:none;}
+.ib-card.done{background:var(--amber-bg);border-color:var(--amber-border);}
+.ib-card.done::before{background:var(--amber);}
+.ib-card.done-teal{background:var(--teal-bg);border-color:var(--teal-border);}
+.ib-card.done-teal::before{background:var(--teal);}
+.ib-card.done-sky{background:var(--sky-bg);border-color:var(--sky-border);}
+.ib-card.done-sky::before{background:var(--sky);}
+.ib-card.done-lavender{background:var(--lavender-bg);border-color:var(--lavender-border);}
+.ib-card.done-lavender::before{background:var(--lavender);}
+.ib-card.done-rose{background:var(--rose-bg);border-color:var(--rose-border);}
+.ib-card.done-rose::before{background:var(--rose);}
+.ib-card.done-green{background:var(--green-bg);border-color:var(--green-border);}
+.ib-card.done-green::before{background:var(--green);}
+.ib-card.overdue{opacity:.55;border-style:dashed;}
+.ib-icon{font-size:22px;line-height:1;}
+.ib-name{font-family:var(--mono);font-size:8.5px;color:var(--t2);letter-spacing:.2px;line-height:1.25;}
+.ib-card.done .ib-name,.ib-card[class*="done-"] .ib-name{color:var(--t1);font-weight:600;}
+.ib-check{position:absolute;top:5px;right:6px;font-size:9px;color:var(--amber);opacity:0;transition:opacity .15s;}
+.ib-card.done .ib-check,.ib-card[class*="done-"] .ib-check{opacity:1;}
+
+/* anytime zone */
+.anytime-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px;}
+.ib-card-wide{
+  background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius-sm);
+  padding:11px 13px;display:flex;align-items:center;gap:10px;
+  cursor:pointer;transition:all .18s;box-shadow:var(--shadow-sm);
+  position:relative;overflow:hidden;
+  user-select:none;
+}
+.ib-card-wide::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--b1);transition:background .2s;}
+.ib-card-wide:hover{transform:translateY(-1px);box-shadow:var(--shadow-md);}
+.ib-card-wide:active{transform:scale(.97);}
+.ib-card-wide.done-lavender{background:var(--lavender-bg);border-color:var(--lavender-border);}
+.ib-card-wide.done-lavender::before{background:var(--lavender);}
+.ib-card-wide.done-rose{background:var(--rose-bg);border-color:var(--rose-border);}
+.ib-card-wide.done-rose::before{background:var(--rose);}
+.ib-card-wide.done-teal{background:var(--teal-bg);border-color:var(--teal-border);}
+.ib-card-wide.done-teal::before{background:var(--teal);}
+.ibw-icon{font-size:20px;flex-shrink:0;}
+.ibw-name{font-family:var(--mono);font-size:9.5px;color:var(--t2);line-height:1.3;}
+.ib-card-wide[class*="done-"] .ibw-name{color:var(--t1);font-weight:600;}
+.ibw-check{margin-left:auto;font-size:11px;color:var(--t3);opacity:0;transition:opacity .15s;flex-shrink:0;}
+.ib-card-wide[class*="done-"] .ibw-check{opacity:1;color:var(--amber);}
+
+/* hafalan card (special wide) */
+.hafalan-compact{
+  background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius-sm);
+  padding:11px 13px;margin-bottom:14px;box-shadow:var(--shadow-sm);
+}
+.hc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.hc-title{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;}
+.hc-queue{display:flex;flex-direction:column;gap:5px;margin-bottom:9px;}
+.hc-item{display:flex;align-items:center;gap:7px;background:var(--s2);border-radius:8px;padding:7px 10px;}
+.hc-name{font-family:var(--serif);font-size:13px;font-style:italic;color:var(--t1);flex:1;}
+.hc-range{font-family:var(--mono);font-size:8px;color:var(--t2);}
+.hc-actions{display:flex;gap:6px;}
+
+/* muhasabah compact */
+.muhasabah-compact{margin-bottom:14px;}
+.mhsb-row{display:flex;gap:7px;}
+.muhasabah-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:var(--radius-sm);border:1.5px solid var(--b1);background:var(--s1);cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);}
+.muhasabah-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
+.muhasabah-btn:active{transform:scale(.96);}
+.mhsb-icon{font-size:20px;line-height:1;}
+.mhsb-label{font-family:var(--mono);font-size:8.5px;color:var(--t3);letter-spacing:.3px;}
+.muhasabah-btn.active-dekat{background:var(--amber-bg);border-color:var(--amber-border);}
+.muhasabah-btn.active-dekat .mhsb-label{color:var(--amber);font-weight:600;}
+.muhasabah-btn.active-biasa{background:var(--sky-bg);border-color:var(--sky-border);}
+.muhasabah-btn.active-biasa .mhsb-label{color:var(--sky);font-weight:600;}
+.muhasabah-btn.active-jauh{background:var(--lavender-bg);border-color:var(--lavender-border);}
+.muhasabah-btn.active-jauh .mhsb-label{color:var(--lavender);font-weight:600;}
+
+/* overdue zone */
+.overdue-zone{margin-bottom:10px;}
+.overdue-collapse{
+  display:flex;align-items:center;gap:8px;
+  background:var(--coral-bg);border:1px solid var(--coral-border);
+  border-radius:var(--radius-sm);padding:9px 12px;
+  cursor:pointer;transition:all .15s;
+  font-family:var(--mono);font-size:9px;color:var(--coral);letter-spacing:.5px;
+}
+.overdue-collapse:hover{background:rgba(212,83,58,.08);}
+.overdue-items{margin-top:6px;display:flex;flex-direction:column;gap:5px;}
+.overdue-item{
+  display:flex;align-items:center;gap:8px;
+  background:var(--s1);border:1px dashed var(--coral-border);
+  border-radius:var(--radius-sm);padding:9px 11px;
+  font-family:var(--sans);font-size:11px;color:var(--t2);
+  cursor:pointer;transition:all .15s;
+}
+.overdue-item:hover{background:var(--coral-bg);}
+.overdue-item.done{opacity:.4;text-decoration:line-through;}
+.overdue-dot{width:6px;height:6px;border-radius:50%;background:var(--coral);flex-shrink:0;}
+
 /* cat wins row */
 .cat-wins{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--b1);background:var(--s2);}
-.cw{padding:12px 4px;text-align:center;border-right:1px solid var(--b1);transition:background .2s;}
+.cw{padding:10px 4px;text-align:center;border-right:1px solid var(--b1);transition:background .2s;}
 .cw:last-child{border-right:none;}
 .cw.done{background:var(--amber-bg);}
-.cw-icon{font-size:20px;margin-bottom:4px;display:block;filter:grayscale(1) opacity(.35);transition:filter .2s;}
+.cw-icon{font-size:18px;margin-bottom:3px;display:block;filter:grayscale(1) opacity(.35);transition:filter .2s;}
 .cw.done .cw-icon{filter:none;}
-.cw-name{font-family:var(--mono);font-size:6.5px;color:var(--t3);letter-spacing:.3px;text-transform:uppercase;}
+.cw-name{font-family:var(--mono);font-size:6px;color:var(--t3);letter-spacing:.2px;text-transform:uppercase;}
 .cw.done .cw-name{color:var(--amber);}
 
-/* section blocks */
+/* section blocks (kept for other pages) */
 .sec-block{padding:16px 16px 12px;}
 .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;cursor:pointer;user-select:none;}
 .sec-head:active{opacity:.75;}
@@ -190,7 +289,7 @@ textarea.inp{resize:none;}
 .check-item.done-green .ci-check{background:var(--green);border-color:var(--green);color:#fff;}
 .check-item.done-coral .ci-check{background:var(--coral);border-color:var(--coral);color:#fff;}
 .ci-info{flex:1;}
-.ci-name{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--t1);}
+.ci-name{font-family:var(--serif);font-size:15px;font-style:italic;color:var(--t1);}
 .ci-sub{font-family:var(--mono);font-size:9px;color:var(--t3);margin-top:1px;}
 .ci-tags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;}
 .ci-tag{font-family:var(--mono);font-size:8px;padding:3px 8px;border-radius:20px;cursor:pointer;border:1.5px solid var(--b1);color:var(--t3);background:var(--s2);transition:all .15s;}
@@ -213,12 +312,13 @@ textarea.inp{resize:none;}
 .htc-label{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
 .htc-queue{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
 .htc-item{display:flex;align-items:center;justify-content:space-between;background:var(--s2);border:1px solid var(--b1);border-radius:var(--radius-sm);padding:9px 11px;}
-.htc-name{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--t1);}
+.htc-name{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--t1);}
 .htc-range{font-family:var(--mono);font-size:9px;color:var(--t2);}
 .strength-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .sd-weak{background:var(--coral);}
 .sd-mid{background:var(--amber);}
 .sd-strong{background:var(--green);}
+.sd-mastered{background:var(--lavender);}
 .htc-empty{font-family:var(--mono);font-size:10px;color:var(--t3);text-align:center;padding:10px;}
 
 /* ══ TILAWAH PAGE ══ */
@@ -333,7 +433,7 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 .cal-day.chain-done{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber);font-weight:600;}
 .cal-day.chain-grace{background:var(--lavender-bg);border-color:var(--lavender-border);color:var(--lavender);}
 .cal-day.chain-miss{background:var(--coral-bg);border-color:var(--coral-border);color:var(--coral);}
-.cal-day.empty{background:transparent;border-color:transparent;cursor:default;}
+.cal-day.sunnah-halo{box-shadow:0 0 0 2px rgba(42,127,196,.35);}
 .cal-day.empty:hover{transform:none;box-shadow:none;}
 
 .chain-legend{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;}
@@ -372,7 +472,7 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 .mur-card.strong{border-color:var(--green-border);}
 .mur-card.strong::before{background:var(--green);}
 .mur-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.mur-name{font-family:var(--sans);font-size:15px;font-weight:800;color:var(--t1);}
+.mur-name{font-family:var(--serif);font-size:18px;font-style:italic;color:var(--t1);}
 .mur-range{font-family:var(--mono);font-size:9px;color:var(--t2);margin-top:1px;}
 .mur-strength{font-family:var(--mono);font-size:8px;padding:3px 9px;border-radius:20px;font-weight:500;}
 .mur-strength.weak{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border);}
@@ -387,6 +487,9 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 .mur-btn.lancar{background:var(--green-bg);border-color:var(--green-border);color:var(--green);}
 .mur-btn.lancar:hover{background:var(--green);color:#fff;border-color:var(--green);}
 .mur-btn:active{transform:scale(.96);}
+.mur-card.mastered{border-color:var(--lavender-border);}
+.mur-card.mastered::before{background:var(--lavender);}
+.mur-strength.mastered{background:var(--lavender-bg);color:var(--lavender);border:1px solid var(--lavender-border);}
 .mur-empty{text-align:center;padding:36px 16px;color:var(--t3);font-family:var(--mono);font-size:11px;}
 .mur-empty-icon{font-size:36px;margin-bottom:10px;}
 
@@ -408,7 +511,7 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 .haf-list{display:flex;flex-direction:column;gap:8px;}
 .haf-surat-card{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);}
 .hsc-head{display:flex;align-items:center;justify-content:space-between;}
-.hsc-name{font-family:var(--sans);font-size:14px;font-weight:800;color:var(--t1);}
+.hsc-name{font-family:var(--serif);font-size:17px;font-style:italic;color:var(--t1);}
 .hsc-range{font-family:var(--mono);font-size:9px;color:var(--t2);}
 .hsc-bar{height:4px;background:var(--s3);border-radius:2px;margin-top:10px;overflow:hidden;}
 .hsc-bar-fill{height:100%;border-radius:2px;transition:width .4s;}
@@ -419,7 +522,7 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:16px;}
 .stat-card{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm);}
 .stat-card-n{font-family:var(--serif);font-size:38px;line-height:1;}
-.stat-card-l{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--t1);margin-top:4px;}
+.stat-card-l{font-family:var(--mono);font-size:10px;color:var(--t2);margin-top:4px;letter-spacing:.5px;}
 .stat-card-s{font-family:var(--mono);font-size:9px;color:var(--t3);margin-top:2px;}
 
 .consistency-block{
@@ -437,7 +540,7 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 .habit-stat-list{display:flex;flex-direction:column;gap:7px;}
 .habit-stat{display:flex;align-items:center;gap:10px;background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:11px 13px;box-shadow:var(--shadow-sm);}
 .hs-emoji{font-size:17px;width:24px;text-align:center;}
-.hs-name{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--t1);flex:1;}
+.hs-name{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--t1);flex:1;}
 .hs-bar-wrap{width:60px;height:4px;background:var(--s3);border-radius:2px;overflow:hidden;}
 .hs-bar-fill{height:100%;border-radius:2px;transition:width .4s;}
 .hs-pct{font-family:var(--mono);font-size:9px;color:var(--t2);width:28px;text-align:right;}
@@ -456,7 +559,7 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 .settings-title{font-family:var(--serif);font-size:28px;font-style:italic;color:var(--t1);margin-bottom:16px;}
 .setting-group{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm);}
 .sg-head{padding:14px 16px;border-bottom:1px solid var(--b1);background:var(--s2);}
-.sg-title{font-family:var(--sans);font-size:14px;font-weight:800;color:var(--t1);}
+.sg-title{font-family:var(--serif);font-size:19px;font-style:italic;color:var(--t1);}
 .sg-sub{font-family:var(--mono);font-size:9px;color:var(--t3);margin-top:2px;}
 .sg-body{padding:14px 16px;}
 .sg-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px;}
@@ -478,7 +581,7 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 /* hafalan input */
 .surat-list-settings{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
 .sls-item{display:flex;align-items:center;gap:9px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--radius-sm);padding:9px 12px;}
-.sls-name{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--t1);flex:1;}
+.sls-name{font-family:var(--serif);font-size:16px;font-style:italic;color:var(--t1);flex:1;}
 .sls-range{font-family:var(--mono);font-size:9px;color:var(--t2);}
 .sls-del{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral);font-size:10px;padding:4px 10px;border-radius:20px;cursor:pointer;font-family:var(--mono);transition:all .15s;}
 .sls-del:hover{background:var(--coral);color:#fff;}
@@ -539,18 +642,7 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 }
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* muhasabah */
-.muhasabah-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 8px;border-radius:var(--radius);border:1.5px solid var(--b1);background:var(--s1);cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);}
-.muhasabah-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
-.muhasabah-btn:active{transform:scale(.96);}
-.mhsb-icon{font-size:22px;line-height:1;}
-.mhsb-label{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.5px;}
-.muhasabah-btn.active-dekat{background:var(--amber-bg);border-color:var(--amber-border);}
-.muhasabah-btn.active-dekat .mhsb-label{color:var(--amber);font-weight:600;}
-.muhasabah-btn.active-biasa{background:var(--sky-bg);border-color:var(--sky-border);}
-.muhasabah-btn.active-biasa .mhsb-label{color:var(--sky);font-weight:600;}
-.muhasabah-btn.active-jauh{background:var(--lavender-bg);border-color:var(--lavender-border);}
-.muhasabah-btn.active-jauh .mhsb-label{color:var(--lavender);font-weight:600;}
+/* prog bar */
 .prog-bar{height:3px;background:var(--s3);border-radius:2px;overflow:hidden;}
 .prog-bar-fill{height:100%;background:var(--amber);border-radius:2px;transition:width .4s;}
 </style>
@@ -562,15 +654,9 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
   <div class="today-hero">
     <div class="th-eyebrow" id="th-date">—</div>
     <div class="th-title">Hari ini, <span id="th-greeting">saatnya beribadah</span> ✨</div>
-    <div class="progress-ring-wrap">
-      <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
-        <circle class="ring-bg" cx="60" cy="60" r="52"/>
-        <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
-        <text class="ring-pct" id="ring-pct" x="60" y="55">0%</text>
-        <text class="ring-sub" x="60" y="73">hari ini</text>
-      </svg>
-      <div class="streak-info">
-        <div class="streak-num" id="streak-num">0</div>
+    <div class="streak-row">
+      <div class="streak-num" id="streak-num">0</div>
+      <div>
         <div class="streak-sub">🔥 hari berturut-turut</div>
         <div class="streak-best" id="streak-best">best: 0 hari</div>
       </div>
@@ -587,134 +673,12 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
     <div class="cw" id="cw-tilawah"><span class="cw-icon">📖</span><div class="cw-name">Tilawah</div></div>
     <div class="cw" id="cw-zikir"><span class="cw-icon">📿</span><div class="cw-name">Zikir</div></div>
     <div class="cw" id="cw-hafalan"><span class="cw-icon">🧠</span><div class="cw-name">Hafalan</div></div>
-    <div class="cw" id="cw-buku"><span class="cw-icon">📚</span><div class="cw-name">Buku</div></div>
+    <div class="cw" id="cw-buku"><span class="cw-icon">📚</span><div class="cw-name">Pengetahuan</div></div>
   </div>
 
-  <!-- Shalat Wajib -->
-  <div class="sec-block" id="sec-shalat">
-    <div class="sec-head" onclick="toggleSec('sec-shalat')">
-      <div class="sec-title"><span class="sec-emoji">🕌</span><span class="sec-name">Shalat Wajib</span></div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span class="sec-pct" id="shalat-pct">0/5</span>
-        <span class="sec-chevron">▼</span>
-      </div>
-    </div>
-    <div class="sec-body"><div id="shalat-wajib-list"></div></div>
-  </div>
-  <div class="divider"></div>
-
-  <!-- Shalat Sunnah -->
-  <div class="sec-block" id="sec-sunnah">
-    <div class="sec-head" onclick="toggleSec('sec-sunnah')">
-      <div class="sec-title"><span class="sec-emoji">🌟</span><span class="sec-name">Shalat Sunnah</span></div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span class="sec-pct" id="sunnah-pct">0/5</span>
-        <span class="sec-chevron">▼</span>
-      </div>
-    </div>
-    <div class="sec-body"><div class="check-list" id="sunnah-list"></div></div>
-  </div>
-  <div class="divider"></div>
-
-  <!-- Tilawah & Zikir -->
-  <div class="sec-block" id="sec-tilzik">
-    <div class="sec-head" onclick="toggleSec('sec-tilzik')">
-      <div class="sec-title"><span class="sec-emoji">📖</span><span class="sec-name">Tilawah & Zikir</span></div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span class="sec-pct" id="tilzik-pct">0/5</span>
-        <span class="sec-chevron">▼</span>
-      </div>
-    </div>
-    <div class="sec-body">
-      <div class="check-list">
-        <div class="check-item" id="ci-tilawah" onclick="toggleSimple('tilawah','teal')">
-          <div class="ci-check">✓</div>
-          <div class="ci-info"><div class="ci-name">📖 Tilawah Al-Qur'an</div><div class="ci-sub">baca hari ini</div></div>
-        </div>
-        <div class="check-item" id="ci-almulk" onclick="toggleSimple('almulk','teal')">
-          <div class="ci-check">✓</div>
-          <div class="ci-info"><div class="ci-name">🌙 Al-Mulk</div><div class="ci-sub">surat ke-67 — baca tiap malam</div></div>
-        </div>
-        <div class="check-item" id="ci-alkahfi" onclick="toggleSimple('alkahfi','sky')" style="display:none;">
-          <div class="ci-check">✓</div>
-          <div class="ci-info"><div class="ci-name">✨ Al-Kahfi</div><div class="ci-sub">surat ke-18 — sunnah hari Jum'at 🕌</div></div>
-        </div>
-        <div class="check-item" id="ci-zikir-pagi" onclick="toggleSimple('zikir-pagi','teal')">
-          <div class="ci-check">✓</div>
-          <div class="ci-info"><div class="ci-name">📿 Zikir Pagi</div><div class="ci-sub">dzikir ba'da subuh</div></div>
-        </div>
-        <div class="check-item" id="ci-zikir-petang" onclick="toggleSimple('zikir-petang','teal')">
-          <div class="ci-check">✓</div>
-          <div class="ci-info"><div class="ci-name">📿 Zikir Petang</div><div class="ci-sub">dzikir ba'da ashar/maghrib</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="divider"></div>
-
-  <!-- Hafalan hari ini -->
-  <div class="sec-block" id="sec-hafalan">
-    <div class="sec-head" onclick="toggleSec('sec-hafalan')">
-      <div class="sec-title"><span class="sec-emoji">🧠</span><span class="sec-name">Hafalan Hari Ini</span></div>
-      <span class="sec-chevron">▼</span>
-    </div>
-    <div class="sec-body">
-      <div class="hafalan-today-card">
-        <div class="htc-label">🔄 Murajaah Hari Ini</div>
-        <div class="htc-queue" id="htc-queue"></div>
-        <div style="display:flex;gap:6px;">
-          <button class="btn btn-o" style="flex:1;font-size:10px;" onclick="navTo('hafalan')">Lihat Semua →</button>
-          <button class="btn btn-a" style="font-size:10px;padding:9px 14px;" onclick="markHafalanToday()">✓ Hafalan Selesai</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="divider"></div>
-
-  <!-- Buku / Ilmu -->
-  <div class="sec-block" id="sec-buku">
-    <div class="sec-head" onclick="toggleSec('sec-buku')">
-      <div class="sec-title"><span class="sec-emoji">📚</span><span class="sec-name">Buku / Ilmu</span></div>
-      <span class="sec-chevron">▼</span>
-    </div>
-    <div class="sec-body">
-      <div class="check-list">
-        <div class="check-item" id="ci-buku" onclick="toggleSimple('buku','lavender')">
-          <div class="ci-check">✓</div>
-          <div class="ci-info"><div class="ci-name">📖 Belajar Ilmu Agama</div><div class="ci-sub">fiqh, aqidah, sirah, tafsir, dll</div></div>
-        </div>
-        <div class="check-item" id="ci-karakter" onclick="toggleSimple('karakter','rose')">
-          <div class="ci-check">✓</div>
-          <div class="ci-info"><div class="ci-name">🌱 Belajar Memperbaiki Karakter</div><div class="ci-sub">sedikit saja, yang penting konsisten — Allah melihat hatimu</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="divider"></div>
-
-  <!-- Muhasabah -->
-  <div class="sec-block" id="sec-muhasabah">
-    <div class="sec-head" onclick="toggleSec('sec-muhasabah')">
-      <div class="sec-title"><span class="sec-emoji">🤍</span><span class="sec-name">Muhasabah</span></div>
-      <span class="sec-chevron">▼</span>
-    </div>
-    <div class="sec-body">
-      <div style="font-family:var(--mono);font-size:9px;color:var(--t2);margin-bottom:12px;line-height:1.6;">Seberapa deket sama Allah hari ini?</div>
-      <div style="display:flex;gap:8px;" id="muhasabah-btns">
-        <button class="muhasabah-btn" id="mhsb-dekat" onclick="setMuhasabah('dekat')">
-          <span class="mhsb-icon">☀️</span>
-          <span class="mhsb-label">Dekat</span>
-        </button>
-        <button class="muhasabah-btn" id="mhsb-biasa" onclick="setMuhasabah('biasa')">
-          <span class="mhsb-icon">🌤️</span>
-          <span class="mhsb-label">Biasa</span>
-        </button>
-        <button class="muhasabah-btn" id="mhsb-jauh" onclick="setMuhasabah('jauh')">
-          <span class="mhsb-icon">🌧️</span>
-          <span class="mhsb-label">Jauh</span>
-        </button>
-      </div>
-    </div>
+  <!-- Smart Timeline -->
+  <div class="timeline-wrap" id="today-timeline">
+    <!-- Rendered by JS -->
   </div>
 </div>
 
@@ -912,6 +876,7 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
     <div class="cl-item"><div class="cl-dot" style="background:rgba(181,154,240,.5)"></div> Grace Day</div>
     <div class="cl-item"><div class="cl-dot" style="background:rgba(255,112,88,.3)"></div> Terlewat</div>
     <div class="cl-item"><div class="cl-dot" style="background:var(--s3)"></div> Belum ada data</div>
+    <div class="cl-item"><div class="cl-dot" style="background:var(--sky-bg);border:2px solid var(--sky);border-radius:3px;box-shadow:0 0 0 2px rgba(42,127,196,.3);"></div> ⭐ Sunnah Lengkap</div>
   </div>
 
   <div class="chain-stats-row" id="chain-stats-row">
@@ -1231,120 +1196,356 @@ function renderTodayHeader() {
   document.getElementById('th-greeting').textContent = greeting;
 }
 
-function renderShalatWajib() {
-  const td = getTodayData();
-  const list = document.getElementById('shalat-wajib-list');
-  list.innerHTML = '';
-  let done = 0;
-  SHALAT_WAJIB.forEach(s => {
-    const sd = (td.shalat||{})[s.id] || {};
-    if (sd.done) done++;
-    const div = document.createElement('div');
-    div.className = 'shalat-item' + (sd.done ? ' done' : '');
-    div.id = 'si-' + s.id;
-    const showDetail = sd.done;
-    div.innerHTML = `
-      <div class="shalat-main" onclick="toggleShalat('${s.id}')">
-        <div class="ci-check" style="${sd.done ? 'background:var(--amber);border-color:var(--amber);color:#fff;' : ''}">✓</div>
-        <div class="ci-info">
-          <div class="ci-name">${s.emoji} ${s.name}</div>
-          <div class="ci-sub">${s.waktu}</div>
-        </div>
-      </div>
-      <div class="shalat-detail ${showDetail ? '' : 'hidden'}" id="sd-${s.id}">
-        <span class="ci-tag ${sd.tepat ? 'on' : ''}" onclick="event.stopPropagation();toggleShalatTag('${s.id}','tepat')">⏰ Tepat Waktu</span>
-        <span class="ci-tag ${sd.jamaah ? 'on' : ''}" onclick="event.stopPropagation();toggleShalatTag('${s.id}','jamaah')">🕌 Berjamaah</span>
-      </div>`;
-    list.appendChild(div);
-  });
-  document.getElementById('shalat-pct').textContent = done + '/5';
+// ══════════════════════════════════════════
+// SMART TIMELINE
+// ══════════════════════════════════════════
+
+// Time slots definition
+// Each item: { id, emoji, name, sub, type, color, timeSlot, toggle }
+// timeSlot: hour range when it's "active" — [startH, endH] or 'anytime'
+// type: 'shalat'|'simple'|'sunnah'|'hafalan'|'muhasabah'
+
+function getTimeSlotNow() {
+  return new Date().getHours();
 }
 
-function toggleShalat(id) {
-  const td = getTodayData();
-  if (!td.shalat) td.shalat = {};
-  if (!td.shalat[id]) td.shalat[id] = {};
-  td.shalat[id].done = !td.shalat[id].done;
-  setTodayData(td);
-  renderShalatWajib();
-  updateAllProgress();
-}
-function toggleShalatTag(id, tag) {
-  const td = getTodayData();
-  if (!td.shalat) td.shalat = {};
-  if (!td.shalat[id]) td.shalat[id] = {};
-  td.shalat[id][tag] = !td.shalat[id][tag];
-  setTodayData(td);
-  renderShalatWajib();
-}
-
-function renderShalatSunnah() {
-  const td = getTodayData();
-  const list = document.getElementById('sunnah-list');
-  list.innerHTML = '';
-  let done = 0;
-  SHALAT_SUNNAH.forEach(s => {
-    const isDone = !!(td.sunnah||{})[s.id];
-    if (isDone) done++;
-    const div = document.createElement('div');
-    div.className = 'check-item' + (isDone ? ' done-amber' : '');
-    div.onclick = () => toggleSunnah(s.id);
-    div.innerHTML = `<div class="ci-check">✓</div><div class="ci-info"><div class="ci-name">${s.emoji} ${s.name}</div><div class="ci-sub">${s.sub}</div></div>`;
-    list.appendChild(div);
-  });
-  document.getElementById('sunnah-pct').textContent = done + '/' + SHALAT_SUNNAH.length;
-}
-function toggleSunnah(id) {
-  const td = getTodayData();
-  if (!td.sunnah) td.sunnah = {};
-  td.sunnah[id] = !td.sunnah[id];
-  setTodayData(td);
-  renderShalatSunnah();
-  updateAllProgress();
-}
-
-function toggleSimple(key, color) {
-  const td = getTodayData();
-  td[key] = !td[key];
-  setTodayData(td);
-  const el = document.getElementById('ci-' + key);
-  if (el) {
-    el.className = 'check-item' + (td[key] ? ' done-'+color : '');
-  }
-  updateAllProgress();
-}
-
-function isFriday() {
-  return new Date().getDay() === 5;
-}
-
-function renderSimpleChecks() {
-  const td = getTodayData();
+function getIbadahItems() {
+  const h = getTimeSlotNow();
   const friday = isFriday();
+  const td = getTodayData();
 
-  // Show/hide Al-Kahfi based on day
-  const kahfiEl = document.getElementById('ci-alkahfi');
-  if (kahfiEl) kahfiEl.style.display = friday ? 'flex' : 'none';
+  // All ibadah with their time windows
+  const items = [
+    // SHALAT WAJIB
+    { id:'subuh',      emoji:'🌅', name:'Subuh',       type:'shalat', color:'amber',   activeStart:3,  activeEnd:9   },
+    { id:'dzuhur',     emoji:'☀️',  name:'Dzuhur',      type:'shalat', color:'amber',   activeStart:11, activeEnd:15  },
+    { id:'ashar',      emoji:'🌤️', name:'Ashar',       type:'shalat', color:'amber',   activeStart:14, activeEnd:18  },
+    { id:'maghrib',    emoji:'🌇', name:'Maghrib',     type:'shalat', color:'amber',   activeStart:17, activeEnd:20  },
+    { id:'isya',       emoji:'🌙', name:'Isya',        type:'shalat', color:'amber',   activeStart:19, activeEnd:24  },
+    // ZIKIR & WIRID
+    { id:'zikir-pagi', emoji:'📿', name:'Zikir Pagi',  type:'simple', color:'teal',    activeStart:3,  activeEnd:9   },
+    { id:'hafalan',    emoji:'🧠', name:'Hafalan',     type:'hafalan',color:'lavender', activeStart:3,  activeEnd:9   },
+    { id:'zikir-petang',emoji:'📿',name:'Zikir Petang',type:'simple', color:'teal',    activeStart:14, activeEnd:19  },
+    { id:'shalat-taubat',emoji:'💚',name:'Taubat',     type:'sunnah_single',color:'green', activeStart:19, activeEnd:24 },
+    { id:'almulk',     emoji:'🌙', name:'Al-Mulk',     type:'simple', color:'teal',    activeStart:19, activeEnd:24  },
+    // SHALAT SUNNAH (lainnya — anytime zone)
+    { id:'rawatib',    emoji:'⭐', name:'Rawatib',     type:'sunnah', color:'sky',     activeStart:0,  activeEnd:24  },
+    { id:'dhuha',      emoji:'🌞', name:'Dhuha',       type:'sunnah', color:'sky',     activeStart:7,  activeEnd:12  },
+    { id:'tahajjud',   emoji:'🌌', name:'Tahajjud',    type:'sunnah', color:'sky',     activeStart:0,  activeEnd:5   },
+    { id:'witir',      emoji:'🌙', name:'Witir',       type:'sunnah', color:'sky',     activeStart:19, activeEnd:24  },
+    // ANYTIME
+    { id:'tilawah',    emoji:'📖', name:'Tilawah',     type:'simple', color:'teal',    activeStart:-1, activeEnd:-1  },
+    { id:'buku',       emoji:'📚', name:'Ilmu Agama',  type:'simple', color:'lavender', activeStart:-1, activeEnd:-1 },
+    { id:'karakter',   emoji:'🌱', name:'Perbaiki Diri',type:'simple',color:'rose',    activeStart:-1, activeEnd:-1  },
+  ];
 
-  const simples = ['tilawah','almulk','alkahfi','zikir-pagi','zikir-petang','buku','karakter'];
-  const colors = {
-    tilawah:'teal', almulk:'teal', alkahfi:'sky',
-    'zikir-pagi':'teal','zikir-petang':'teal',
-    buku:'lavender', karakter:'rose'
-  };
-  simples.forEach(k => {
-    const el = document.getElementById('ci-'+k);
-    if (!el) return;
-    el.className = 'check-item' + (td[k] ? ' done-'+(colors[k]||'teal') : '');
-    // Re-apply display for alkahfi
-    if (k === 'alkahfi') el.style.display = friday ? 'flex' : 'none';
+  // Al-Kahfi only on Friday
+  if (friday) {
+    items.push({ id:'alkahfi', emoji:'✨', name:'Al-Kahfi', type:'simple', color:'sky', activeStart:0, activeEnd:24 });
+  }
+
+  return items;
+}
+
+function isDone(item, td) {
+  if (item.type === 'shalat') return !!((td.shalat||{})[item.id]||{}).done;
+  if (item.type === 'sunnah') return !!((td.sunnah||{})[item.id]);
+  if (item.type === 'sunnah_single') return !!((td.sunnah||{})[item.id]);
+  if (item.type === 'hafalan') return !!td.hafalan;
+  return !!td[item.id];
+}
+
+function toggleItem(item) {
+  const td = getTodayData();
+  if (item.type === 'shalat') {
+    if (!td.shalat) td.shalat = {};
+    if (!td.shalat[item.id]) td.shalat[item.id] = {};
+    td.shalat[item.id].done = !td.shalat[item.id].done;
+    setTodayData(td);
+    updateAllProgress();
+    return;
+  }
+  if (item.type === 'sunnah' || item.type === 'sunnah_single') {
+    if (!td.sunnah) td.sunnah = {};
+    td.sunnah[item.id] = !td.sunnah[item.id];
+    setTodayData(td);
+    if (isSunnahFull(td)) toast('⭐ Masya Allah! Sunnah lengkap hari ini!');
+    updateAllProgress();
+    return;
+  }
+  if (item.type === 'hafalan') {
+    markHafalanToday();
+    return;
+  }
+  // simple
+  td[item.id] = !td[item.id];
+  setTodayData(td);
+  updateAllProgress();
+}
+
+function renderTodayTimeline() {
+  const wrap = document.getElementById('today-timeline');
+  if (!wrap) return;
+  const h = getTimeSlotNow();
+  const td = getTodayData();
+  const allItems = getIbadahItems();
+
+  // Classify each item — sunnah NEVER goes into active/overdue, always its own zone
+  const active = [], anytime = [], overdue = [], done_items = [], sunnahPending = [];
+
+  allItems.forEach(item => {
+    const d = isDone(item, td);
+    if (d) { done_items.push(item); return; }
+
+    // Sunnah goes to its own bucket always
+    if (item.type === 'sunnah' || item.type === 'sunnah_single') {
+      sunnahPending.push(item); return;
+    }
+
+    const isAnytime = item.activeStart === -1;
+    if (isAnytime) { anytime.push(item); return; }
+
+    const inWindow = h >= item.activeStart && h < item.activeEnd;
+    const pastWindow = h >= item.activeEnd && item.activeStart > 0;
+
+    if (inWindow) { active.push(item); }
+    else if (pastWindow) { overdue.push(item); }
+    else { /* future — don't show yet */ }
   });
 
-  // Count tilzik items: always tilawah + almulk + zikir pagi + zikir petang, + alkahfi if friday
-  const tilzikKeys = ['tilawah','almulk','zikir-pagi','zikir-petang'];
-  if (friday) tilzikKeys.push('alkahfi');
-  const tilzikDone = tilzikKeys.filter(k => td[k]).length;
-  document.getElementById('tilzik-pct').textContent = tilzikDone + '/' + tilzikKeys.length;
+  wrap.innerHTML = '';
+
+  // ── Zone: Sekarang ──
+  if (active.length > 0) {
+    wrap.innerHTML += `<div class="tl-zone-label">Sekarang</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'ibadah-grid';
+    active.forEach(item => {
+      grid.appendChild(makeCard(item, td, false));
+    });
+    wrap.appendChild(grid);
+  } else {
+    // No active items right now — show a soft message
+    const msg = document.createElement('div');
+    msg.style.cssText = 'font-family:var(--mono);font-size:9px;color:var(--t3);text-align:center;padding:14px 0 10px;letter-spacing:.5px;';
+    const nextItem = allItems.find(it => !isDone(it, td) && it.activeStart > h && it.activeStart !== -1);
+    msg.textContent = nextItem ? `Waktu ${nextItem.name} belum tiba ✦` : 'Semua ibadah terjadwal selesai ✦';
+    wrap.appendChild(msg);
+  }
+
+  // ── Zone: Kapan Aja ──
+  if (anytime.length > 0) {
+    const anytimeLabel = document.createElement('div');
+    anytimeLabel.className = 'tl-zone-label';
+    anytimeLabel.textContent = 'Kapan Aja';
+    wrap.appendChild(anytimeLabel);
+
+    const grid = document.createElement('div');
+    grid.className = 'anytime-grid';
+    anytime.forEach(item => {
+      grid.appendChild(makeCardWide(item, td));
+    });
+    wrap.appendChild(grid);
+  }
+
+  // ── Zone: Hafalan compact widget (if in active or anytime) ──
+  const hafalanItem = allItems.find(i => i.id === 'hafalan');
+  if (hafalanItem && !isDone(hafalanItem, td)) {
+    // already shown in active grid if within window, but show hafalan widget always
+    const hc = makeHafalanCard();
+    if (hc) wrap.appendChild(hc);
+  }
+
+  // ── Zone: Muhasabah (shown in evening or if already set) ──
+  const showMuhasabah = h >= 19 || td.muhasabah;
+  if (showMuhasabah) {
+    const mLabel = document.createElement('div');
+    mLabel.className = 'tl-zone-label';
+    mLabel.textContent = 'Muhasabah';
+    wrap.appendChild(mLabel);
+    wrap.appendChild(makeMuhasabahBlock(td));
+  }
+
+  // ── Zone: Bonus Sunnah ── (always separate, never in Sekarang)
+  const sunnahActive = sunnahPending.filter(i => h >= i.activeStart && h < i.activeEnd);
+  if (sunnahActive.length > 0) {
+    const sLabel = document.createElement('div');
+    sLabel.className = 'tl-zone-label';
+    sLabel.textContent = 'Bonus Sunnah ⭐';
+    wrap.appendChild(sLabel);
+    const grid = document.createElement('div');
+    grid.className = 'ibadah-grid';
+    sunnahActive.forEach(item => grid.appendChild(makeCard(item, td, false)));
+    wrap.appendChild(grid);
+  }
+
+  // ── Zone: Belum Tercatat (overdue) ──
+  if (overdue.length > 0) {
+    const ovZone = document.createElement('div');
+    ovZone.className = 'overdue-zone';
+    const isOpen = wrap.dataset.overdueOpen === '1';
+    ovZone.innerHTML = `
+      <div class="overdue-collapse" onclick="toggleOverdueZone(this)">
+        <span>⚠ ${overdue.length} ibadah belum tercatat</span>
+        <span style="margin-left:auto;">${isOpen ? '▴' : '▾'}</span>
+      </div>
+      <div class="overdue-items" style="display:${isOpen?'flex':'none'};">
+        ${overdue.map(item => `
+          <div class="overdue-item${isDone(item,td)?' done':''}" onclick="toggleOverdueItem('${item.id}')">
+            <div class="overdue-dot"></div>
+            <span>${item.emoji} ${item.name}</span>
+            ${isDone(item,td)?'<span style="margin-left:auto;color:var(--green);font-size:11px;">✓</span>':''}
+          </div>`).join('')}
+      </div>`;
+    wrap.appendChild(ovZone);
+  }
+
+  // ── Zone: Selesai ── (done items collapsed)
+  if (done_items.length > 0) {
+    const doneZone = document.createElement('div');
+    const isOpen = wrap.dataset.doneOpen === '1';
+    doneZone.style.cssText = 'margin-bottom:12px;';
+    doneZone.innerHTML = `
+      <div style="display:flex;align-items:center;gap:7px;cursor:pointer;padding:8px 0 6px;"
+           onclick="toggleDoneZone(this)">
+        <div style="flex:1;height:1px;background:var(--b1);"></div>
+        <span style="font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:1.5px;white-space:nowrap;">
+          ✓ ${done_items.length} selesai ${isOpen?'▴':'▾'}
+        </span>
+        <div style="flex:1;height:1px;background:var(--b1);"></div>
+      </div>
+      <div style="display:${isOpen?'grid':'none'};grid-template-columns:repeat(3,1fr);gap:6px;">
+        ${done_items.map(item => makeDoneChip(item)).join('')}
+      </div>`;
+    wrap.appendChild(doneZone);
+  }
+}
+
+function makeCard(item, td, overdue) {
+  const done = isDone(item, td);
+  const colorClass = done ? `done-${item.color}` : (overdue ? 'overdue' : '');
+  const div = document.createElement('div');
+  div.className = `ib-card ${colorClass}`;
+  div.onclick = () => { toggleItem(item); };
+  div.innerHTML = `
+    <span class="ib-check">✓</span>
+    <span class="ib-icon">${item.emoji}</span>
+    <span class="ib-name">${item.name}</span>`;
+  return div;
+}
+
+function makeCardWide(item, td) {
+  const done = isDone(item, td);
+  const colorClass = done ? `done-${item.color}` : '';
+  const div = document.createElement('div');
+  div.className = `ib-card-wide ${colorClass}`;
+  div.onclick = () => { toggleItem(item); };
+  div.innerHTML = `
+    <span class="ibw-icon">${item.emoji}</span>
+    <span class="ibw-name">${item.name}</span>
+    <span class="ibw-check">✓</span>`;
+  return div;
+}
+
+function makeHafalanCard() {
+  const queue = getMurajaahQueue().slice(0, 3);
+  if (queue.length === 0) return null;
+  const div = document.createElement('div');
+  div.className = 'hafalan-compact';
+  const items = queue.map(item => {
+    const s = QURAN_SURAT.find(x => x.no === item.suratNo) || {};
+    return `<div class="hc-item">
+      <div class="strength-dot sd-${item.strength}"></div>
+      <div class="hc-name">${s.name||item.suratNo}</div>
+      <div class="hc-range">ayat ${item.dari}–${item.sampai}</div>
+    </div>`;
+  }).join('');
+  div.innerHTML = `
+    <div class="hc-top">
+      <div class="hc-title">🔄 Murajaah Hari Ini</div>
+    </div>
+    <div class="hc-queue" id="htc-queue">${items}</div>
+    <div class="hc-actions">
+      <button class="btn btn-o" style="flex:1;font-size:10px;" onclick="navTo('hafalan')">Lihat Semua →</button>
+      <button class="btn btn-a" style="font-size:10px;padding:9px 14px;" onclick="markHafalanToday()">✓ Selesai</button>
+    </div>`;
+  return div;
+}
+
+function makeMuhasabahBlock(td) {
+  const val = td.muhasabah;
+  const div = document.createElement('div');
+  div.className = 'muhasabah-compact';
+  div.innerHTML = `
+    <div style="font-family:var(--mono);font-size:8.5px;color:var(--t2);margin-bottom:8px;letter-spacing:.3px;">Seberapa deket sama Allah hari ini?</div>
+    <div class="mhsb-row" id="muhasabah-btns">
+      <button class="muhasabah-btn${val==='dekat'?' active-dekat':''}" id="mhsb-dekat" onclick="setMuhasabah('dekat')">
+        <span class="mhsb-icon">☀️</span><span class="mhsb-label">Dekat</span>
+      </button>
+      <button class="muhasabah-btn${val==='biasa'?' active-biasa':''}" id="mhsb-biasa" onclick="setMuhasabah('biasa')">
+        <span class="mhsb-icon">🌤️</span><span class="mhsb-label">Biasa</span>
+      </button>
+      <button class="muhasabah-btn${val==='jauh'?' active-jauh':''}" id="mhsb-jauh" onclick="setMuhasabah('jauh')">
+        <span class="mhsb-icon">🌧️</span><span class="mhsb-label">Jauh</span>
+      </button>
+    </div>`;
+  return div;
+}
+
+function makeDoneChip(item) {
+  return `<div style="background:var(--s2);border:1px solid var(--b1);border-radius:var(--radius-sm);padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.6;">
+    <span style="font-size:16px;">${item.emoji}</span>
+    <span style="font-family:var(--mono);font-size:7.5px;color:var(--t2);">${item.name}</span>
+  </div>`;
+}
+
+function toggleDoneZone(el) {
+  const wrap = document.getElementById('today-timeline');
+  wrap.dataset.doneOpen = wrap.dataset.doneOpen === '1' ? '0' : '1';
+  renderTodayTimeline();
+}
+
+function toggleOverdueZone(el) {
+  const wrap = document.getElementById('today-timeline');
+  wrap.dataset.overdueOpen = wrap.dataset.overdueOpen === '1' ? '0' : '1';
+  renderTodayTimeline();
+}
+
+function toggleOverdueItem(itemId) {
+  const td = getTodayData();
+  const allItems = getIbadahItems();
+  const item = allItems.find(i => i.id === itemId);
+  if (!item) return;
+  toggleItem(item);
+}
+
+// Keep these for backward compat with other parts of the code
+function renderShalatWajib() { renderTodayTimeline(); }
+function renderShalatSunnah() { renderTodayTimeline(); }
+function renderSimpleChecks() { renderTodayTimeline(); }
+function renderMuhasabah() { renderTodayTimeline(); }
+function renderHtcQueue() { renderTodayTimeline(); }
+
+function isFriday() { return new Date().getDay() === 5; }
+
+function getSunnahStreak() {
+  let streak = 0;
+  const today = new Date();
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const dd = getDayData(k);
+    if (Object.keys(dd).length === 0 && i > 0) break;
+    const sunnahDone = Object.keys(dd.sunnah||{}).filter(id => dd.sunnah[id]).length;
+    if (sunnahDone > 0) streak++;
+    else if (i > 0) break;
+  }
+  return streak;
+}
+
+function isSunnahFull(dd) {
+  return SHALAT_SUNNAH.every(s => !!(dd.sunnah||{})[s.id]);
 }
 
 function markHafalanToday() {
@@ -1352,51 +1553,34 @@ function markHafalanToday() {
   td.hafalan = true;
   setTodayData(td);
   updateAllProgress();
-  renderHtcQueue();
   toast('✓ Hafalan hari ini selesai! 🧠');
+}
+
+function toggleSimple(key, color) {
+  const td = getTodayData();
+  td[key] = !td[key];
+  setTodayData(td);
+  updateAllProgress();
 }
 
 function updateAllProgress() {
   const td = getTodayData();
   const friday = isFriday();
-  // calculate overall %
-  let total = 0, done = 0;
-  // shalat wajib: 5
-  const sw = td.shalat || {};
-  SHALAT_WAJIB.forEach(s => { total++; if ((sw[s.id]||{}).done) done++; });
-  // tilawah
-  total++; if (td.tilawah) done++;
-  // al-mulk
-  total++; if (td.almulk) done++;
-  // al-kahfi (only on friday)
-  if (friday) { total++; if (td.alkahfi) done++; }
-  // zikir pagi
-  total++; if (td['zikir-pagi']) done++;
-  // zikir petang
-  total++; if (td['zikir-petang']) done++;
-  // hafalan
-  total++; if (td.hafalan) done++;
-  // buku
-  total++; if (td.buku) done++;
-  // akhlak
-  total++; if (td.akhlak) done++;
-
-  const pct = Math.round(done/total*100);
-  document.getElementById('ring-pct').textContent = pct + '%';
-  const circ = 326.7;
-  document.getElementById('ring-fill').style.strokeDashoffset = circ - (circ * pct/100);
 
   // cat wins
+  const sw = td.shalat || {};
   const shalatDone = SHALAT_WAJIB.every(s => (sw[s.id]||{}).done);
   setCatWin('shalat', shalatDone);
   const tilawahWin = !!td.tilawah && !!td.almulk && (!friday || !!td.alkahfi);
   setCatWin('tilawah', tilawahWin);
   setCatWin('zikir', !!(td['zikir-pagi'] && td['zikir-petang']));
   setCatWin('hafalan', !!td.hafalan);
-  setCatWin('buku', !!(td.buku || td.akhlak));
+  setCatWin('buku', !!(td.buku || td.karakter));
 
   // streak
   updateStreakDisplay();
+  // re-render timeline
+  renderTodayTimeline();
 }
 
 function setCatWin(id, done) {
@@ -1445,6 +1629,7 @@ function isDaySuccess(k, cat) {
     return !!dd.tilawah && !!dd.almulk && (!isFri || !!dd.alkahfi);
   }
   if (cat === 'zikir') return !!(dd['zikir-pagi'] && dd['zikir-petang']);
+  if (cat === 'sunnah') return isSunnahFull(dd);
   if (cat === 'hafalan') return !!dd.hafalan;
   if (cat === 'buku') return !!(dd.buku && dd.karakter);
   if (cat === 'karakter') return !!dd.karakter;
@@ -1596,6 +1781,8 @@ function renderCalendar() {
     }
 
     el.className = cls;
+    // sunnah halo — blue glow on days where all sunnah were done
+    if (!hasFuture && isSunnahFull(dd)) el.classList.add('sunnah-halo');
     // Show checkmark on done days, grace symbol on grace days
     if (!hasFuture && Object.keys(dd).length > 0) {
       if (dd.mode === 'rest') {
@@ -1670,8 +1857,9 @@ function getSuratList() { return S.get('suratList') || []; }
 function getMurajaahData() { return S.get('murajaahData') || {}; }
 function setMurajaahData(d) { S.set('murajaahData', d); }
 
-// Spaced repetition intervals (days)
-const STRENGTH_INTERVALS = { weak: 1, mid: 4, strong: 8 };
+// Spaced repetition — 4 levels: weak(1d) → mid(4d) → strong(14d) → mastered(30d)
+const STRENGTH_LEVELS = ['weak','mid','strong','mastered'];
+const STRENGTH_INTERVALS = { weak:1, mid:4, strong:14, mastered:30 };
 
 function getMurajaahQueue() {
   const surats = getSuratList();
@@ -1686,20 +1874,22 @@ function getMurajaahQueue() {
     }
   });
   return queue.sort((a,b) => {
-    const order = {weak:0, mid:1, strong:2};
-    return order[a.strength] - order[b.strength];
+    const order = {weak:0, mid:1, strong:2, mastered:3};
+    return order[a.strength||'weak'] - order[b.strength||'weak'];
   });
 }
 
 function rateMurajaah(key, rating) {
   const mData = getMurajaahData();
   if (!mData[key]) mData[key] = {strength:'weak'};
+  const cur = mData[key].strength || 'weak';
+  const curIdx = STRENGTH_LEVELS.indexOf(cur);
   let newStrength;
   if (rating === 'lancar') {
-    newStrength = mData[key].strength === 'weak' ? 'mid' : 'strong';
+    newStrength = STRENGTH_LEVELS[Math.min(curIdx + 1, 3)];
   } else if (rating === 'ragu') {
-    newStrength = 'mid';
-  } else {
+    newStrength = curIdx > 1 ? STRENGTH_LEVELS[curIdx - 1] : 'weak';
+  } else { // lupa — reset ke weak
     newStrength = 'weak';
   }
   mData[key].strength = newStrength;
@@ -1711,7 +1901,13 @@ function rateMurajaah(key, rating) {
   setMurajaahData(mData);
   renderMurajaahQueue();
   renderHtcQueue();
-  toast(rating === 'lancar' ? '🟢 Mantap! Jadwal diperpanjang' : rating === 'ragu' ? '🟡 Oke, ulang lagi dalam 4 hari' : '🔴 Perlu diulang besok');
+  const intervalMsg = interval === 1 ? 'besok' : `${interval} hari lagi`;
+  const toasts = {
+    lancar: newStrength === 'mastered' ? '🏆 Mastered! Ulang 30 hari lagi' : `🟢 Naik level! Ulang ${intervalMsg}`,
+    ragu: `🟡 Oke, ulang lagi ${intervalMsg}`,
+    lupa: '🔴 Gak apa-apa, ulang besok ya',
+  };
+  toast(toasts[rating]);
 }
 
 function renderMurajaahQueue() {
@@ -1723,18 +1919,19 @@ function renderMurajaahQueue() {
     el.innerHTML = `<div class="mur-empty"><div class="mur-empty-icon">✅</div>Tidak ada murajaah hari ini!<br><span style="color:var(--t3)">Tambah hafalan di Ziyadah atau Settings</span></div>`;
     return;
   }
+  const strengthLabel = {weak:'🔴 Lemah', mid:'🟡 Sedang', strong:'🟢 Kuat', mastered:'🏆 Mastered'};
   queue.forEach(item => {
     const surat = QURAN_SURAT.find(s => s.no === item.suratNo) || {name: 'Surat #'+item.suratNo};
     const card = document.createElement('div');
-    card.className = 'mur-card ' + (item.strength||'weak');
-    const strengthLabel = {weak:'🔴 Lemah', mid:'🟡 Sedang', strong:'🟢 Kuat'};
+    const level = item.strength || 'weak';
+    card.className = 'mur-card ' + level;
     card.innerHTML = `
       <div class="mur-card-head">
         <div>
           <div class="mur-name">${surat.name}</div>
           <div class="mur-range">Ayat ${item.dari} – ${item.sampai}</div>
         </div>
-        <div class="mur-strength ${item.strength||'weak'}">${strengthLabel[item.strength||'weak']}</div>
+        <div class="mur-strength ${level}">${strengthLabel[level]}</div>
       </div>
       <div class="mur-actions">
         <button class="mur-btn lupa" onclick="rateMurajaah('${item.key}','lupa')">😓 Lupa</button>
@@ -1795,6 +1992,23 @@ function markZiyadahDone() {
   td.hafalan = true;
   setTodayData(td);
   updateAllProgress();
+
+  // Auto-pipeline: if ziyadah target reached, add to murajaah queue
+  const target = S.get('ziyadahTarget');
+  if (target && target.suratNo && target.currentAyat >= (target.targetAyat || 1)) {
+    const surats = getSuratList();
+    const exists = surats.find(s => s.suratNo === target.suratNo && s.dari === 1 && s.sampai === target.targetAyat);
+    if (!exists) {
+      surats.push({suratNo: target.suratNo, dari: 1, sampai: target.targetAyat});
+      S.set('suratList', surats);
+      const mData = getMurajaahData();
+      const key = `${target.suratNo}-1-${target.targetAyat}`;
+      if (!mData[key]) { mData[key] = {strength:'weak', nextDate: todayStr()}; setMurajaahData(mData); }
+      renderSuratListSettings();
+      toast('🎉 Ziyadah selesai! Otomatis masuk antrian murajaah');
+      return;
+    }
+  }
   toast('✓ Sesi ziyadah selesai! 🧠');
 }
 
@@ -1808,21 +2022,69 @@ function renderHafSuratList() {
     el.innerHTML = '<div style="font-family:var(--mono);font-size:11px;color:var(--t3);text-align:center;padding:20px;">Belum ada hafalan. Tambah di Settings → Input Hafalan.</div>';
     return;
   }
+  // summary bar
+  const counts = {weak:0,mid:0,strong:0,mastered:0};
+  const totalAyat = surats.reduce((acc, s) => acc + (s.sampai - s.dari + 1), 0);
+  const masteredAyat = surats.reduce((acc, s) => {
+    const key = `${s.suratNo}-${s.dari}-${s.sampai}`;
+    const md = mData[key] || {};
+    return acc + (md.strength === 'mastered' ? (s.sampai - s.dari + 1) : 0);
+  }, 0);
+  surats.forEach(s => {
+    const key = `${s.suratNo}-${s.dari}-${s.sampai}`;
+    const md = mData[key] || {strength:'weak'};
+    counts[md.strength || 'weak']++;
+  });
+  const summaryDiv = document.createElement('div');
+  summaryDiv.style.cssText = 'background:var(--s2);border:1.5px solid var(--b1);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;';
+  const mastPct = totalAyat > 0 ? Math.round(masteredAyat/totalAyat*100) : 0;
+  summaryDiv.innerHTML = `
+    <div style="font-family:var(--mono);font-size:8.5px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Ringkasan Hafalan</div>
+    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:55px;text-align:center;background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-sm);padding:7px 4px;">
+        <div style="font-family:var(--serif);font-size:22px;color:var(--coral)">${counts.weak}</div>
+        <div style="font-family:var(--mono);font-size:7.5px;color:var(--coral);letter-spacing:.5px;">🔴 Lemah</div>
+      </div>
+      <div style="flex:1;min-width:55px;text-align:center;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius-sm);padding:7px 4px;">
+        <div style="font-family:var(--serif);font-size:22px;color:var(--amber)">${counts.mid}</div>
+        <div style="font-family:var(--mono);font-size:7.5px;color:var(--amber);letter-spacing:.5px;">🟡 Sedang</div>
+      </div>
+      <div style="flex:1;min-width:55px;text-align:center;background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-sm);padding:7px 4px;">
+        <div style="font-family:var(--serif);font-size:22px;color:var(--green)">${counts.strong}</div>
+        <div style="font-family:var(--mono);font-size:7.5px;color:var(--green);letter-spacing:.5px;">🟢 Kuat</div>
+      </div>
+      <div style="flex:1;min-width:55px;text-align:center;background:var(--lavender-bg);border:1px solid var(--lavender-border);border-radius:var(--radius-sm);padding:7px 4px;">
+        <div style="font-family:var(--serif);font-size:22px;color:var(--lavender)">${counts.mastered}</div>
+        <div style="font-family:var(--mono);font-size:7.5px;color:var(--lavender);letter-spacing:.5px;">🏆 Mastered</div>
+      </div>
+    </div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--t2);margin-bottom:4px;">${masteredAyat} / ${totalAyat} ayat mastered (${mastPct}%)</div>
+    <div style="height:4px;background:var(--s3);border-radius:2px;overflow:hidden;">
+      <div style="height:100%;width:${mastPct}%;background:linear-gradient(90deg,var(--lavender),var(--sky));border-radius:2px;transition:width .4s;"></div>
+    </div>`;
+  el.appendChild(summaryDiv);
+
+  const strengthColors = {weak:var_coral(), mid:var_amber(), strong:var_green(), mastered:'var(--lavender)'};
+  const strengthLabels = {weak:'🔴 Lemah', mid:'🟡 Sedang', strong:'🟢 Kuat', mastered:'🏆 Mastered'};
+  const strengthPcts = {weak:20, mid:50, strong:80, mastered:100};
   surats.forEach(s => {
     const surat = QURAN_SURAT.find(x => x.no === s.suratNo) || {name:'?'};
     const key = `${s.suratNo}-${s.dari}-${s.sampai}`;
     const md = mData[key] || {strength:'weak'};
-    const colors = {weak:var_coral(), mid:var_amber(), strong:var_green()};
+    const level = md.strength || 'weak';
     const card = document.createElement('div');
     card.className = 'haf-surat-card';
-    const pct = md.strength === 'weak' ? 30 : md.strength === 'mid' ? 65 : 95;
+    const nextReview = md.nextDate ? (md.nextDate <= todayStr() ? 'Hari ini!' : md.nextDate) : '—';
     card.innerHTML = `
       <div class="hsc-head">
         <div class="hsc-name">${surat.name}</div>
-        <div class="hsc-range" style="font-family:var(--mono);font-size:9px;color:var(--t2);">Ayat ${s.dari}–${s.sampai}</div>
+        <div class="hsc-range">Ayat ${s.dari}–${s.sampai}</div>
       </div>
-      <div style="font-family:var(--mono);font-size:8px;color:${colors[md.strength]};margin-top:3px;">${md.strength === 'weak' ? '🔴 Lemah' : md.strength === 'mid' ? '🟡 Sedang' : '🟢 Kuat'}</div>
-      <div class="hsc-bar"><div class="hsc-bar-fill" style="width:${pct}%;background:${colors[md.strength]}"></div></div>`;
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+        <div style="font-family:var(--mono);font-size:8px;color:${strengthColors[level]};">${strengthLabels[level]}</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--t3);">ulang: ${nextReview}</div>
+      </div>
+      <div class="hsc-bar"><div class="hsc-bar-fill" style="width:${strengthPcts[level]}%;background:${strengthColors[level]}"></div></div>`;
     el.appendChild(card);
   });
 }
@@ -1880,6 +2142,8 @@ function renderStats() {
     {n:best, l:'Best Streak', s:'hari terbaik', c:'var(--teal)'},
     {n:successDays, l:'Hari Sempurna', s:'semua ibadah done', c:'var(--rose)'},
     {n:activeDays, l:'Hari Aktif', s:'total ada data', c:'var(--sky)'},
+    {n:getSunnahStreak(), l:'Streak Sunnah', s:'⭐ bonus berturut-turut', c:'var(--sky)'},
+    {n:(() => { const mData=getMurajaahData(); return Object.values(mData).filter(m=>m.strength==='mastered').length; })(), l:'Mastered', s:'🏆 hafalan kuat', c:'var(--lavender)'},
   ].forEach(s => {
     const card = document.createElement('div');
     card.className = 'stat-card';
@@ -1890,8 +2154,10 @@ function renderStats() {
   // per habit
   const list = document.getElementById('habit-stat-list');
   list.innerHTML = '';
+  const sunnahStreak = getSunnahStreak();
   const habits = [
     {emoji:'🕌', name:'Shalat Wajib (5x)', cat:'shalat'},
+    {emoji:'⭐', name:'Shalat Sunnah (bonus)', cat:'sunnah'},
     {emoji:'📖', name:'Tilawah', cat:'tilawah'},
     {emoji:'📿', name:'Zikir', cat:'zikir'},
     {emoji:'🧠', name:'Hafalan', cat:'hafalan'},
@@ -2477,12 +2743,10 @@ function init() {
   calYear = now.getFullYear();
   calMonth = now.getMonth();
   renderTodayHeader();
-  renderShalatWajib();
-  renderShalatSunnah();
-  renderSimpleChecks();
-  renderMuhasabah();
+  renderDayModes();
+  renderTodayTimeline();
+  updateStreakDisplay();
   updateAllProgress();
-  renderHtcQueue();
   renderCalendar();
 }
 

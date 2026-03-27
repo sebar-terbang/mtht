@@ -323,85 +323,89 @@ textarea.inp{resize:none;}
 
 /* ══ TILAWAH PAGE ══ */
 #pg-tilawah{padding:0;}
-.til-hero{
-  padding:20px 16px 16px;
-  background:linear-gradient(145deg,#fffbf5 0%,#f5f0e8 60%,#ede7d9 100%);
-  border-bottom:1px solid var(--b1);
-  position:relative;overflow:hidden;
-}
-.til-hero::before{content:'';position:absolute;top:-40px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(200,136,26,.1) 0%,transparent 70%);pointer-events:none;}
-.til-eyebrow{font-family:var(--mono);font-size:8.5px;color:var(--t2);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
-.til-title{font-family:var(--serif);font-size:24px;font-style:italic;color:var(--amber);margin-bottom:12px;}
 
+/* header */
+.til-hero{
+  background:var(--s1);
+  border-bottom:1px solid var(--b1);
+  padding:13px 16px 11px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  flex-shrink:0;
+}
+.til-bismillah{font-family:'Amiri',serif;font-size:17px;color:var(--amber);}
+.til-streak-pill{
+  background:var(--amber-bg);border:1px solid var(--amber-border);
+  border-radius:20px;padding:3px 10px;
+  font-family:var(--mono);font-size:10px;color:var(--amber);
+  letter-spacing:.5px;white-space:nowrap;
+}
+.til-hero-date{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;text-align:right;}
+
+/* tabs */
 .til-tabs{display:flex;gap:6px;padding:12px 16px 0;background:var(--s2);border-bottom:1px solid var(--b1);}
 .til-tab{padding:8px 14px;border-radius:var(--radius) var(--radius) 0 0;border:1.5px solid transparent;border-bottom:none;background:transparent;color:var(--t3);font-family:var(--mono);font-size:9px;cursor:pointer;transition:all .15s;letter-spacing:.5px;position:relative;bottom:-1px;}
 .til-tab.on{background:var(--s1);border-color:var(--b1);border-bottom-color:var(--s1);color:var(--amber);}
+.til-panel{display:none;padding:14px 14px 0;}
+.til-panel.on{display:block;animation:fadeUp .18s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 
-.til-panel{display:none;padding:14px 16px 0;}
-.til-panel.on{display:block;}
+/* card */
+.til-card{background:var(--s1);border:1px solid var(--b1);border-radius:5px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 3px rgba(44,31,14,.06);}
+.til-card-title{font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--t3);padding:11px 14px 9px;border-bottom:1px solid var(--s3);background:var(--s2);}
+.til-card-body{padding:14px;}
 
-/* streak strip */
-.til-streak-strip{display:flex;gap:10px;margin-bottom:14px;}
-.til-streak-card{flex:1;background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:11px 12px;text-align:center;box-shadow:var(--shadow-sm);}
-.til-streak-num{font-family:var(--serif);font-size:28px;color:var(--amber);line-height:1;}
-.til-streak-lbl{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:.5px;margin-top:3px;}
-
-/* log form */
-.til-form-card{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
-.til-form-title{font-family:var(--mono);font-size:8.5px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:11px;}
-.til-row{display:grid;gap:8px;margin-bottom:10px;}
-.til-row.c2{grid-template-columns:1fr auto 1fr;}
-.til-row.c2p{grid-template-columns:1fr 1fr;}
-.til-arrow{color:var(--t3);font-size:16px;display:flex;align-items:flex-end;padding-bottom:11px;justify-content:center;}
-.til-inp{background:var(--bg);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:9px 11px;color:var(--t1);font-family:var(--sans);font-size:13px;outline:none;transition:border-color .15s;width:100%;}
+/* form */
+.til-lbl{display:block;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:5px;}
+.til-inp{width:100%;background:var(--s2);border:1px solid var(--b1);color:var(--t1);font-family:var(--serif);font-size:16px;padding:9px 11px;border-radius:3px;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none;resize:none;}
 .til-inp:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(200,136,26,.12);}
 .til-inp::placeholder{color:var(--t3);}
-.til-lbl{font-family:var(--mono);font-size:8.5px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;display:block;}
-textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:1.5;}
+textarea.til-inp{line-height:1.5;}
+.til-row{display:grid;gap:10px;margin-bottom:12px;}
+.til-row:last-child{margin-bottom:0;}
+.til-row.c2{grid-template-columns:1fr 1fr;}
+.til-row.c3{grid-template-columns:1fr 1fr 1fr;}
+.til-fld{margin-bottom:12px;}
+.til-fld:last-child{margin-bottom:0;}
+.til-arrow-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:12px;}
+.til-arrow-row .til-af{flex:1;}
+.til-arrow-mid{flex-shrink:0;color:var(--t3);font-size:18px;padding-bottom:10px;line-height:1;}
 
 /* ayat preview */
-.til-ayat-preview{background:var(--amber-bg);border-left:3px solid var(--amber);padding:11px 13px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin-bottom:10px;display:none;}
+.til-ayat-preview{background:var(--amber-bg);border-left:3px solid var(--amber);padding:11px 13px;border-radius:0 4px 4px 0;margin-bottom:12px;display:none;}
 .til-ayat-text{font-family:'Amiri',serif;font-size:20px;color:var(--t1);direction:rtl;text-align:right;line-height:1.8;margin-bottom:4px;}
 .til-ayat-ref{font-family:var(--mono);font-size:9px;color:var(--amber);letter-spacing:1px;}
 
-/* mood chips */
-.til-mood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
-.til-mood-chip{background:var(--s2);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:9px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .13s;font-family:var(--mono);font-size:8.5px;color:var(--t3);text-align:center;user-select:none;}
+/* mood */
+.til-mood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.til-mood-chip{background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .13s;font-family:var(--mono);font-size:9px;letter-spacing:.3px;color:var(--t3);text-align:center;user-select:none;}
 .til-mood-chip:active{transform:scale(.93);}
 .til-mood-chip.on{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber);}
-.til-mood-em{font-size:20px;line-height:1;}
+.til-mood-em{font-size:22px;line-height:1;}
 
-/* juz grid */
-.til-juz-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:10px;}
-.til-juz-box{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--s2);border:1.5px solid var(--b1);border-radius:var(--radius-sm);font-family:var(--mono);font-size:11px;color:var(--t3);cursor:pointer;transition:all .13s;user-select:none;}
-.til-juz-box:active{transform:scale(.9);}
-.til-juz-box.done{background:var(--green-bg);border-color:var(--green-border);color:var(--green);font-weight:700;}
-.til-khatam{display:none;text-align:center;padding:12px;background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:var(--radius-sm);font-family:var(--serif);font-style:italic;color:var(--green);font-size:15px;margin-bottom:12px;}
-.til-khatam.show{display:block;}
-
-/* chain cal (reuse cal-grid styles, just wrap) */
-.til-cal-wrap{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
-.til-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
-.til-cal-dow{font-family:var(--mono);font-size:8px;color:var(--t3);text-align:center;padding:3px 0;letter-spacing:.5px;}
-.til-cal-day{aspect-ratio:1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;background:var(--s2);color:var(--t3);border:1px solid var(--b1);position:relative;}
-.til-cal-day.til-today{border:2px solid var(--amber);color:var(--amber);font-weight:700;background:var(--amber-bg);}
-.til-cal-day.til-done{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal);font-weight:600;}
-.til-cal-day.til-done::after{content:'✓';position:absolute;font-size:12px;font-weight:700;}
-.til-cal-day.til-done span{opacity:0;}
-.til-cal-day.til-empty{background:transparent;border-color:transparent;}
+/* save btn */
+.til-save-btn{width:100%;background:var(--t1);color:var(--bg);border:none;border-radius:4px;padding:15px;font-family:var(--mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:background .15s,transform .1s;margin-top:4px;margin-bottom:10px;}
+.til-save-btn:active{transform:scale(.98);background:var(--t2);}
 
 /* history */
-.til-hist-item{border-bottom:1px solid var(--b1);padding:12px 0;}
+.til-hist-item{border-bottom:1px solid var(--s3);padding:13px 0;}
 .til-hist-item:last-child{border-bottom:none;}
 .til-hist-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
 .til-hist-date{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--t3);}
-.til-hist-range{font-size:14px;color:var(--t2);font-family:var(--serif);font-style:italic;margin-bottom:3px;}
-.til-hist-ayat{font-family:'Amiri',serif;font-size:17px;direction:rtl;text-align:right;color:var(--t1);margin-bottom:3px;}
-.til-hist-tadabbur{font-family:var(--sans);font-size:13px;color:var(--t2);line-height:1.5;max-height:60px;overflow:hidden;transition:max-height .3s;}
-.til-hist-tadabbur.exp{max-height:500px;}
-.til-hist-toggle{background:none;border:none;font-family:var(--mono);font-size:9px;color:var(--amber);cursor:pointer;padding:2px 0;letter-spacing:.5px;}
-.til-save-btn{width:100%;background:var(--amber);color:#fff;border:none;border-radius:var(--radius-sm);padding:14px;font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .18s;box-shadow:0 2px 8px rgba(200,136,26,.25);margin-bottom:10px;}
-.til-save-btn:active{transform:scale(.98);}
+.til-hist-range{font-size:15px;color:var(--t2);font-family:var(--serif);font-style:italic;margin-bottom:3px;}
+.til-hist-ayat{font-family:'Amiri',serif;font-size:14px;color:var(--amber);margin-bottom:2px;}
+.til-hist-tadabbur{font-family:var(--sans);font-size:13px;color:var(--t3);line-height:1.6;white-space:pre-wrap;}
+.til-hist-tadabbur.collapsed{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.til-hist-toggle{display:inline-block;margin-top:5px;font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--amber);cursor:pointer;text-transform:uppercase;border:none;background:none;padding:0;text-decoration:underline;text-underline-offset:3px;}
+.til-hist-catatan{font-size:12px;color:var(--t3);line-height:1.5;font-style:italic;margin-top:4px;white-space:pre-wrap;}
+
+/* backup */
+.til-backup-btn{background:var(--s2);border:1px solid var(--b1);border-radius:5px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;transition:all .13s;cursor:pointer;}
+.til-backup-btn:active{transform:scale(.96);}
+.til-backup-lbl{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);}
+.til-backup-sub{font-family:var(--mono);font-size:8.5px;color:var(--t3);letter-spacing:.5px;margin-top:1px;}
+
+/* ornament */
+.til-orn{text-align:center;color:var(--t3);font-size:10px;letter-spacing:8px;padding:8px 0;}
 .chain-header{margin-bottom:16px;}
 .chain-title{font-family:var(--serif);font-size:28px;font-style:italic;color:var(--t1);margin-bottom:3px;}
 .chain-sub{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;}
@@ -729,121 +733,118 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 <!-- ══════════════ TILAWAH ══════════════ -->
 <div id="pg-tilawah" class="page">
   <div class="til-hero">
-    <div class="til-eyebrow" id="til-date-lbl">—</div>
-    <div class="til-title">📖 Tilawah Journal</div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div style="font-family:var(--serif);font-size:44px;line-height:1;color:var(--amber);" id="til-streak-num">0</div>
-      <div>
-        <div style="font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:.5px;">🔥 hari streak tilawah</div>
-        <div style="font-family:var(--mono);font-size:8px;color:var(--t3);margin-top:2px;" id="til-streak-best">best: 0 hari</div>
-      </div>
-    </div>
+    <div class="til-bismillah">بِسْمِ اللَّهِ</div>
+    <div class="til-streak-pill" id="til-streak-pill">🔥 0 hari</div>
+    <div class="til-hero-date" id="til-date-lbl">—</div>
   </div>
 
   <!-- tabs -->
   <div class="til-tabs">
-    <div class="til-tab on" onclick="setTilTab(this,'log')">✏️ Log</div>
+    <div class="til-tab on" onclick="setTilTab(this,'log')">✏️ Hari Ini</div>
     <div class="til-tab" onclick="setTilTab(this,'riwayat')">📜 Riwayat</div>
   </div>
 
   <!-- LOG PANEL -->
   <div class="til-panel on" id="til-panel-log">
-    <!-- progress tilawah -->
-    <div class="til-form-card">
-      <div class="til-form-title">Progress Tilawah</div>
-      <div class="til-row c2">
-        <div>
-          <span class="til-lbl">Dari Surah</span>
-          <input type="text" class="til-inp" id="til-from-surah" placeholder="Al-Baqarah">
+    <div class="til-card">
+      <div class="til-card-title">Progress Tilawah</div>
+      <div class="til-card-body">
+        <div class="til-arrow-row">
+          <div class="til-af">
+            <label class="til-lbl">Dari Surah</label>
+            <input type="text" class="til-inp" id="til-from-surah" placeholder="Al-Baqarah">
+          </div>
+          <div class="til-arrow-mid">→</div>
+          <div class="til-af">
+            <label class="til-lbl">Sampai Surah</label>
+            <input type="text" class="til-inp" id="til-to-surah" placeholder="Al-Baqarah">
+          </div>
         </div>
-        <div class="til-arrow">→</div>
-        <div>
-          <span class="til-lbl">Sampai Surah</span>
-          <input type="text" class="til-inp" id="til-to-surah" placeholder="Al-Baqarah">
+        <div class="til-row c3">
+          <div><label class="til-lbl">Ayat awal</label><input type="number" class="til-inp" id="til-from-ayat" placeholder="1" min="1"></div>
+          <div style="display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;color:var(--t3);font-size:16px;">→</div>
+          <div><label class="til-lbl">Ayat akhir</label><input type="number" class="til-inp" id="til-to-ayat" placeholder="20" min="1"></div>
         </div>
-      </div>
-      <div class="til-row" style="grid-template-columns:1fr auto 1fr;margin-bottom:10px;">
-        <div>
-          <span class="til-lbl">Ayat awal</span>
-          <input type="number" class="til-inp" id="til-from-ayat" placeholder="1" min="1">
-        </div>
-        <div class="til-arrow">→</div>
-        <div>
-          <span class="til-lbl">Ayat akhir</span>
-          <input type="number" class="til-inp" id="til-to-ayat" placeholder="20" min="1">
-        </div>
-      </div>
-      <div class="til-row c2p">
-        <div>
-          <span class="til-lbl">Hal. awal</span>
-          <input type="number" class="til-inp" id="til-from-page" placeholder="1" min="1" max="604">
-        </div>
-        <div>
-          <span class="til-lbl">Hal. akhir</span>
-          <input type="number" class="til-inp" id="til-to-page" placeholder="5" min="1" max="604">
+        <div class="til-row c2" style="margin-top:10px;">
+          <div><label class="til-lbl">Hal. awal</label><input type="number" class="til-inp" id="til-from-page" placeholder="1" min="1" max="604"></div>
+          <div><label class="til-lbl">Hal. akhir</label><input type="number" class="til-inp" id="til-to-page" placeholder="5" min="1" max="604"></div>
         </div>
       </div>
     </div>
-
-    <!-- ayat favorit -->
-    <div class="til-form-card">
-      <div class="til-form-title">Ayat Favorit + Tadabbur</div>
-      <div style="margin-bottom:10px;">
-        <span class="til-lbl">Tulis ayatnya (Arab)</span>
-        <textarea class="til-inp" id="til-ayat-fav" rows="2" placeholder="..." style="font-family:'Amiri',serif;font-size:20px;direction:rtl;text-align:right;" oninput="updateTilPreview()"></textarea>
-      </div>
-      <div style="margin-bottom:10px;">
-        <span class="til-lbl">Referensi</span>
-        <input type="text" class="til-inp" id="til-ayat-ref" placeholder="QS. Al-Baqarah : 255" oninput="updateTilPreview()">
-      </div>
-      <div class="til-ayat-preview" id="til-ayat-preview">
-        <div class="til-ayat-text" id="til-prev-text"></div>
-        <div class="til-ayat-ref" id="til-prev-ref"></div>
-      </div>
-      <div>
-        <span class="til-lbl">Tadabbur — apa yang lo dapat?</span>
-        <textarea class="til-inp" id="til-tadabbur" rows="4" placeholder="Pikiran, perasaan, koneksi sama hidup lo..."></textarea>
-      </div>
-    </div>
-
-    <!-- kondisi hati -->
-    <div class="til-form-card">
-      <div class="til-form-title">Kondisi Hati</div>
-      <div class="til-mood-grid" id="til-mood-grid">
-        <div class="til-mood-chip" onclick="pickTilMood(this,'khushu')"><span class="til-mood-em">🕌</span>Khusyu'</div>
-        <div class="til-mood-chip" onclick="pickTilMood(this,'tenang')"><span class="til-mood-em">🌿</span>Tenang</div>
-        <div class="til-mood-chip" onclick="pickTilMood(this,'terharu')"><span class="til-mood-em">💧</span>Terharu</div>
-        <div class="til-mood-chip" onclick="pickTilMood(this,'semangat')"><span class="til-mood-em">⚡</span>Semangat</div>
-        <div class="til-mood-chip" onclick="pickTilMood(this,'gelisah')"><span class="til-mood-em">🌊</span>Gelisah</div>
-        <div class="til-mood-chip" onclick="pickTilMood(this,'ngantuk')"><span class="til-mood-em">😴</span>Ngantuk</div>
-        <div class="til-mood-chip" onclick="pickTilMood(this,'biasa')"><span class="til-mood-em">☁️</span>Biasa aja</div>
-        <div class="til-mood-chip" onclick="pickTilMood(this,'berat')"><span class="til-mood-em">🪨</span>Berat</div>
-      </div>
-      <div>
-        <span class="til-lbl">Catatan hati (opsional)</span>
-        <textarea class="til-inp" id="til-catatan" rows="2" placeholder="Lo lagi ngerasain apa..."></textarea>
+    <div class="til-card">
+      <div class="til-card-title">Ayat Favorit + Tadabbur</div>
+      <div class="til-card-body">
+        <div class="til-fld">
+          <label class="til-lbl">Tulis ayatnya (Arab)</label>
+          <textarea class="til-inp" id="til-ayat-fav" rows="2" placeholder="..." style="font-family:'Amiri',serif;font-size:19px;direction:rtl;text-align:right;" oninput="updateTilPreview()"></textarea>
+        </div>
+        <div class="til-fld">
+          <label class="til-lbl">Referensi</label>
+          <input type="text" class="til-inp" id="til-ayat-ref" placeholder="QS. Al-Baqarah : 255" oninput="updateTilPreview()">
+        </div>
+        <div class="til-ayat-preview" id="til-ayat-preview">
+          <div class="til-ayat-text" id="til-prev-text"></div>
+          <div class="til-ayat-ref" id="til-prev-ref"></div>
+        </div>
+        <div class="til-fld">
+          <label class="til-lbl">Tadabbur — apa yang kamu dapat?</label>
+          <textarea class="til-inp" id="til-tadabbur" rows="4" placeholder="Pikiran, perasaan, koneksi sama hidup lo..."></textarea>
+        </div>
       </div>
     </div>
-
+    <div class="til-card">
+      <div class="til-card-title">Kondisi Hati</div>
+      <div class="til-card-body">
+        <div class="til-mood-grid" id="til-mood-grid">
+          <div class="til-mood-chip" onclick="pickTilMood(this,'khushu')"><span class="til-mood-em">🕌</span>Khusyu'</div>
+          <div class="til-mood-chip" onclick="pickTilMood(this,'tenang')"><span class="til-mood-em">🌿</span>Tenang</div>
+          <div class="til-mood-chip" onclick="pickTilMood(this,'terharu')"><span class="til-mood-em">💧</span>Terharu</div>
+          <div class="til-mood-chip" onclick="pickTilMood(this,'semangat')"><span class="til-mood-em">⚡</span>Semangat</div>
+          <div class="til-mood-chip" onclick="pickTilMood(this,'gelisah')"><span class="til-mood-em">🌊</span>Gelisah</div>
+          <div class="til-mood-chip" onclick="pickTilMood(this,'ngantuk')"><span class="til-mood-em">😴</span>Ngantuk</div>
+          <div class="til-mood-chip" onclick="pickTilMood(this,'biasa')"><span class="til-mood-em">☁️</span>Biasa aja</div>
+          <div class="til-mood-chip" onclick="pickTilMood(this,'berat')"><span class="til-mood-em">🪨</span>Berat</div>
+        </div>
+        <div class="til-fld" style="margin-top:12px;">
+          <label class="til-lbl">Catatan hati (opsional)</label>
+          <textarea class="til-inp" id="til-catatan" rows="2" placeholder="Lagi ngerasain apa..."></textarea>
+        </div>
+      </div>
+    </div>
     <button class="til-save-btn" onclick="saveTilawah()">✦ Simpan Tilawah Hari Ini</button>
+    <div style="height:10px;"></div>
   </div>
 
   <!-- RIWAYAT PANEL -->
   <div class="til-panel" id="til-panel-riwayat">
-    <div class="til-form-card">
-      <div class="til-form-title">Riwayat Tilawah</div>
-      <div id="til-hist-list"><div style="font-family:var(--mono);font-size:10px;color:var(--t3);text-align:center;padding:20px;">Belum ada catatan.<br>Mulai tilawah hari ini ✦</div></div>
-    </div>
-    <div class="til-form-card">
-      <div class="til-form-title">Backup &amp; Restore</div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-a" style="flex:1;font-size:10px;" onclick="exportTilData()">📦 Export</button>
-        <label class="btn btn-o" style="flex:1;font-size:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
-          📂 Import <input type="file" accept=".json" style="display:none;" onchange="importTilData(event)">
-        </label>
+    <div class="til-card">
+      <div class="til-card-title">Riwayat Tilawah</div>
+      <div class="til-card-body" id="til-hist-list">
+        <div class="til-orn">✦ ✦ ✦</div>
+        <div style="text-align:center;padding:20px 0;font-style:italic;color:var(--t3);font-family:var(--serif);font-size:15px;">Belum ada catatan.<br>Mulai tilawah hari ini ✦</div>
       </div>
     </div>
+    <div class="til-card">
+      <div class="til-card-title">Backup &amp; Restore</div>
+      <div class="til-card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <button class="til-backup-btn" onclick="exportTilData()">
+            <span style="font-size:20px;display:block;margin-bottom:4px;">💾</span>
+            <span class="til-backup-lbl">Export JSON</span>
+            <span class="til-backup-sub">unduh semua data</span>
+          </button>
+          <label class="til-backup-btn" style="cursor:pointer;">
+            <span style="font-size:20px;display:block;margin-bottom:4px;">📂</span>
+            <span class="til-backup-lbl">Import JSON</span>
+            <span class="til-backup-sub">pulihkan dari file</span>
+            <input type="file" accept=".json" style="display:none;" onchange="importTilData(event)">
+          </label>
+        </div>
+      </div>
+    </div>
+    <div style="height:10px;"></div>
   </div>
+</div>
 </div>
 
 <!-- ══════════════ CHAIN ══════════════ -->
@@ -2894,15 +2895,16 @@ function initTilawah() {
   const now = new Date();
   tilCalViewYear = now.getFullYear();
   tilCalViewMonth = now.getMonth();
-  document.getElementById('til-date-lbl').textContent =
-    DAYS[now.getDay()] + ', ' + now.getDate() + ' ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear();
+  // Format: JUM, 27 MAR — like reference app
+  const dateEl = document.getElementById('til-date-lbl');
+  if (dateEl) dateEl.textContent =
+    now.toLocaleDateString('id-ID', {weekday:'short', day:'numeric', month:'short'}).toUpperCase();
   updateTilStreak();
   loadTilDraft();
 }
 
 function updateTilStreak() {
   const chain = getTilChain();
-  // streak
   let s = 0;
   const d = new Date();
   if (!chain[todayStr()]) d.setDate(d.getDate() - 1);
@@ -2912,9 +2914,10 @@ function updateTilStreak() {
     if (!chain[k]) break;
     s++; tmp.setDate(tmp.getDate()-1);
   }
-  // best streak
   let best = 0, cur = 0;
   Object.keys(chain).sort().forEach(k => { if (chain[k]) { cur++; if (cur > best) best = cur; } else cur = 0; });
+  const pillEl = document.getElementById('til-streak-pill');
+  if (pillEl) pillEl.textContent = '🔥 ' + s + ' hari';
   const numEl = document.getElementById('til-streak-num');
   if (numEl) numEl.textContent = s;
   const bestEl = document.getElementById('til-streak-best');
@@ -3051,7 +3054,7 @@ function renderTilHistory() {
   const hist = getTilHistory();
   const el = document.getElementById('til-hist-list');
   if (!hist.length) {
-    el.innerHTML = '<div style="font-family:var(--mono);font-size:10px;color:var(--t3);text-align:center;padding:20px;">Belum ada catatan.<br>Mulai tilawah hari ini ✦</div>';
+    el.innerHTML = '<div class="til-orn">✦ ✦ ✦</div><div style="text-align:center;padding:20px 0;font-style:italic;color:var(--t3);font-family:var(--serif);font-size:15px;">Belum ada catatan.<br>Mulai tilawah hari ini ✦</div>';
     return;
   }
   el.innerHTML = '';
@@ -3064,20 +3067,20 @@ function renderTilHistory() {
     div.innerHTML = `
       <div class="til-hist-top">
         <div class="til-hist-date">${e.dateDisplay||e.dateKey}</div>
-        <div style="font-size:14px;">${MOOD_EM_TIL[e.mood]||''}</div>
+        <div style="font-size:15px;">${MOOD_EM_TIL[e.mood]||''}</div>
       </div>
       ${range?`<div class="til-hist-range">${range}</div>`:''}
       ${e.ayatFav?`<div class="til-hist-ayat">${e.ayatFav.slice(0,80)}${e.ayatFav.length>80?'...':''}</div>`:''}
-      ${e.ayatRef?`<div style="font-family:var(--mono);font-size:9px;color:var(--amber);letter-spacing:1px;margin-bottom:4px">${e.ayatRef}</div>`:''}
-      ${e.tadabbur?`<div class="til-hist-tadabbur ${isLong?'':'exp'}" id="${tadId}">${e.tadabbur}</div>${isLong?`<button class="til-hist-toggle" id="${togId}" onclick="toggleTilTad('${tadId}','${togId}')">baca selengkapnya ▾</button>`:''}`:''}
-      ${e.catatanHati?`<div style="font-family:var(--sans);font-size:12px;color:var(--t2);margin-top:4px;">💬 ${e.catatanHati}</div>`:''}`;
+      ${e.ayatRef?`<div style="font-family:var(--mono);font-size:9px;color:var(--amber);letter-spacing:1px;margin-bottom:4px;">${e.ayatRef}</div>`:''}
+      ${e.tadabbur?`<div class="til-hist-tadabbur${isLong?' collapsed':''}" id="${tadId}">${e.tadabbur}</div>${isLong?`<button class="til-hist-toggle" id="${togId}" onclick="toggleTilTad('${tadId}','${togId}')">selengkapnya ▾</button>`:''}`:''}
+      ${e.catatanHati?`<div class="til-hist-catatan">💬 ${e.catatanHati}</div>`:''}`;
     el.appendChild(div);
   });
 }
 function toggleTilTad(textId, btnId) {
   const el = document.getElementById(textId), btn = document.getElementById(btnId);
-  const exp = el.classList.toggle('exp');
-  btn.textContent = exp ? 'tutup ▴' : 'baca selengkapnya ▾';
+  const isCollapsed = el.classList.toggle('collapsed');
+  btn.textContent = isCollapsed ? 'selengkapnya ▾' : 'tutup ▴';
 }
 
 // Export/import tilawah data

@@ -554,6 +554,50 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
 .hm-cell.l3{background:rgba(200,136,26,.65);}
 .hm-cell.l4{background:var(--amber);}
 
+/* sunnah tracker calendar */
+.sunnah-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px;}
+.sunnah-cal-day{
+  aspect-ratio:1;border-radius:8px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:9px;color:var(--t3);
+  background:var(--s2);border:1px solid var(--b1);
+  position:relative;cursor:pointer;transition:all .15s;gap:2px;
+}
+.sunnah-cal-day:hover{transform:scale(1.06);box-shadow:var(--shadow-sm);}
+.sunnah-cal-day.is-today{border:2px solid var(--amber);color:var(--amber);font-weight:700;background:var(--amber-bg);}
+.sunnah-cal-day.empty{background:transparent;border-color:transparent;cursor:default;}
+.sunnah-cal-day.empty:hover{transform:none;box-shadow:none;}
+.sunnah-dots{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;max-width:100%;padding:0 2px;}
+.sunnah-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+
+/* sunnah weekly strip */
+.sunnah-week-strip{display:flex;gap:8px;margin-bottom:14px;}
+.sunnah-week-card{flex:1;background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;box-shadow:var(--shadow-sm);}
+.swc-num{font-family:var(--serif);font-size:24px;color:var(--amber);line-height:1;}
+.swc-lbl{font-family:var(--mono);font-size:7.5px;color:var(--t3);letter-spacing:.5px;margin-top:3px;}
+.sunnah-week-card.win{background:var(--amber-bg);border-color:var(--amber-border);}
+.sunnah-week-card.win .swc-num{color:var(--amber);}
+
+/* sunnah motivation text */
+.sunnah-motiv{
+  font-family:var(--mono);font-size:8.5px;color:var(--t2);
+  letter-spacing:.3px;line-height:1.5;
+  padding:8px 10px;margin-bottom:10px;
+  background:var(--amber-bg);border-left:2px solid var(--amber-border);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* sunnah input overlay */
+.sunnah-ov-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--b1);}
+.sunnah-ov-item:last-child{border-bottom:none;}
+.sunnah-ov-emoji{font-size:24px;}
+.sunnah-ov-name{font-family:var(--serif);font-size:17px;font-style:italic;color:var(--t1);flex:1;}
+.sunnah-rakaat-ctrl{display:flex;align-items:center;gap:8px;}
+.sunnah-rakaat-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--b1);background:var(--s2);color:var(--t1);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:var(--mono);}
+.sunnah-rakaat-btn:hover{background:var(--amber-bg);border-color:var(--amber-border);}
+.sunnah-rakaat-num{font-family:var(--serif);font-size:20px;color:var(--t1);min-width:24px;text-align:center;}
+.sunnah-rakaat-lbl{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:.5px;}
+
 /* ══ SETTINGS ══ */
 #pg-settings{padding:16px;}
 .settings-title{font-family:var(--serif);font-size:28px;font-style:italic;color:var(--t1);margin-bottom:16px;}
@@ -687,18 +731,11 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
   <div class="til-hero">
     <div class="til-eyebrow" id="til-date-lbl">—</div>
     <div class="til-title">📖 Tilawah Journal</div>
-    <div class="til-streak-strip">
-      <div class="til-streak-card">
-        <div class="til-streak-num" id="til-streak-num">0</div>
-        <div class="til-streak-lbl">🔥 hari streak</div>
-      </div>
-      <div class="til-streak-card">
-        <div class="til-streak-num" id="til-juz-num" style="color:var(--teal)">0</div>
-        <div class="til-streak-lbl">📚 juz selesai</div>
-      </div>
-      <div class="til-streak-card">
-        <div class="til-streak-num" id="til-total-num" style="color:var(--rose)">0</div>
-        <div class="til-streak-lbl">📅 total hari</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="font-family:var(--serif);font-size:44px;line-height:1;color:var(--amber);" id="til-streak-num">0</div>
+      <div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:.5px;">🔥 hari streak tilawah</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--t3);margin-top:2px;" id="til-streak-best">best: 0 hari</div>
       </div>
     </div>
   </div>
@@ -706,8 +743,6 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
   <!-- tabs -->
   <div class="til-tabs">
     <div class="til-tab on" onclick="setTilTab(this,'log')">✏️ Log</div>
-    <div class="til-tab" onclick="setTilTab(this,'chain')">🔗 Chain</div>
-    <div class="til-tab" onclick="setTilTab(this,'juz')">🕌 Juz</div>
     <div class="til-tab" onclick="setTilTab(this,'riwayat')">📜 Riwayat</div>
   </div>
 
@@ -791,42 +826,6 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
     </div>
 
     <button class="til-save-btn" onclick="saveTilawah()">✦ Simpan Tilawah Hari Ini</button>
-  </div>
-
-  <!-- CHAIN PANEL -->
-  <div class="til-panel" id="til-panel-chain">
-    <div class="til-cal-wrap">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div class="cal-month" id="til-cal-label" style="font-family:var(--serif);font-size:18px;font-style:italic;">—</div>
-        <div style="display:flex;gap:6px;">
-          <button class="cal-nav-btn" style="padding:6px 11px;" onclick="tilCalPrev()">‹</button>
-          <button class="cal-nav-btn" style="padding:6px 11px;" onclick="tilCalNext()">›</button>
-        </div>
-      </div>
-      <div class="til-cal-grid" id="til-cal-grid"></div>
-    </div>
-    <div class="chain-stats-row">
-      <div class="cs-card"><div class="cs-num" id="til-cs-done" style="color:var(--teal)">0</div><div class="cs-lbl">✅ Hari Tilawah</div></div>
-      <div class="cs-card"><div class="cs-num" id="til-cs-missed" style="color:var(--coral)">0</div><div class="cs-lbl">⛔ Terlewat</div></div>
-      <div class="cs-card"><div class="cs-num" id="til-cs-pct" style="color:var(--teal)">0%</div><div class="cs-lbl">📈 Konsistensi</div></div>
-    </div>
-  </div>
-
-  <!-- JUZ PANEL -->
-  <div class="til-panel" id="til-panel-juz">
-    <div class="til-form-card">
-      <div class="til-form-title">Progress Khatam Al-Qur'an</div>
-      <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1px;margin-bottom:5px;">
-        <span>Juz Selesai</span><span id="til-juz-count">0 / 30</span>
-      </div>
-      <div style="height:5px;background:var(--s3);border-radius:3px;margin-bottom:14px;overflow:hidden;">
-        <div id="til-juz-bar" style="height:100%;background:linear-gradient(90deg,var(--teal),var(--green));border-radius:3px;width:0%;transition:width .4s;"></div>
-      </div>
-      <div class="til-khatam" id="til-khatam-badge">🎉 MasyaAllah — 30 Juz Khatam! Barakallah fiik.</div>
-      <div class="til-juz-grid" id="til-juz-grid"></div>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1px;text-align:center;margin-bottom:6px;">ketuk juz untuk toggle</div>
-      <button class="btn btn-o" style="width:100%;font-size:10px;" onclick="resetTilJuz()">Reset Juz</button>
-    </div>
   </div>
 
   <!-- RIWAYAT PANEL -->
@@ -944,13 +943,77 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
   <div class="habit-stat-list" id="habit-stat-list"></div>
 
   <div class="heatmap-wrap" style="margin-top:12px;">
-    <div class="sec-lbl">aktivitas 3 bulan terakhir</div>
-    <div class="heatmap-grid" id="heatmap-grid"></div>
+    <div class="sec-lbl" style="margin-bottom:12px;">don't break the chain</div>
+    <!-- chain category tabs -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;" id="stats-chain-tabs">
+      <div class="chain-tab on" data-cat="overall" onclick="setStatsChainCat(this,'overall')">🌟 Overall</div>
+      <div class="chain-tab" data-cat="shalat" onclick="setStatsChainCat(this,'shalat')">🕌 Shalat</div>
+      <div class="chain-tab" data-cat="tilawah" onclick="setStatsChainCat(this,'tilawah')">📖 Tilawah</div>
+      <div class="chain-tab" data-cat="zikir" onclick="setStatsChainCat(this,'zikir')">📿 Zikir</div>
+      <div class="chain-tab" data-cat="hafalan" onclick="setStatsChainCat(this,'hafalan')">🧠 Hafalan</div>
+      <div class="chain-tab" data-cat="buku" onclick="setStatsChainCat(this,'buku')">📚 Pengetahuan</div>
+    </div>
+    <!-- calendar nav -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div class="cal-month" id="stats-cal-label" style="font-size:17px;font-style:italic;">—</div>
+      <div style="display:flex;gap:6px;">
+        <button class="cal-nav-btn" style="padding:6px 11px;" onclick="statsCalPrev()">‹</button>
+        <button class="cal-nav-btn" style="padding:6px 11px;" onclick="statsCalNext()">›</button>
+      </div>
+    </div>
+    <div class="cal-grid" id="stats-cal-grid"></div>
+    <div class="chain-legend" style="margin-top:10px;">
+      <div class="cl-item"><div class="cl-dot" style="background:rgba(245,166,35,.6)"></div> Selesai</div>
+      <div class="cl-item"><div class="cl-dot" style="background:rgba(181,154,240,.5)"></div> Grace Day</div>
+      <div class="cl-item"><div class="cl-dot" style="background:rgba(255,112,88,.3)"></div> Terlewat</div>
+    </div>
+    <div class="chain-stats-row" style="margin-top:12px;">
+      <div class="cs-card"><div class="cs-num" id="stats-cs-streak" style="color:var(--amber)">0</div><div class="cs-lbl">🔥 Streak</div></div>
+      <div class="cs-card"><div class="cs-num" id="stats-cs-best" style="color:var(--teal)">0</div><div class="cs-lbl">⭐ Best</div></div>
+      <div class="cs-card"><div class="cs-num" id="stats-cs-pct" style="color:var(--sky)">0%</div><div class="cs-lbl">📈 Konsistensi</div></div>
+    </div>
   </div>
 
   <div class="heatmap-wrap">
     <div class="sec-lbl">🤍 muhasabah — 30 hari terakhir</div>
     <div id="muhasabah-chart"></div>
+  </div>
+
+  <!-- Sunnah Tracker -->
+  <div class="heatmap-wrap">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div class="sec-lbl" style="margin-bottom:0;">⭐ sunnah tracker</div>
+      <div style="display:flex;gap:6px;">
+        <button class="cal-nav-btn" style="padding:5px 10px;font-size:10px;" onclick="sunnahCalPrev()">‹</button>
+        <span class="cal-month" id="sunnah-cal-label" style="font-size:14px;align-self:center;">—</span>
+        <button class="cal-nav-btn" style="padding:5px 10px;font-size:10px;" onclick="sunnahCalNext()">›</button>
+      </div>
+    </div>
+    <!-- weekly stats -->
+    <div class="sunnah-week-strip">
+      <div class="sunnah-week-card" id="sunnah-week-card">
+        <div class="swc-num" id="sunnah-week-days">0</div>
+        <div class="swc-lbl">hari minggu ini</div>
+      </div>
+      <div class="sunnah-week-card">
+        <div class="swc-num" id="sunnah-week-streak" style="color:var(--sky)">0</div>
+        <div class="swc-lbl">minggu berturut</div>
+      </div>
+      <div class="sunnah-week-card">
+        <div class="swc-num" id="sunnah-month-rakaat" style="color:var(--teal)">0</div>
+        <div class="swc-lbl">rakaat bulan ini</div>
+      </div>
+    </div>
+    <!-- legend -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;color:var(--t2);"><div class="sunnah-dot" style="background:var(--amber);"></div>Rawatib</div>
+      <div style="display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;color:var(--t2);"><div class="sunnah-dot" style="background:var(--sky);"></div>Dhuha</div>
+      <div style="display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;color:var(--t2);"><div class="sunnah-dot" style="background:var(--lavender);"></div>Tahajjud</div>
+      <div style="display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;color:var(--t2);"><div class="sunnah-dot" style="background:var(--teal);"></div>Witir</div>
+      <div style="display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;color:var(--t2);"><div class="sunnah-dot" style="background:var(--green);"></div>Taubat</div>
+    </div>
+    <!-- calendar -->
+    <div class="sunnah-cal-grid" id="sunnah-cal-grid"></div>
   </div>
 </div>
 
@@ -1088,6 +1151,17 @@ textarea.til-inp{resize:none;font-family:var(--sans);font-size:13px;line-height:
   </div>
 </div>
 
+<!-- Sunnah Input Overlay -->
+<div class="ov" id="ov-sunnah">
+  <div class="ov-sheet">
+    <button class="ov-close" onclick="closeOv('ov-sunnah')">✕</button>
+    <div class="ov-title" id="sunnah-ov-title">⭐ Shalat Sunnah</div>
+    <div class="ov-sub">CATAT RAKAAT HARI INI</div>
+    <div id="sunnah-ov-body"></div>
+    <button class="btn btn-a" style="width:100%;margin-top:14px;" onclick="saveSunnahInput()">✓ Simpan</button>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
@@ -1111,11 +1185,11 @@ const SHALAT_WAJIB = [
   {id:'isya', name:'Isya', emoji:'🌙', waktu:'19:00–23:59'},
 ];
 const SHALAT_SUNNAH = [
-  {id:'rawatib', name:'Rawatib', emoji:'⭐', sub:'qabliyah & ba\'diyah'},
-  {id:'dhuha', name:'Dhuha', emoji:'🌞', sub:'min. 2 rakaat'},
-  {id:'tahajjud', name:'Tahajjud', emoji:'🌌', sub:'qiyamullail'},
-  {id:'witir', name:'Witir', emoji:'🌙', sub:'setelah isya / tahajjud'},
-  {id:'taubat', name:'Shalat Taubat', emoji:'💚', sub:'kapan pun'},
+  {id:'rawatib',  name:'Rawatib',       emoji:'⭐', sub:'qabliyah & ba\'diyah', defaultRakaat:4, color:'var(--amber)'},
+  {id:'dhuha',    name:'Dhuha',         emoji:'🌞', sub:'min. 2 rakaat',        defaultRakaat:2, color:'var(--sky)'},
+  {id:'tahajjud', name:'Tahajjud',      emoji:'🌌', sub:'qiyamullail',          defaultRakaat:2, color:'var(--lavender)'},
+  {id:'witir',    name:'Witir',         emoji:'🌙', sub:'setelah isya / tahajjud', defaultRakaat:1, color:'var(--teal)'},
+  {id:'taubat',   name:'Shalat Taubat', emoji:'💚', sub:'kapan pun',            defaultRakaat:2, color:'var(--green)'},
 ];
 
 const QURAN_SURAT = [
@@ -1249,8 +1323,12 @@ function getIbadahItems() {
 
 function isDone(item, td) {
   if (item.type === 'shalat') return !!((td.shalat||{})[item.id]||{}).done;
-  if (item.type === 'sunnah') return !!((td.sunnah||{})[item.id]);
-  if (item.type === 'sunnah_single') return !!((td.sunnah||{})[item.id]);
+  if (item.type === 'sunnah' || item.type === 'sunnah_single') {
+    const v = (td.sunnah||{})[item.id];
+    if (!v) return false;
+    if (typeof v === 'boolean') return v;
+    return !!(v.done);
+  }
   if (item.type === 'hafalan') return !!td.hafalan;
   return !!td[item.id];
 }
@@ -1266,11 +1344,7 @@ function toggleItem(item) {
     return;
   }
   if (item.type === 'sunnah' || item.type === 'sunnah_single') {
-    if (!td.sunnah) td.sunnah = {};
-    td.sunnah[item.id] = !td.sunnah[item.id];
-    setTodayData(td);
-    if (isSunnahFull(td)) toast('⭐ Masya Allah! Sunnah lengkap hari ini!');
-    updateAllProgress();
+    openSunnahOv(item.id);
     return;
   }
   if (item.type === 'hafalan') {
@@ -1373,9 +1447,16 @@ function renderTodayTimeline() {
     sLabel.className = 'tl-zone-label';
     sLabel.textContent = 'Bonus Sunnah ⭐';
     wrap.appendChild(sLabel);
+
+    // motivation text
+    const motiv = document.createElement('div');
+    motiv.className = 'sunnah-motiv';
+    motiv.textContent = getSunnahMotiv();
+    wrap.appendChild(motiv);
+
     const grid = document.createElement('div');
     grid.className = 'ibadah-grid';
-    sunnahActive.forEach(item => grid.appendChild(makeCard(item, td, false)));
+    sunnahActive.forEach(item => grid.appendChild(makeSunnahCard(item, td)));
     wrap.appendChild(grid);
   }
 
@@ -1431,6 +1512,23 @@ function makeCard(item, td, overdue) {
     <span class="ib-check">✓</span>
     <span class="ib-icon">${item.emoji}</span>
     <span class="ib-name">${item.name}</span>`;
+  return div;
+}
+
+function makeSunnahCard(item, td) {
+  const done = isDone(item, td);
+  const rakaat = getSunnahRakaat(td, item.id);
+  const s = SHALAT_SUNNAH.find(s => s.id === item.id);
+  const colorVar = s ? s.color.replace('var(','').replace(')','') : '--amber';
+  const colorClass = done ? `done-${item.color}` : '';
+  const div = document.createElement('div');
+  div.className = `ib-card ${colorClass}`;
+  div.onclick = () => openSunnahOv(item.id);
+  div.innerHTML = `
+    <span class="ib-check">✓</span>
+    <span class="ib-icon">${item.emoji}</span>
+    <span class="ib-name">${item.name}</span>
+    ${rakaat > 0 ? `<span style="font-family:var(--mono);font-size:8px;color:var(--t2);margin-top:1px;">${rakaat} rakaat</span>` : ''}`;
   return div;
 }
 
@@ -1497,6 +1595,295 @@ function makeDoneChip(item) {
     <span style="font-size:16px;">${item.emoji}</span>
     <span style="font-family:var(--mono);font-size:7.5px;color:var(--t2);">${item.name}</span>
   </div>`;
+}
+
+// ══════════════════════════════════════════
+// SUNNAH OVERLAY + TRACKER
+// ══════════════════════════════════════════
+const SUNNAH_COLORS = {
+  rawatib:'var(--amber)', dhuha:'var(--sky)',
+  tahajjud:'var(--lavender)', witir:'var(--teal)', taubat:'var(--green)'
+};
+
+const SUNNAH_MOTIVS = [
+  'Dua rakaat di malam yang tenang lebih baik dari dunia dan seisinya.',
+  'Mulai dari satu rakaat. Allah melihat usahamu, bukan hitungannya.',
+  'Sunnah itu pintu menuju yang wajib — jaga pintunya, jaga isinya.',
+  'Konsistensi kecil mengalahkan semangat yang datang-pergi.',
+  'Tiap rakaat sunnah menutupi kekurangan yang wajib. SubhanAllah.',
+  'Yang ringan tapi rutin, itulah yang Allah cintai.',
+  'Jangan tanya berapa banyak — tanya: sudah mulai belum?',
+];
+
+let sunnahOvId = null;
+let sunnahOvRakaat = {};
+
+function openSunnahOv(id) {
+  sunnahOvId = id;
+  sunnahOvRakaat = {};
+  const td = getTodayData();
+
+  // Set title
+  const sunnah = SHALAT_SUNNAH.find(s => s.id === id);
+  document.getElementById('sunnah-ov-title').textContent = sunnah ? sunnah.emoji + ' ' + sunnah.name : '⭐ Shalat Sunnah';
+
+  // Build body — show all sunnah so user can log multiple at once
+  const body = document.getElementById('sunnah-ov-body');
+  body.innerHTML = '';
+  SHALAT_SUNNAH.forEach(s => {
+    const existing = (td.sunnah||{})[s.id];
+    const existingRakaat = existing && typeof existing === 'object' ? existing.rakaat : (existing ? s.defaultRakaat : 0);
+    sunnahOvRakaat[s.id] = existingRakaat || 0;
+
+    const row = document.createElement('div');
+    row.className = 'sunnah-ov-item';
+    row.innerHTML = `
+      <span class="sunnah-ov-emoji">${s.emoji}</span>
+      <div style="flex:1;">
+        <div class="sunnah-ov-name">${s.name}</div>
+        <div class="sunnah-rakaat-lbl">${s.sub}</div>
+      </div>
+      <div class="sunnah-rakaat-ctrl">
+        <button class="sunnah-rakaat-btn" onclick="adjustRakaat('${s.id}',-1)">−</button>
+        <span class="sunnah-rakaat-num" id="srov-${s.id}">${sunnahOvRakaat[s.id]}</span>
+        <button class="sunnah-rakaat-btn" onclick="adjustRakaat('${s.id}',1)">+</button>
+      </div>`;
+    body.appendChild(row);
+  });
+
+  openOv('ov-sunnah');
+}
+
+function adjustRakaat(id, delta) {
+  const s = SHALAT_SUNNAH.find(s => s.id === id);
+  const min = 0, step = s && s.id === 'witir' ? 1 : 2;
+  sunnahOvRakaat[id] = Math.max(min, (sunnahOvRakaat[id] || 0) + (delta > 0 ? step : -step));
+  const el = document.getElementById('srov-' + id);
+  if (el) el.textContent = sunnahOvRakaat[id];
+}
+
+function saveSunnahInput() {
+  const td = getTodayData();
+  if (!td.sunnah) td.sunnah = {};
+  let anyDone = false;
+  SHALAT_SUNNAH.forEach(s => {
+    const rakaat = sunnahOvRakaat[s.id] || 0;
+    if (rakaat > 0) {
+      td.sunnah[s.id] = {done: true, rakaat};
+      anyDone = true;
+    } else {
+      // preserve existing if not changed
+      if (!td.sunnah[s.id]) td.sunnah[s.id] = {done: false, rakaat: 0};
+      else if (typeof td.sunnah[s.id] === 'boolean') td.sunnah[s.id] = {done: false, rakaat: 0};
+      else td.sunnah[s.id] = {done: false, rakaat: 0};
+    }
+  });
+  setTodayData(td);
+  closeOv('ov-sunnah');
+  if (anyDone) {
+    const total = Object.values(td.sunnah).reduce((a,v) => a + (v && typeof v === 'object' ? v.rakaat : 0), 0);
+    toast(`⭐ Alhamdulillah! ${total} rakaat hari ini`);
+  }
+  updateAllProgress();
+  // refresh sunnah calendar if stats is visible
+  renderSunnahCalendar();
+}
+
+// helper: get rakaat for a sunnah on a day
+function getSunnahRakaat(dayData, sunnahId) {
+  const v = (dayData.sunnah||{})[sunnahId];
+  if (!v) return 0;
+  if (typeof v === 'boolean') return v ? SHALAT_SUNNAH.find(s=>s.id===sunnahId)?.defaultRakaat||0 : 0;
+  return v.rakaat || 0;
+}
+
+function getSunnahDone(dayData, sunnahId) {
+  const v = (dayData.sunnah||{})[sunnahId];
+  if (!v) return false;
+  if (typeof v === 'boolean') return v;
+  return v.done && v.rakaat > 0;
+}
+
+// ── Sunnah Calendar ──
+let sunnahCalYear, sunnahCalMonth;
+
+function sunnahCalPrev() {
+  sunnahCalMonth--;
+  if (sunnahCalMonth < 0) { sunnahCalMonth = 11; sunnahCalYear--; }
+  renderSunnahCalendar();
+}
+
+function sunnahCalNext() {
+  sunnahCalMonth++;
+  if (sunnahCalMonth > 11) { sunnahCalMonth = 0; sunnahCalYear++; }
+  renderSunnahCalendar();
+}
+
+function renderSunnahCalendar() {
+  if (!sunnahCalYear) {
+    const now = new Date();
+    sunnahCalYear = now.getFullYear();
+    sunnahCalMonth = now.getMonth();
+  }
+
+  const labelEl = document.getElementById('sunnah-cal-label');
+  if (labelEl) labelEl.textContent = MONTHS[sunnahCalMonth] + ' ' + sunnahCalYear;
+
+  const grid = document.getElementById('sunnah-cal-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  // DOW headers
+  ['Min','Sen','Sel','Rab','Kam','Jum','Sab'].forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-dow';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(sunnahCalYear, sunnahCalMonth, 1).getDay();
+  const daysInMonth = new Date(sunnahCalYear, sunnahCalMonth + 1, 0).getDate();
+  const todayK = todayStr();
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'sunnah-cal-day empty';
+    grid.appendChild(el);
+  }
+
+  // stats for this month
+  const now2 = new Date();
+  const monthStart = new Date(sunnahCalYear, sunnahCalMonth, 1);
+  let monthRakaat = 0;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const k = `${sunnahCalYear}-${String(sunnahCalMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dd = getDayData(k);
+    const isToday = k === todayK;
+    const isFuture = new Date(k) > now2;
+
+    const cell = document.createElement('div');
+    cell.className = 'sunnah-cal-day' + (isToday ? ' is-today' : '');
+
+    // build dots
+    const dotsWrap = document.createElement('div');
+    dotsWrap.className = 'sunnah-dots';
+
+    let hasSunnah = false;
+    let dayRakaat = 0;
+
+    if (!isFuture) {
+      SHALAT_SUNNAH.forEach(s => {
+        const rakaat = getSunnahRakaat(dd, s.id);
+        if (rakaat > 0) {
+          hasSunnah = true;
+          dayRakaat += rakaat;
+          monthRakaat += rakaat;
+          const dot = document.createElement('div');
+          dot.className = 'sunnah-dot';
+          dot.style.background = SUNNAH_COLORS[s.id];
+          dotsWrap.appendChild(dot);
+        }
+      });
+    }
+
+    const dayNum = document.createElement('span');
+    dayNum.style.cssText = 'font-size:9px;line-height:1;';
+    dayNum.textContent = d;
+
+    cell.appendChild(dayNum);
+    if (hasSunnah) cell.appendChild(dotsWrap);
+
+    if (hasSunnah) {
+      cell.style.cursor = 'pointer';
+      cell.onclick = () => openSunnahDayDetail(k, d);
+    } else {
+      cell.style.cursor = 'default';
+    }
+
+    grid.appendChild(cell);
+  }
+
+  // update monthly rakaat
+  const rakEl = document.getElementById('sunnah-month-rakaat');
+  if (rakEl) rakEl.textContent = monthRakaat;
+
+  // weekly stats (current week only)
+  renderSunnahWeekStats();
+}
+
+function renderSunnahWeekStats() {
+  const today = new Date();
+  const dow = today.getDay(); // 0=Sun
+  let weekDays = 0, weekHasSunnah = false;
+  for (let i = 0; i <= dow; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const dd = getDayData(k);
+    const hasAny = SHALAT_SUNNAH.some(s => getSunnahRakaat(dd, s.id) > 0);
+    if (hasAny) weekDays++;
+  }
+
+  // weekly streak (consecutive weeks with ≥1 sunnah)
+  let weekStreak = 0;
+  for (let w = 0; w < 52; w++) {
+    const weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - dow - w * 7);
+    let weekHas = false;
+    for (let d = 0; d < 7; d++) {
+      const day = new Date(weekStart);
+      day.setDate(weekStart.getDate() + d);
+      if (day > today) continue;
+      const k = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
+      const dd = getDayData(k);
+      if (SHALAT_SUNNAH.some(s => getSunnahRakaat(dd, s.id) > 0)) { weekHas = true; break; }
+    }
+    if (weekHas) weekStreak++;
+    else if (w > 0) break;
+  }
+
+  const daysEl = document.getElementById('sunnah-week-days');
+  const streakEl = document.getElementById('sunnah-week-streak');
+  const cardEl = document.getElementById('sunnah-week-card');
+  if (daysEl) daysEl.textContent = weekDays;
+  if (streakEl) streakEl.textContent = weekStreak;
+  if (cardEl) cardEl.className = 'sunnah-week-card' + (weekDays >= 1 ? ' win' : '');
+}
+
+function openSunnahDayDetail(k, d) {
+  const dd = getDayData(k);
+  const parts = k.split('-');
+  const dateLabel = d + ' ' + MONTHS[parseInt(parts[1])-1] + ' ' + parts[0];
+  document.getElementById('day-modal-title').textContent = '⭐ ' + dateLabel;
+  const cont = document.getElementById('day-modal-content');
+  cont.innerHTML = '';
+  let totalRakaat = 0;
+  SHALAT_SUNNAH.forEach(s => {
+    const rakaat = getSunnahRakaat(dd, s.id);
+    if (rakaat === 0) return;
+    totalRakaat += rakaat;
+    const row = document.createElement('div');
+    row.className = 'dd-item';
+    row.innerHTML = `
+      <div class="dd-dot" style="background:${SUNNAH_COLORS[s.id]}"></div>
+      <span class="dd-label">${s.emoji} ${s.name}</span>
+      <span style="font-family:var(--mono);font-size:10px;color:${SUNNAH_COLORS[s.id]}">${rakaat} rakaat</span>`;
+    cont.appendChild(row);
+  });
+  if (totalRakaat > 0) {
+    const total = document.createElement('div');
+    total.style.cssText = 'margin-top:10px;font-family:var(--mono);font-size:9px;color:var(--t3);text-align:right;letter-spacing:.5px;';
+    total.textContent = 'total: ' + totalRakaat + ' rakaat';
+    cont.appendChild(total);
+  }
+  openOv('ov-day');
+}
+
+// add motivation text to sunnah zone
+function getSunnahMotiv() {
+  const idx = new Date().getDate() % SUNNAH_MOTIVS.length;
+  return SUNNAH_MOTIVS[idx];
 }
 
 function toggleDoneZone(el) {
@@ -2177,33 +2564,123 @@ function renderStats() {
     list.appendChild(row);
   });
 
-  // heatmap (13 weeks)
-  const hm = document.getElementById('heatmap-grid');
-  hm.innerHTML = '';
-  for (let i = 90; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    const dd = getDayData(k);
-    const cell = document.createElement('div');
-    cell.className = 'hm-cell';
-    if (Object.keys(dd).length > 0) {
-      const sw = dd.shalat || {};
-      const doneShalat = SHALAT_WAJIB.filter(s => (sw[s.id]||{}).done).length;
-      const dayOfWeek = new Date(k).getDay();
-      const isFri = dayOfWeek === 5;
-      const extras = [dd.tilawah, dd.almulk, isFri ? dd.alkahfi : null, dd['zikir-pagi'], dd['zikir-petang'], dd.hafalan].filter(Boolean).length;
-      const total = doneShalat + extras;
-      if (total >= 8) cell.classList.add('l4');
-      else if (total >= 6) cell.classList.add('l3');
-      else if (total >= 3) cell.classList.add('l2');
-      else cell.classList.add('l1');
-    }
-    hm.appendChild(cell);
-  }
+  // stats chain calendar
+  renderStatsCalendar();
+  // sunnah tracker calendar
+  renderSunnahCalendar();
 
   // muhasabah chart (30 hari)
   renderMuhasabahChart(today, days);
+}
+
+// ══════════════════════════════════════════
+// STATS CHAIN CALENDAR
+// ══════════════════════════════════════════
+let statsCalYear, statsCalMonth, statsChainCat = 'overall';
+
+function setStatsChainCat(el, cat) {
+  statsChainCat = cat;
+  document.querySelectorAll('#stats-chain-tabs .chain-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  renderStatsCalendar();
+}
+
+function statsCalPrev() {
+  statsCalMonth--;
+  if (statsCalMonth < 0) { statsCalMonth = 11; statsCalYear--; }
+  renderStatsCalendar();
+}
+
+function statsCalNext() {
+  statsCalMonth++;
+  if (statsCalMonth > 11) { statsCalMonth = 0; statsCalYear++; }
+  renderStatsCalendar();
+}
+
+function renderStatsCalendar() {
+  // init state if needed
+  if (!statsCalYear) {
+    const now = new Date();
+    statsCalYear = now.getFullYear();
+    statsCalMonth = now.getMonth();
+  }
+
+  const label = MONTHS[statsCalMonth] + ' ' + statsCalYear;
+  const labelEl = document.getElementById('stats-cal-label');
+  if (labelEl) labelEl.textContent = label;
+
+  const grid = document.getElementById('stats-cal-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  // day-of-week headers
+  ['Min','Sen','Sel','Rab','Kam','Jum','Sab'].forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-dow';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(statsCalYear, statsCalMonth, 1).getDay();
+  const daysInMonth = new Date(statsCalYear, statsCalMonth + 1, 0).getDate();
+  const todayK = todayStr();
+
+  // empty cells
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  // day cells
+  let doneCt = 0, missedCt = 0;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const k = `${statsCalYear}-${String(statsCalMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dd = getDayData(k);
+    const el = document.createElement('div');
+    const isToday = k === todayK;
+    const isFuture = new Date(k) > new Date();
+    const hasData = Object.keys(dd).length > 0;
+
+    let cls = 'cal-day';
+    if (isToday) cls += ' is-today';
+
+    if (!isFuture && hasData) {
+      if (dd.mode === 'rest') { cls += ' chain-grace'; }
+      else if (isDaySuccess(k, statsChainCat)) { cls += ' chain-done'; doneCt++; }
+      else { cls += ' chain-miss'; missedCt++; }
+    }
+
+    el.className = cls;
+
+    if (!isFuture && hasData) {
+      if (dd.mode === 'rest') {
+        el.innerHTML = `<span style="font-size:9px;line-height:1;">${d}</span><span style="font-size:9px;">🌙</span>`;
+      } else if (isDaySuccess(k, statsChainCat)) {
+        el.innerHTML = `<span style="font-size:9px;line-height:1;">${d}</span><span style="font-size:11px;font-weight:700;">✓</span>`;
+      } else {
+        el.textContent = d;
+      }
+      el.onclick = () => openDayDetail(statsCalYear, statsCalMonth, d, k);
+    } else {
+      el.textContent = d;
+    }
+
+    grid.appendChild(el);
+  }
+
+  // update stats
+  const streak = getStreak(statsChainCat);
+  const best = getBestStreak(statsChainCat);
+  const total = doneCt + missedCt;
+  const pct = total > 0 ? Math.round(doneCt / total * 100) : 0;
+
+  const streakEl = document.getElementById('stats-cs-streak');
+  const bestEl = document.getElementById('stats-cs-best');
+  const pctEl = document.getElementById('stats-cs-pct');
+  if (streakEl) streakEl.textContent = streak;
+  if (bestEl) bestEl.textContent = best;
+  if (pctEl) pctEl.textContent = pct + '%';
 }
 
 function renderMuhasabahChart(today, days) {
@@ -2425,7 +2902,6 @@ function initTilawah() {
 
 function updateTilStreak() {
   const chain = getTilChain();
-  const hist = getTilHistory();
   // streak
   let s = 0;
   const d = new Date();
@@ -2436,12 +2912,13 @@ function updateTilStreak() {
     if (!chain[k]) break;
     s++; tmp.setDate(tmp.getDate()-1);
   }
-  document.getElementById('til-streak-num').textContent = s;
-  document.getElementById('til-juz-num').textContent = getTilJuz().length;
-  document.getElementById('til-total-num').textContent = Object.keys(chain).length;
-  // update header
-  const headerEl = document.getElementById('til-streak-num');
-  if (headerEl) headerEl.textContent = s;
+  // best streak
+  let best = 0, cur = 0;
+  Object.keys(chain).sort().forEach(k => { if (chain[k]) { cur++; if (cur > best) best = cur; } else cur = 0; });
+  const numEl = document.getElementById('til-streak-num');
+  if (numEl) numEl.textContent = s;
+  const bestEl = document.getElementById('til-streak-best');
+  if (bestEl) bestEl.textContent = 'best: ' + best + ' hari';
 }
 
 function setTilTab(el, tab) {
@@ -2449,8 +2926,6 @@ function setTilTab(el, tab) {
   document.querySelectorAll('.til-panel').forEach(p => p.classList.remove('on'));
   el.classList.add('on');
   document.getElementById('til-panel-'+tab).classList.add('on');
-  if (tab === 'chain') renderTilCal();
-  if (tab === 'juz') renderTilJuz();
   if (tab === 'riwayat') renderTilHistory();
 }
 
@@ -2527,49 +3002,15 @@ function saveTilawah() {
 }
 
 // Tilawah Chain Calendar
-function renderTilCal() {
-  const chain = getTilChain();
-  const y = tilCalViewYear, m = tilCalViewMonth;
-  document.getElementById('til-cal-label').textContent = MONTHS[m] + ' ' + y;
-  const grid = document.getElementById('til-cal-grid');
-  grid.innerHTML = '';
-  ['Min','Sen','Sel','Rab','Kam','Jum','Sab'].forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'til-cal-dow'; el.textContent = d; grid.appendChild(el);
-  });
-  const firstDay = new Date(y, m, 1).getDay();
-  const daysInMonth = new Date(y, m+1, 0).getDate();
-  const todayK = todayStr();
-  const today = new Date();
-  const passed = (y===today.getFullYear()&&m===today.getMonth()) ? today.getDate() : (new Date(y,m+1,0)<today ? daysInMonth : 0);
-  let done = 0;
-  for (let i = 0; i < firstDay; i++) {
-    const el = document.createElement('div'); el.className = 'til-cal-day til-empty'; grid.appendChild(el);
-  }
-  for (let d = 1; d <= daysInMonth; d++) {
-    const k = y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    const checked = !!chain[k]; if(checked) done++;
-    const el = document.createElement('div');
-    let cls = 'til-cal-day';
-    if (k === todayK) cls += ' til-today';
-    if (checked) cls += ' til-done';
-    el.className = cls;
-    const sp = document.createElement('span'); sp.textContent = d;
-    el.appendChild(sp); grid.appendChild(el);
-  }
-  const missed = Math.max(0, passed - done);
-  const pct = passed > 0 ? Math.round(done/passed*100) : 0;
-  document.getElementById('til-cs-done').textContent = done;
-  document.getElementById('til-cs-missed').textContent = missed;
-  document.getElementById('til-cs-pct').textContent = pct + '%';
-}
-function tilCalPrev() { tilCalViewMonth--; if(tilCalViewMonth<0){tilCalViewMonth=11;tilCalViewYear--;} renderTilCal(); }
-function tilCalNext() { tilCalViewMonth++; if(tilCalViewMonth>11){tilCalViewMonth=0;tilCalViewYear++;} renderTilCal(); }
+function renderTilCal() { /* chain panel removed from tilawah */ }
+function tilCalPrev() {}
+function tilCalNext() {}
 
-// Juz tracker
+// Juz tracker (panel removed from tilawah tab but data kept)
 function renderTilJuz() {
-  const juzDone = getTilJuz();
   const grid = document.getElementById('til-juz-grid');
+  if (!grid) return;
+  const juzDone = getTilJuz();
   grid.innerHTML = '';
   for (let i = 1; i <= 30; i++) {
     const b = document.createElement('div');
@@ -2591,9 +3032,12 @@ function toggleTilJuz(n, el) {
 function updateTilJuzProg() {
   const juzDone = getTilJuz();
   const c = juzDone.length, pct = Math.round(c/30*100);
-  document.getElementById('til-juz-count').textContent = c + ' / 30';
-  document.getElementById('til-juz-bar').style.width = pct + '%';
-  document.getElementById('til-khatam-badge').classList.toggle('show', c===30);
+  const countEl = document.getElementById('til-juz-count');
+  const barEl = document.getElementById('til-juz-bar');
+  const badgeEl = document.getElementById('til-khatam-badge');
+  if (countEl) countEl.textContent = c + ' / 30';
+  if (barEl) barEl.style.width = pct + '%';
+  if (badgeEl) badgeEl.classList.toggle('show', c===30);
 }
 function resetTilJuz() {
   if (!confirm('Reset semua juz?')) return;

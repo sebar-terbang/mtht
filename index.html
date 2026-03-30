@@ -732,6 +732,30 @@ textarea.til-inp{line-height:1.5;}
 .prog-bar{height:3px;background:var(--s3);border-radius:2px;overflow:hidden;}
 .prog-bar-fill{height:100%;background:var(--amber);border-radius:2px;transition:width .4s;}
 
+/* zikir overlay content */
+.zikir-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--b1);}
+.zikir-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.zikir-num{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.zikir-arabic{font-family:'Amiri',serif;font-size:22px;color:var(--t1);direction:rtl;text-align:right;line-height:2;margin-bottom:8px;}
+.zikir-latin{font-family:var(--serif);font-size:13px;font-style:italic;color:var(--t2);line-height:1.6;margin-bottom:5px;}
+.zikir-meaning{font-family:var(--sans);font-size:12px;color:var(--t3);line-height:1.6;margin-bottom:5px;}
+.zikir-count{display:inline-block;font-family:var(--mono);font-size:9px;color:var(--amber);background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:20px;padding:2px 10px;letter-spacing:.5px;}
+
+/* shalat quality buttons */
+.sq-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:14px 8px;border-radius:var(--radius-sm);
+  border:1.5px solid var(--b1);background:var(--s1);
+  cursor:pointer;transition:all .18s;box-shadow:var(--shadow-sm);
+}
+.sq-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-md);}
+.sq-btn.on{background:var(--amber-bg);border-color:var(--amber-border);}
+.sq-lbl{font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:.3px;}
+.sq-btn.on .sq-lbl{color:var(--amber);font-weight:600;}
+
+/* shalat tepat waktu halo di kalender */
+.cal-day.tepat-halo{box-shadow:0 0 0 2px rgba(42,144,85,.4);}
+
 /* dzikrul maut block */
 .maut-block{
   margin-top:14px;
@@ -951,6 +975,7 @@ textarea.til-inp{line-height:1.5;}
     <div class="cl-item"><div class="cl-dot" style="background:rgba(255,112,88,.3)"></div> Terlewat</div>
     <div class="cl-item"><div class="cl-dot" style="background:var(--s3)"></div> Belum ada data</div>
     <div class="cl-item"><div class="cl-dot" style="background:var(--sky-bg);border:2px solid var(--sky);border-radius:3px;box-shadow:0 0 0 2px rgba(42,127,196,.3);"></div> ⭐ Sunnah Lengkap</div>
+    <div class="cl-item"><div class="cl-dot" style="background:var(--green-bg);border:2px solid var(--green);border-radius:3px;box-shadow:0 0 0 2px rgba(42,144,85,.3);"></div> ⏰ Shalat Tepat Waktu</div>
   </div>
 
   <div class="chain-stats-row" id="chain-stats-row">
@@ -1237,6 +1262,41 @@ textarea.til-inp{line-height:1.5;}
   </div>
 </div>
 
+<!-- Zikir Overlay -->
+<div class="ov" id="ov-zikir">
+  <div class="ov-sheet" style="max-height:90vh;">
+    <button class="ov-close" onclick="closeZikirOv()">✕</button>
+    <div class="ov-title" id="zikir-ov-title">📿 Zikir</div>
+    <div class="ov-sub" id="zikir-ov-sub">DZIKIR MA'TSUR</div>
+    <div id="zikir-ov-body" style="margin-bottom:16px;"></div>
+    <button class="btn btn-a" style="width:100%;" onclick="doneZikir()">✓ Selesai — Alhamdulillah</button>
+  </div>
+</div>
+
+<!-- Shalat Quality Overlay -->
+<div class="ov" id="ov-shalat-quality">
+  <div class="ov-sheet" style="padding-bottom:32px;">
+    <div class="ov-title" id="sqov-title">🕌 Subuh</div>
+    <div class="ov-sub">KUALITAS SHALAT</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+      <div style="display:flex;gap:8px;">
+        <button class="sq-btn" id="sq-tepat" onclick="toggleSQ('tepat')">
+          <span style="font-size:18px;">⏰</span>
+          <span class="sq-lbl">Tepat Waktu</span>
+        </button>
+        <button class="sq-btn" id="sq-jamaah" onclick="toggleSQ('jamaah')">
+          <span style="font-size:18px;">🕌</span>
+          <span class="sq-lbl">Berjamaah</span>
+        </button>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-a" style="flex:1;" onclick="saveShalatQuality()">✓ Simpan</button>
+        <button class="btn btn-o" style="flex:1;" onclick="skipShalatQuality()">Lewati</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
@@ -1413,9 +1473,12 @@ function toggleItem(item) {
   if (item.type === 'shalat') {
     if (!td.shalat) td.shalat = {};
     if (!td.shalat[item.id]) td.shalat[item.id] = {};
-    td.shalat[item.id].done = !td.shalat[item.id].done;
+    const wasDown = td.shalat[item.id].done;
+    td.shalat[item.id].done = !wasDown;
     setTodayData(td);
     updateAllProgress();
+    // open quality overlay only when marking as done
+    if (!wasDown) openShalatQualityOv(item.id);
     return;
   }
   if (item.type === 'sunnah' || item.type === 'sunnah_single') {
@@ -1424,6 +1487,11 @@ function toggleItem(item) {
   }
   if (item.type === 'hafalan') {
     markHafalanToday();
+    return;
+  }
+  // zikir — open zikir overlay
+  if (item.id === 'zikir-pagi' || item.id === 'zikir-petang') {
+    openZikirOv(item.id);
     return;
   }
   // simple
@@ -1748,6 +1816,241 @@ function makeDoneChip(item) {
 }
 
 // ══════════════════════════════════════════
+// ══════════════════════════════════════════
+// ZIKIR OVERLAY
+// ══════════════════════════════════════════
+const ZIKIR_PAGI = [
+  {
+    num: '1 — Ayat Kursi',
+    arabic: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ',
+    latin: 'Allāhu lā ilāha illā huw, al-ḥayyul-qayyūm, lā ta\'khużuhū sinatuw wa lā nawm, lahū mā fis-samāwāti wa mā fil-arḍ, man żallażī yasyfa\'u \'indahū illā bi\'iżnih, ya\'lamu mā baina aidīhim wa mā khalfahum, wa lā yuḥīṭūna bisyai\'im min \'ilmihī illā bimā syā\', wasi\'a kursiyyuhus-samāwāti wal-arḍ, wa lā ya\'ūduhū ḥifẓuhumā, wa huwal-\'aliyyul-\'aẓīm.',
+    meaning: 'Allah, tidak ada tuhan selain Dia, Yang Maha Hidup, Yang terus-menerus mengurus makhluk-Nya. Tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan di bumi. Tidak ada yang dapat memberi syafaat di sisi-Nya tanpa izin-Nya. Dia mengetahui apa yang ada di hadapan mereka dan apa yang ada di belakang mereka. Mereka tidak mengetahui sesuatu pun dari ilmu-Nya, kecuali apa yang Dia kehendaki. Kursi-Nya meliputi langit dan bumi. Dia tidak merasa berat memelihara keduanya. Dan Dia Maha Tinggi lagi Maha Besar.',
+    count: '1×',
+    source: 'QS. Al-Baqarah: 255'
+  },
+  {
+    num: '2 — Al-Ikhlas',
+    arabic: 'قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ',
+    latin: 'Qul huwallāhu aḥad, Allāhuṣ-ṣamad, lam yalid wa lam yūlad, wa lam yakul lahū kufuwan aḥad.',
+    meaning: 'Katakanlah: Dialah Allah, Yang Maha Esa. Allah tempat meminta segala sesuatu. Dia tidak beranak dan tidak diperanakkan. Dan tidak ada sesuatu yang setara dengan Dia.',
+    count: '3×',
+    source: 'QS. Al-Ikhlas: 1-4'
+  },
+  {
+    num: '3 — Al-Falaq',
+    arabic: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِن شَرِّ مَا خَلَقَ ۝ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ',
+    latin: 'Qul a\'ūżu birabbil-falaq, min syarri mā khalaq, wa min syarri ghāsiqin iżā waqab, wa min syarrin-naffāṡāti fil-\'uqad, wa min syarri ḥāsidin iżā ḥasad.',
+    meaning: 'Katakanlah: Aku berlindung kepada Tuhan yang menguasai subuh, dari kejahatan (makhluk yang) Dia ciptakan, dan dari kejahatan malam apabila telah gelap gulita, dan dari kejahatan (perempuan-perempuan) peniup pada buhul-buhul (tukang sihir), dan dari kejahatan orang yang dengki apabila dia dengki.',
+    count: '3×',
+    source: 'QS. Al-Falaq: 1-5'
+  },
+  {
+    num: '4 — An-Nas',
+    arabic: 'قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ',
+    latin: 'Qul a\'ūżu birabbin-nās, malikin-nās, ilāhin-nās, min syarril-waswāsil-khannās, allażī yuwaswisu fī ṣudūrin-nās, minal-jinnati wan-nās.',
+    meaning: 'Katakanlah: Aku berlindung kepada Tuhannya manusia, Raja manusia, Sembahan manusia, dari kejahatan (bisikan) setan yang bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia.',
+    count: '3×',
+    source: 'QS. An-Nas: 1-6'
+  },
+  {
+    num: '5 — Sayyidul Istighfar',
+    arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',
+    latin: 'Allāhumma anta rabbī lā ilāha illā anta, khalaqtanī wa ana \'abduka, wa ana \'alā \'ahdika wa wa\'dika mastaṭa\'tu, a\'ūżu bika min syarri mā ṣana\'tu, abū\'u laka bini\'matika \'alayya, wa abū\'u biżambī, faghfirlī fa\'innahū lā yaghfiruż-żunūba illā anta.',
+    meaning: 'Ya Allah, Engkau adalah Rabbku, tidak ada tuhan selain Engkau. Engkau yang menciptakanku dan aku adalah hamba-Mu. Aku berada di atas perjanjian-Mu dan janji-Mu semampuku. Aku berlindung kepada-Mu dari keburukan apa yang telah aku perbuat. Aku mengakui nikmat-Mu atasku, dan aku mengakui dosaku. Maka ampunilah aku, sesungguhnya tidak ada yang mengampuni dosa-dosa kecuali Engkau.',
+    count: '1×',
+    source: 'HR. Bukhari no. 6306'
+  },
+  {
+    num: '6 — Doa Pagi',
+    arabic: 'اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ',
+    latin: 'Allāhumma bika aṣbaḥnā wa bika amsaynā wa bika naḥyā wa bika namūtu wa ilaikan-nusyūr.',
+    meaning: 'Ya Allah, dengan-Mu kami memasuki pagi, dengan-Mu kami memasuki petang, dengan-Mu kami hidup, dengan-Mu kami mati, dan kepada-Mu kebangkitan.',
+    count: '1×',
+    source: 'HR. Tirmidzi no. 3391'
+  },
+  {
+    num: '7 — Tasbih, Tahmid, Tahlil, Takbir',
+    arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
+    latin: 'Subḥānallāhi wa biḥamdih.',
+    meaning: 'Maha Suci Allah dan segala puji bagi-Nya.',
+    count: '100×',
+    source: 'HR. Bukhari no. 6405, Muslim no. 2691'
+  },
+  {
+    num: '8 — Doa Perlindungan',
+    arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي',
+    latin: 'Allāhumma innī as\'alukal-\'āfiyata fid-dunyā wal-ākhirah, Allāhumma innī as\'alukal-\'afwa wal-\'āfiyata fī dīnī wa dunyāya wa ahlī wa mālī.',
+    meaning: 'Ya Allah, aku memohon kepada-Mu keselamatan di dunia dan akhirat. Ya Allah, aku memohon kepada-Mu maaf dan keselamatan dalam agamaku, duniaku, keluargaku, dan hartaku.',
+    count: '1×',
+    source: 'HR. Abu Dawud no. 5074, Ibnu Majah no. 3871'
+  },
+];
+
+const ZIKIR_PETANG = [
+  {
+    num: '1 — Ayat Kursi',
+    arabic: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ',
+    latin: 'Allāhu lā ilāha illā huw, al-ḥayyul-qayyūm, lā ta\'khużuhū sinatuw wa lā nawm, lahū mā fis-samāwāti wa mā fil-arḍ, man żallażī yasyfa\'u \'indahū illā bi\'iżnih, ya\'lamu mā baina aidīhim wa mā khalfahum, wa lā yuḥīṭūna bisyai\'im min \'ilmihī illā bimā syā\', wasi\'a kursiyyuhus-samāwāti wal-arḍ, wa lā ya\'ūduhū ḥifẓuhumā, wa huwal-\'aliyyul-\'aẓīm.',
+    meaning: 'Allah, tidak ada tuhan selain Dia, Yang Maha Hidup, Yang terus-menerus mengurus makhluk-Nya. Tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan di bumi. Tidak ada yang dapat memberi syafaat di sisi-Nya tanpa izin-Nya. Dia mengetahui apa yang ada di hadapan mereka dan apa yang ada di belakang mereka. Mereka tidak mengetahui sesuatu pun dari ilmu-Nya, kecuali apa yang Dia kehendaki. Kursi-Nya meliputi langit dan bumi. Dia tidak merasa berat memelihara keduanya. Dan Dia Maha Tinggi lagi Maha Besar.',
+    count: '1×',
+    source: 'QS. Al-Baqarah: 255'
+  },
+  {
+    num: '2 — Al-Ikhlas',
+    arabic: 'قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ',
+    latin: 'Qul huwallāhu aḥad, Allāhuṣ-ṣamad, lam yalid wa lam yūlad, wa lam yakul lahū kufuwan aḥad.',
+    meaning: 'Katakanlah: Dialah Allah, Yang Maha Esa. Allah tempat meminta segala sesuatu. Dia tidak beranak dan tidak diperanakkan. Dan tidak ada sesuatu yang setara dengan Dia.',
+    count: '3×',
+    source: 'QS. Al-Ikhlas: 1-4'
+  },
+  {
+    num: '3 — Al-Falaq',
+    arabic: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِن شَرِّ مَا خَلَقَ ۝ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ',
+    latin: 'Qul a\'ūżu birabbil-falaq, min syarri mā khalaq, wa min syarri ghāsiqin iżā waqab, wa min syarrin-naffāṡāti fil-\'uqad, wa min syarri ḥāsidin iżā ḥasad.',
+    meaning: 'Katakanlah: Aku berlindung kepada Tuhan yang menguasai subuh, dari kejahatan (makhluk yang) Dia ciptakan, dan dari kejahatan malam apabila telah gelap gulita, dan dari kejahatan (perempuan-perempuan) peniup pada buhul-buhul (tukang sihir), dan dari kejahatan orang yang dengki apabila dia dengki.',
+    count: '3×',
+    source: 'QS. Al-Falaq: 1-5'
+  },
+  {
+    num: '4 — An-Nas',
+    arabic: 'قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ',
+    latin: 'Qul a\'ūżu birabbin-nās, malikin-nās, ilāhin-nās, min syarril-waswāsil-khannās, allażī yuwaswisu fī ṣudūrin-nās, minal-jinnati wan-nās.',
+    meaning: 'Katakanlah: Aku berlindung kepada Tuhannya manusia, Raja manusia, Sembahan manusia, dari kejahatan (bisikan) setan yang bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia.',
+    count: '3×',
+    source: 'QS. An-Nas: 1-6'
+  },
+  {
+    num: '5 — Doa Petang',
+    arabic: 'اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ',
+    latin: 'Allāhumma bika amsaynā wa bika aṣbaḥnā wa bika naḥyā wa bika namūtu wa ilaykal-maṣīr.',
+    meaning: 'Ya Allah, dengan-Mu kami memasuki petang, dengan-Mu kami memasuki pagi, dengan-Mu kami hidup, dengan-Mu kami mati, dan kepada-Mu tempat kembali.',
+    count: '1×',
+    source: 'HR. Tirmidzi no. 3391'
+  },
+  {
+    num: '6 — Istighfar',
+    arabic: 'أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ الَّذِي لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ',
+    latin: 'Astaghfirullāhal-\'aẓīmallażī lā ilāha illā huwal-ḥayyul-qayyūmu wa atūbu ilayh.',
+    meaning: 'Aku memohon ampun kepada Allah Yang Maha Agung, yang tidak ada tuhan selain Dia, Yang Maha Hidup lagi terus-menerus mengurus makhluk-Nya, dan aku bertaubat kepada-Nya.',
+    count: '3×',
+    source: 'HR. Tirmidzi no. 3577'
+  },
+  {
+    num: '7 — Tasbih Petang',
+    arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
+    latin: 'Subḥānallāhi wa biḥamdih.',
+    meaning: 'Maha Suci Allah dan segala puji bagi-Nya.',
+    count: '100×',
+    source: 'HR. Muslim no. 2692'
+  },
+  {
+    num: '8 — Doa Perlindungan Malam',
+    arabic: 'اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ',
+    latin: 'Allāhumma qinī \'adzābaka yawma tab\'atsu \'ibādak.',
+    meaning: 'Ya Allah, peliharalah aku dari azab-Mu pada hari Engkau membangkitkan hamba-hamba-Mu.',
+    count: '3×',
+    source: 'HR. Abu Dawud no. 5045, Tirmidzi no. 3398'
+  },
+];
+
+let currentZikirId = null;
+
+function openZikirOv(id) {
+  currentZikirId = id;
+  const isPagi = id === 'zikir-pagi';
+  const data = isPagi ? ZIKIR_PAGI : ZIKIR_PETANG;
+  document.getElementById('zikir-ov-title').textContent = isPagi ? '📿 Zikir Pagi' : '📿 Zikir Petang';
+  document.getElementById('zikir-ov-sub').textContent = isPagi ? 'BA\'DA SUBUH' : 'BA\'DA ASHAR / MAGHRIB';
+  const body = document.getElementById('zikir-ov-body');
+  body.innerHTML = '';
+  data.forEach(z => {
+    const div = document.createElement('div');
+    div.className = 'zikir-item';
+    div.innerHTML = `
+      <div class="zikir-num">${z.num}</div>
+      <div class="zikir-arabic">${z.arabic}</div>
+      <div class="zikir-latin">${z.latin}</div>
+      <div class="zikir-meaning">${z.meaning}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+        <span class="zikir-count">${z.count}</span>
+        ${z.source ? `<span style="font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:.5px;">${z.source}</span>` : ''}
+      </div>`;
+    body.appendChild(div);
+  });
+  openOv('ov-zikir');
+}
+
+function closeZikirOv() {
+  closeOv('ov-zikir');
+}
+
+function doneZikir() {
+  if (!currentZikirId) return;
+  const td = getTodayData();
+  td[currentZikirId] = true;
+  setTodayData(td);
+  closeOv('ov-zikir');
+  updateAllProgress();
+  toast('📿 Alhamdulillah, zikir selesai ✦');
+}
+
+// ══════════════════════════════════════════
+// SHALAT QUALITY OVERLAY
+// ══════════════════════════════════════════
+let sqShalatId = null;
+let sqState = { tepat: false, jamaah: false };
+
+function openShalatQualityOv(id) {
+  sqShalatId = id;
+  sqState = { tepat: false, jamaah: false };
+  // pre-fill from existing data
+  const td = getTodayData();
+  const existing = (td.shalat||{})[id] || {};
+  sqState.tepat = !!existing.tepat;
+  sqState.jamaah = !!existing.jamaah;
+  const shalat = SHALAT_WAJIB.find(s => s.id === id);
+  document.getElementById('sqov-title').textContent = (shalat ? shalat.emoji + ' ' + shalat.name : '🕌 Shalat');
+  renderSQButtons();
+  openOv('ov-shalat-quality');
+}
+
+function renderSQButtons() {
+  const tEl = document.getElementById('sq-tepat');
+  const jEl = document.getElementById('sq-jamaah');
+  if (tEl) tEl.className = 'sq-btn' + (sqState.tepat ? ' on' : '');
+  if (jEl) jEl.className = 'sq-btn' + (sqState.jamaah ? ' on' : '');
+}
+
+function toggleSQ(key) {
+  sqState[key] = !sqState[key];
+  renderSQButtons();
+}
+
+function saveShalatQuality() {
+  if (!sqShalatId) return;
+  const td = getTodayData();
+  if (!td.shalat) td.shalat = {};
+  if (!td.shalat[sqShalatId]) td.shalat[sqShalatId] = {};
+  td.shalat[sqShalatId].tepat = sqState.tepat;
+  td.shalat[sqShalatId].jamaah = sqState.jamaah;
+  setTodayData(td);
+  closeOv('ov-shalat-quality');
+  updateAllProgress();
+  const tags = [sqState.tepat ? '⏰ tepat waktu' : '', sqState.jamaah ? '🕌 berjamaah' : ''].filter(Boolean);
+  toast(tags.length ? '✓ ' + tags.join(' + ') : '✓ Shalat tercatat');
+}
+
+function skipShalatQuality() {
+  closeOv('ov-shalat-quality');
+}
+
+// helper: cek apakah semua shalat hari ini tepat waktu
+function isAllShalatTepat(k) {
+  const dd = getDayData(k);
+  const sw = dd.shalat || {};
+  return SHALAT_WAJIB.every(s => !!(sw[s.id]||{}).done && !!(sw[s.id]||{}).tepat);
+}
+
 // SUNNAH OVERLAY + TRACKER
 // ══════════════════════════════════════════
 const SUNNAH_COLORS = {
@@ -2320,6 +2623,8 @@ function renderCalendar() {
     el.className = cls;
     // sunnah halo — blue glow on days where all sunnah were done
     if (!hasFuture && isSunnahFull(dd)) el.classList.add('sunnah-halo');
+    // tepat waktu halo — green glow on days where all shalat were on time
+    if (!hasFuture && isAllShalatTepat(k)) el.classList.add('tepat-halo');
     // Show checkmark on done days, grace symbol on grace days
     if (!hasFuture && Object.keys(dd).length > 0) {
       if (dd.mode === 'rest') {
@@ -2681,6 +2986,19 @@ function renderStats() {
     {n:activeDays, l:'Hari Aktif', s:'total ada data', c:'var(--sky)'},
     {n:getSunnahStreak(), l:'Streak Sunnah', s:'⭐ bonus berturut-turut', c:'var(--sky)'},
     {n:(() => { const mData=getMurajaahData(); return Object.values(mData).filter(m=>m.strength==='mastered').length; })(), l:'Mastered', s:'🏆 hafalan kuat', c:'var(--lavender)'},
+    {n:(() => {
+      const days = S.get('days') || {};
+      const ks = Object.keys(days);
+      if (!ks.length) return '—';
+      let total = 0, tepat = 0;
+      ks.forEach(k => {
+        const sw = (days[k].shalat)||{};
+        SHALAT_WAJIB.forEach(s => {
+          if ((sw[s.id]||{}).done) { total++; if ((sw[s.id]||{}).tepat) tepat++; }
+        });
+      });
+      return total > 0 ? Math.round(tepat/total*100)+'%' : '—';
+    })(), l:'Tepat Waktu', s:'⏰ dari total shalat tercatat', c:'var(--green)'},
   ].forEach(s => {
     const card = document.createElement('div');
     card.className = 'stat-card';

@@ -385,8 +385,69 @@ textarea.til-inp{line-height:1.5;}
 .til-arrow-row .til-af{flex:1;}
 .til-arrow-mid{flex-shrink:0;color:var(--t3);font-size:18px;padding-bottom:10px;line-height:1;}
 
-/* ayat preview */
-.til-ayat-preview{
+/* ayat list — multi tadabbur */
+.ayat-list-card{
+  background:var(--s1);border:1.5px solid var(--b1);
+  border-radius:var(--radius);margin-bottom:8px;
+  overflow:hidden;box-shadow:var(--shadow-sm);
+  transition:all .2s;
+}
+.ayat-list-card.expanded{border-color:var(--amber-border);box-shadow:0 2px 12px rgba(200,136,26,.12);}
+.ayat-list-header{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;cursor:pointer;
+  transition:background .15s;
+}
+.ayat-list-header:active{background:var(--s2);}
+.ayat-num-badge{
+  font-family:var(--mono);font-size:9px;color:var(--t3);
+  background:var(--s3);border-radius:20px;
+  padding:2px 8px;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;
+}
+.ayat-list-card.expanded .ayat-num-badge{background:var(--amber-bg);color:var(--amber);}
+.ayat-preview-snippet{
+  font-family:'Amiri',serif;font-size:16px;color:var(--t2);
+  direction:rtl;flex:1;overflow:hidden;
+  white-space:nowrap;text-overflow:ellipsis;text-align:right;
+  line-height:1.5;
+}
+.ayat-chevron{font-size:10px;color:var(--t3);transition:transform .2s;flex-shrink:0;}
+.ayat-list-card.expanded .ayat-chevron{transform:rotate(180deg);color:var(--amber);}
+.ayat-list-body{
+  display:none;padding:0 14px 14px;
+  border-top:1px solid var(--b1);
+}
+.ayat-list-card.expanded .ayat-list-body{display:block;}
+.ayat-arabic-full{
+  font-family:'Amiri',serif;font-size:22px;color:var(--t1);
+  direction:rtl;text-align:right;line-height:2;
+  padding:12px 0 8px;
+}
+.ayat-translation{
+  font-family:var(--serif);font-size:13px;font-style:italic;
+  color:var(--t2);line-height:1.6;margin-bottom:12px;
+  border-left:2px solid var(--b1);padding-left:10px;
+}
+.ayat-loading{
+  font-family:var(--mono);font-size:9px;color:var(--t3);
+  text-align:center;padding:16px 0;letter-spacing:1px;
+}
+.ayat-tadabbur-label{
+  font-family:var(--mono);font-size:8px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--amber);margin-bottom:6px;
+}
+.ayat-tandai-btn{
+  width:100%;margin-top:4px;
+  background:var(--amber-bg);border:1.5px solid var(--amber-border);
+  color:var(--amber);border-radius:var(--radius-sm);
+  padding:8px;font-family:var(--mono);font-size:9px;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  transition:all .15s;
+}
+.ayat-tandai-btn:hover{background:var(--amber);color:#fff;}
+.ayat-list-card.expanded.has-tadabbur .ayat-num-badge{background:var(--teal-bg);color:var(--teal);}
+.ayat-list-card.expanded.has-tadabbur{border-color:var(--teal-border);}
+.til-ayat-list-wrap{margin-bottom:4px;}
   background:var(--amber-bg);border-left:3px solid var(--amber);
   padding:11px 13px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;
   margin-bottom:12px;display:none;
@@ -844,52 +905,43 @@ textarea.til-inp{line-height:1.5;}
 
   <!-- LOG PANEL -->
   <div class="til-panel on" id="til-panel-log">
+
+    <!-- 1. Range surat/ayat -->
     <div class="til-card">
-      <div class="til-card-title">Progress Tilawah</div>
+      <div class="til-card-title">Tilawah Hari Ini</div>
       <div class="til-card-body">
-        <div class="til-arrow-row">
-          <div class="til-af">
+        <div class="til-row c2" style="margin-bottom:10px;">
+          <div>
             <label class="til-lbl">Dari Surah</label>
-            <input type="text" class="til-inp" id="til-from-surah" placeholder="Al-Baqarah">
+            <select class="til-inp" id="til-from-surah" style="font-size:13px;" onchange="onTilSurahChange()">
+              <option value="">— pilih surat —</option>
+            </select>
           </div>
-          <div class="til-arrow-mid">→</div>
-          <div class="til-af">
+          <div>
             <label class="til-lbl">Sampai Surah</label>
-            <input type="text" class="til-inp" id="til-to-surah" placeholder="Al-Baqarah">
+            <select class="til-inp" id="til-to-surah" style="font-size:13px;" onchange="onTilSurahChange()">
+              <option value="">— pilih surat —</option>
+            </select>
           </div>
         </div>
-        <div class="til-row c3">
-          <div><label class="til-lbl">Ayat awal</label><input type="number" class="til-inp" id="til-from-ayat" placeholder="1" min="1"></div>
-          <div style="display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;color:var(--t3);font-size:16px;">→</div>
-          <div><label class="til-lbl">Ayat akhir</label><input type="number" class="til-inp" id="til-to-ayat" placeholder="20" min="1"></div>
+        <div class="til-row c2" style="margin-bottom:12px;">
+          <div>
+            <label class="til-lbl">Ayat awal</label>
+            <input type="number" class="til-inp" id="til-from-ayat" placeholder="1" min="1" oninput="onTilRangeChange()">
+          </div>
+          <div>
+            <label class="til-lbl">Ayat akhir</label>
+            <input type="number" class="til-inp" id="til-to-ayat" placeholder="10" min="1" oninput="onTilRangeChange()">
+          </div>
         </div>
-        <div class="til-row c2" style="margin-top:10px;">
-          <div><label class="til-lbl">Hal. awal</label><input type="number" class="til-inp" id="til-from-page" placeholder="1" min="1" max="604"></div>
-          <div><label class="til-lbl">Hal. akhir</label><input type="number" class="til-inp" id="til-to-page" placeholder="5" min="1" max="604"></div>
-        </div>
+        <button class="btn btn-o" style="width:100%;font-size:11px;" onclick="buildAyatList()">✦ Lihat Ayat &amp; Tandai Tadabbur</button>
       </div>
     </div>
-    <div class="til-card">
-      <div class="til-card-title">Ayat Favorit + Tadabbur</div>
-      <div class="til-card-body">
-        <div class="til-fld">
-          <label class="til-lbl">Tulis ayatnya (Arab)</label>
-          <textarea class="til-inp" id="til-ayat-fav" rows="2" placeholder="..." style="font-family:'Amiri',serif;font-size:19px;direction:rtl;text-align:right;" oninput="updateTilPreview()"></textarea>
-        </div>
-        <div class="til-fld">
-          <label class="til-lbl">Referensi</label>
-          <input type="text" class="til-inp" id="til-ayat-ref" placeholder="QS. Al-Baqarah : 255" oninput="updateTilPreview()">
-        </div>
-        <div class="til-ayat-preview" id="til-ayat-preview">
-          <div class="til-ayat-text" id="til-prev-text"></div>
-          <div class="til-ayat-ref" id="til-prev-ref"></div>
-        </div>
-        <div class="til-fld">
-          <label class="til-lbl">Tadabbur — apa yang kamu dapat?</label>
-          <textarea class="til-inp" id="til-tadabbur" rows="4" placeholder="Pikiran, perasaan, koneksi sama hidup lo..."></textarea>
-        </div>
-      </div>
-    </div>
+
+    <!-- 2. Ayat list — rendered by JS -->
+    <div id="til-ayat-list"></div>
+
+    <!-- 3. Kondisi Hati -->
     <div class="til-card">
       <div class="til-card-title">Kondisi Hati</div>
       <div class="til-card-body">
@@ -909,6 +961,7 @@ textarea.til-inp{line-height:1.5;}
         </div>
       </div>
     </div>
+
     <button class="til-save-btn" onclick="saveTilawah()">✦ Simpan Tilawah Hari Ini</button>
     <div style="height:10px;"></div>
   </div>
@@ -3350,6 +3403,8 @@ function confirmReset() {
 const MOOD_EM_TIL = {khushu:'🕌',tenang:'🌿',terharu:'💧',semangat:'⚡',gelisah:'🌊',ngantuk:'😴',biasa:'☁️',berat:'🪨'};
 let tilMood = '';
 let tilCalViewYear, tilCalViewMonth;
+let tilTadabburMap = {}; // { 'suratNo:ayatNo': { arabic, translation, tadabbur } }
+let tilFromSuratNo = 0, tilToSuratNo = 0;
 
 function getTilHistory() { return JSON.parse(localStorage.getItem('tilHist') || '[]'); }
 function setTilHistory(h) { localStorage.setItem('tilHist', JSON.stringify(h)); }
@@ -3362,12 +3417,191 @@ function initTilawah() {
   const now = new Date();
   tilCalViewYear = now.getFullYear();
   tilCalViewMonth = now.getMonth();
-  // Format: JUM, 27 MAR — like reference app
   const dateEl = document.getElementById('til-date-lbl');
   if (dateEl) dateEl.textContent =
     now.toLocaleDateString('id-ID', {weekday:'short', day:'numeric', month:'short'}).toUpperCase();
   updateTilStreak();
+  populateTilSuratDropdowns();
   loadTilDraft();
+}
+
+function populateTilSuratDropdowns() {
+  ['til-from-surah','til-to-surah'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel || sel.options.length > 1) return;
+    QURAN_SURAT.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.no;
+      opt.textContent = s.no + '. ' + s.name;
+      sel.appendChild(opt);
+    });
+  });
+}
+
+function onTilSurahChange() {
+  // auto-reset ayat range when surat changes
+  const fromNo = parseInt(document.getElementById('til-from-surah').value) || 0;
+  const toNo   = parseInt(document.getElementById('til-to-surah').value) || 0;
+  const fromAyatEl = document.getElementById('til-from-ayat');
+  const toAyatEl   = document.getElementById('til-to-ayat');
+  if (fromNo) {
+    const s = QURAN_SURAT.find(x => x.no === fromNo);
+    if (s) { fromAyatEl.max = s.ayat; fromAyatEl.placeholder = '1'; }
+  }
+  if (toNo) {
+    const s = QURAN_SURAT.find(x => x.no === toNo);
+    if (s) { toAyatEl.max = s.ayat; toAyatEl.placeholder = s.ayat; }
+  }
+  // clear ayat list
+  document.getElementById('til-ayat-list').innerHTML = '';
+  tilTadabburMap = {};
+}
+
+function onTilRangeChange() {
+  document.getElementById('til-ayat-list').innerHTML = '';
+  tilTadabburMap = {};
+}
+
+async function buildAyatList() {
+  const fromSuratNo = parseInt(document.getElementById('til-from-surah').value);
+  const toSuratNo   = parseInt(document.getElementById('til-to-surah').value) || fromSuratNo;
+  const fromAyat    = parseInt(document.getElementById('til-from-ayat').value) || 1;
+  const toAyatEl    = document.getElementById('til-to-ayat');
+
+  if (!fromSuratNo) { toast('⚠ Pilih surah dulu'); return; }
+
+  const fromSurat = QURAN_SURAT.find(s => s.no === fromSuratNo);
+  const toSurat   = QURAN_SURAT.find(s => s.no === (toSuratNo || fromSuratNo));
+
+  // default to-ayat
+  let toAyat = parseInt(toAyatEl.value);
+  if (!toAyat) {
+    if (toSuratNo === fromSuratNo || !toSuratNo) toAyat = fromSurat ? fromSurat.ayat : fromAyat;
+    else toAyat = toSurat ? toSurat.ayat : 1;
+  }
+
+  // build list of (suratNo, ayatNo) pairs
+  const pairs = [];
+  for (let sNo = fromSuratNo; sNo <= (toSuratNo || fromSuratNo); sNo++) {
+    const surat = QURAN_SURAT.find(s => s.no === sNo);
+    if (!surat) continue;
+    const startAyat = sNo === fromSuratNo ? fromAyat : 1;
+    const endAyat   = sNo === (toSuratNo || fromSuratNo) ? Math.min(toAyat, surat.ayat) : surat.ayat;
+    for (let a = startAyat; a <= endAyat; a++) {
+      pairs.push({ suratNo: sNo, ayatNo: a, suratName: surat.name });
+    }
+  }
+
+  if (pairs.length === 0) { toast('⚠ Range ayat tidak valid'); return; }
+  if (pairs.length > 50) { toast('⚠ Terlalu banyak ayat sekaligus (maks 50)'); return; }
+
+  tilFromSuratNo = fromSuratNo;
+  tilToSuratNo   = toSuratNo || fromSuratNo;
+
+  const wrap = document.getElementById('til-ayat-list');
+  wrap.innerHTML = '';
+
+  const label = document.createElement('div');
+  label.className = 'tl-zone-label';
+  label.style.margin = '4px 0 10px';
+  label.textContent = pairs.length + ' ayat — tap untuk tandai tadabbur';
+  wrap.appendChild(label);
+
+  pairs.forEach(p => {
+    const key = `${p.suratNo}:${p.ayatNo}`;
+    const card = document.createElement('div');
+    card.className = 'ayat-list-card';
+    card.id = 'ayat-card-' + key;
+    card.innerHTML = `
+      <div class="ayat-list-header" onclick="toggleAyatCard('${key}', ${p.suratNo}, ${p.ayatNo}, '${p.suratName}')">
+        <span class="ayat-num-badge">${p.suratName} : ${p.ayatNo}</span>
+        <span class="ayat-preview-snippet" id="ayat-snippet-${key}">ketuk untuk lihat &amp; tadabbur</span>
+        <span class="ayat-chevron">▾</span>
+      </div>
+      <div class="ayat-list-body" id="ayat-body-${key}">
+        <div class="ayat-loading" id="ayat-loading-${key}">memuat ayat…</div>
+        <div class="ayat-arabic-full" id="ayat-arabic-${key}" style="display:none;"></div>
+        <div class="ayat-translation" id="ayat-trans-${key}" style="display:none;"></div>
+        <div class="ayat-tadabbur-label">✦ Tadabbur</div>
+        <textarea class="til-inp" id="ayat-tad-${key}" rows="3"
+          placeholder="Apa yang kamu dapat dari ayat ini?"
+          oninput="onTadabburInput('${key}')"></textarea>
+      </div>`;
+    wrap.appendChild(card);
+
+    // restore saved tadabbur if exists
+    if (tilTadabburMap[key]) {
+      const ta = card.querySelector(`#ayat-tad-${key}`);
+      if (ta) ta.value = tilTadabburMap[key].tadabbur || '';
+      if (tilTadabburMap[key].tadabbur) card.classList.add('has-tadabbur');
+    }
+  });
+}
+
+async function toggleAyatCard(key, suratNo, ayatNo, suratName) {
+  const card = document.getElementById('ayat-card-' + key);
+  const isOpen = card.classList.contains('expanded');
+  card.classList.toggle('expanded', !isOpen);
+  if (isOpen) return;
+
+  const loadEl  = document.getElementById('ayat-loading-' + key);
+  const arabEl  = document.getElementById('ayat-arabic-'  + key);
+  const transEl = document.getElementById('ayat-trans-'   + key);
+  const snipEl  = document.getElementById('ayat-snippet-' + key);
+
+  // already loaded
+  if (arabEl.textContent) {
+    arabEl.style.display = 'block';
+    transEl.style.display = 'block';
+    loadEl.style.display  = 'none';
+    return;
+  }
+
+  try {
+    const [arRes, idRes] = await Promise.all([
+      fetch(`https://api.alquran.cloud/v1/ayah/${suratNo}:${ayatNo}`),
+      fetch(`https://api.alquran.cloud/v1/ayah/${suratNo}:${ayatNo}/id.indonesian`)
+    ]);
+    const arData = await arRes.json();
+    const idData = await idRes.json();
+
+    const arabic = arData?.data?.text || '';
+    const translation = idData?.data?.text || '';
+
+    arabEl.textContent = arabic;
+    transEl.textContent = translation;
+    arabEl.style.display = 'block';
+    transEl.style.display = 'block';
+    loadEl.style.display = 'none';
+
+    // save to map
+    if (!tilTadabburMap[key]) tilTadabburMap[key] = {};
+    tilTadabburMap[key].arabic      = arabic;
+    tilTadabburMap[key].translation = translation;
+    tilTadabburMap[key].suratNo     = suratNo;
+    tilTadabburMap[key].ayatNo      = ayatNo;
+    tilTadabburMap[key].suratName   = suratName;
+
+    // snippet
+    if (snipEl && arabic) snipEl.textContent = arabic.slice(0, 40) + '…';
+
+  } catch {
+    loadEl.textContent = 'Offline — teks Arab tidak tersedia';
+    arabEl.style.display = 'none';
+    transEl.style.display = 'none';
+    if (!tilTadabburMap[key]) tilTadabburMap[key] = {};
+    tilTadabburMap[key].suratNo   = suratNo;
+    tilTadabburMap[key].ayatNo    = ayatNo;
+    tilTadabburMap[key].suratName = suratName;
+  }
+}
+
+function onTadabburInput(key) {
+  const ta = document.getElementById('ayat-tad-' + key);
+  if (!tilTadabburMap[key]) tilTadabburMap[key] = {};
+  tilTadabburMap[key].tadabbur = ta ? ta.value : '';
+  const card = document.getElementById('ayat-card-' + key);
+  if (card) card.classList.toggle('has-tadabbur', !!(ta && ta.value.trim()));
 }
 
 function updateTilStreak() {
@@ -3405,68 +3639,86 @@ function pickTilMood(el, val) {
   tilMood = val;
 }
 
-function updateTilPreview() {
-  const t = document.getElementById('til-ayat-fav').value.trim();
-  const r = document.getElementById('til-ayat-ref').value.trim();
-  const p = document.getElementById('til-ayat-preview');
-  if (t || r) {
-    p.style.display = 'block';
-    document.getElementById('til-prev-text').textContent = t;
-    document.getElementById('til-prev-ref').textContent = r;
-  } else { p.style.display = 'none'; }
-}
+function updateTilPreview() { /* deprecated — kept for compat */ }
 
 function loadTilDraft() {
-  const d = JSON.parse(localStorage.getItem('tilDraft') || '{}');
+  const d = JSON.parse(localStorage.getItem('tilDraftV2') || '{}');
   if (!d.dateKey || d.dateKey !== todayStr()) return;
-  const fields = ['til-from-surah','til-to-surah','til-ayat-fav','til-ayat-ref','til-tadabbur','til-catatan'];
-  const nums = ['til-from-ayat','til-to-ayat','til-from-page','til-to-page'];
-  const map = {'til-from-surah':'fromSurah','til-to-surah':'toSurah','til-ayat-fav':'ayatFav','til-ayat-ref':'ayatRef','til-tadabbur':'tadabbur','til-catatan':'catatanHati','til-from-ayat':'fromAyat','til-to-ayat':'toAyat','til-from-page':'fromPage','til-to-page':'toPage'};
-  [...fields,...nums].forEach(id => {
-    const el = document.getElementById(id);
-    if (el && d[map[id]]) el.value = d[map[id]];
-  });
+  // restore dropdowns
+  const fs = document.getElementById('til-from-surah');
+  const ts = document.getElementById('til-to-surah');
+  const fa = document.getElementById('til-from-ayat');
+  const ta = document.getElementById('til-to-ayat');
+  if (fs && d.fromSuratNo) { fs.value = d.fromSuratNo; }
+  if (ts && d.toSuratNo)   { ts.value = d.toSuratNo; }
+  if (fa && d.fromAyat)    { fa.value = d.fromAyat; }
+  if (ta && d.toAyat)      { ta.value = d.toAyat; }
+  // restore mood
   if (d.mood) {
     tilMood = d.mood;
     document.querySelectorAll('.til-mood-chip').forEach(c => {
-      const fn = c.getAttribute('onclick') || '';
-      if (fn.includes(`'${d.mood}'`)) c.classList.add('on');
+      if ((c.getAttribute('onclick')||'').includes(`'${d.mood}'`)) c.classList.add('on');
     });
   }
-  updateTilPreview();
+  const catEl = document.getElementById('til-catatan');
+  if (catEl && d.catatanHati) catEl.value = d.catatanHati;
+  // restore tadabbur map
+  if (d.tadabburMap) tilTadabburMap = d.tadabburMap;
 }
 
 function saveTilawah() {
   const k = todayStr();
-  const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
-  const gn = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+  const fromSuratNo = parseInt(document.getElementById('til-from-surah').value) || 0;
+  const toSuratNo   = parseInt(document.getElementById('til-to-surah').value) || fromSuratNo;
+  const fromAyat    = parseInt(document.getElementById('til-from-ayat').value) || '';
+  const toAyat      = parseInt(document.getElementById('til-to-ayat').value) || '';
+  const catatanHati = (document.getElementById('til-catatan').value || '').trim();
+
+  const fromSurat = QURAN_SURAT.find(s => s.no === fromSuratNo);
+  const toSurat   = QURAN_SURAT.find(s => s.no === toSuratNo);
+
+  // collect tadabbur entries that have text
+  const tadabburEntries = Object.entries(tilTadabburMap)
+    .filter(([,v]) => v.tadabbur && v.tadabbur.trim())
+    .map(([key, v]) => ({
+      key, suratNo: v.suratNo, ayatNo: v.ayatNo,
+      suratName: v.suratName,
+      arabic: v.arabic || '',
+      translation: v.translation || '',
+      tadabbur: v.tadabbur.trim()
+    }));
+
   const entry = {
     dateKey: k,
     dateDisplay: new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}),
-    fromSurah: g('til-from-surah'), toSurah: g('til-to-surah'),
-    fromAyat: gn('til-from-ayat'), toAyat: gn('til-to-ayat'),
-    fromPage: gn('til-from-page'), toPage: gn('til-to-page'),
-    ayatFav: g('til-ayat-fav'), ayatRef: g('til-ayat-ref'),
-    tadabbur: g('til-tadabbur'), catatanHati: g('til-catatan'),
+    fromSurah:  fromSurat ? fromSurat.name : '',
+    toSurah:    toSurat   ? toSurat.name   : '',
+    fromSuratNo, toSuratNo, fromAyat, toAyat,
+    tadabburEntries,
+    catatanHati,
     mood: tilMood,
   };
+
   let hist = getTilHistory();
   hist = hist.filter(h => h.dateKey !== k);
   hist.push(entry);
   setTilHistory(hist);
+
   const chain = getTilChain();
   chain[k] = true;
   setTilChain(chain);
-  localStorage.setItem('tilDraft', JSON.stringify(entry));
 
-  // ✅ auto-mark tilawah checkbox in Muntaha today
+  // save draft v2
+  localStorage.setItem('tilDraftV2', JSON.stringify({
+    dateKey: k, fromSuratNo, toSuratNo, fromAyat, toAyat,
+    mood: tilMood, catatanHati, tadabburMap: tilTadabburMap
+  }));
+
+  // auto-mark tilawah done
   const td = getTodayData();
   td.tilawah = true;
   setTodayData(td);
-  const el = document.getElementById('ci-tilawah');
-  if (el) el.className = 'check-item done-teal';
   updateAllProgress();
-
   updateTilStreak();
   toast('✦ Tilawah tersimpan — jazakallah khair! 📖');
 }
@@ -3528,19 +3780,45 @@ function renderTilHistory() {
   [...hist].reverse().slice(0, 30).forEach((e, idx) => {
     const div = document.createElement('div');
     div.className = 'til-hist-item';
-    const range = (e.fromSurah && e.toSurah) ? `${e.fromSurah} ${e.fromAyat||''}→${e.toSurah} ${e.toAyat||''}` : '';
-    const isLong = e.tadabbur && e.tadabbur.length > 120;
-    const tadId = 'tilTad-'+idx, togId = 'tilTog-'+idx;
+
+    // range label
+    const range = (e.fromSurah && e.toSurah && e.fromSurah !== e.toSurah)
+      ? `${e.fromSurah} ${e.fromAyat||''}–${e.toSurah} ${e.toAyat||''}`
+      : e.fromSurah
+        ? `${e.fromSurah}${e.fromAyat ? ' : '+e.fromAyat : ''}${e.toAyat && e.toAyat !== e.fromAyat ? '–'+e.toAyat : ''}`
+        : '';
+
+    // tadabbur entries (new format) or legacy single tadabbur
+    let tadHTML = '';
+    if (e.tadabburEntries && e.tadabburEntries.length) {
+      tadHTML = e.tadabburEntries.map((t, ti) => {
+        const isLong = t.tadabbur.length > 120;
+        const tadId = `th-tad-${idx}-${ti}`, togId = `th-tog-${idx}-${ti}`;
+        return `
+          <div style="margin-top:10px;border-left:2px solid var(--amber-border);padding-left:10px;">
+            <div style="font-family:var(--mono);font-size:8px;color:var(--amber);letter-spacing:1px;margin-bottom:4px;">${t.suratName} : ${t.ayatNo}</div>
+            ${t.arabic ? `<div style="font-family:'Amiri',serif;font-size:16px;direction:rtl;text-align:right;color:var(--t1);line-height:1.8;margin-bottom:4px;">${t.arabic}</div>` : ''}
+            <div class="til-hist-tadabbur${isLong?' collapsed':''}" id="${tadId}">${t.tadabbur}</div>
+            ${isLong ? `<button class="til-hist-toggle" id="${togId}" onclick="toggleTilTad('${tadId}','${togId}')">selengkapnya ▾</button>` : ''}
+          </div>`;
+      }).join('');
+    } else if (e.tadabbur) {
+      // legacy format
+      const isLong = e.tadabbur.length > 120;
+      const tadId = `th-tad-${idx}`, togId = `th-tog-${idx}`;
+      tadHTML = `
+        <div class="til-hist-tadabbur${isLong?' collapsed':''}" id="${tadId}">${e.tadabbur}</div>
+        ${isLong ? `<button class="til-hist-toggle" id="${togId}" onclick="toggleTilTad('${tadId}','${togId}')">selengkapnya ▾</button>` : ''}`;
+    }
+
     div.innerHTML = `
       <div class="til-hist-top">
         <div class="til-hist-date">${e.dateDisplay||e.dateKey}</div>
         <div style="font-size:15px;">${MOOD_EM_TIL[e.mood]||''}</div>
       </div>
-      ${range?`<div class="til-hist-range">${range}</div>`:''}
-      ${e.ayatFav?`<div class="til-hist-ayat">${e.ayatFav.slice(0,80)}${e.ayatFav.length>80?'...':''}</div>`:''}
-      ${e.ayatRef?`<div style="font-family:var(--mono);font-size:9px;color:var(--amber);letter-spacing:1px;margin-bottom:4px;">${e.ayatRef}</div>`:''}
-      ${e.tadabbur?`<div class="til-hist-tadabbur${isLong?' collapsed':''}" id="${tadId}">${e.tadabbur}</div>${isLong?`<button class="til-hist-toggle" id="${togId}" onclick="toggleTilTad('${tadId}','${togId}')">selengkapnya ▾</button>`:''}`:''}
-      ${e.catatanHati?`<div class="til-hist-catatan">💬 ${e.catatanHati}</div>`:''}`;
+      ${range ? `<div class="til-hist-range">${range}</div>` : ''}
+      ${tadHTML}
+      ${e.catatanHati ? `<div class="til-hist-catatan">💬 ${e.catatanHati}</div>` : ''}`;
     el.appendChild(div);
   });
 }
